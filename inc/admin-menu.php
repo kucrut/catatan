@@ -29,9 +29,9 @@ function bootstrap(): void {
  * @return void
  */
 function replace_add_new_submenu( string $post_type, WP_Post_Type $post_type_object ): void {
-	$post_types = Settings\get_value( 'post_types' );
+	$supported = Settings\get_value( 'post_types' );
 
-	if ( empty( $post_types ) ) {
+	if ( empty( $supported ) || ! in_array( $post_type, $supported, true ) ) {
 		return;
 	}
 
