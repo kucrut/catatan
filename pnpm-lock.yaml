@@ -5,10 +5,29 @@ importers:
   .:
     specifiers:
       prettier: npm:wp-prettier@^2.6.2
+      prettier-plugin-svelte: ^2.7.0
+      svelte: ^3.49.0
     devDependencies:
       prettier: /wp-prettier/2.6.2
+      prettier-plugin-svelte: 2.7.0_ylf6ruhrfmzhqqfhhqx55xyklq
+      svelte: 3.49.0
 
 packages:
+
+  /prettier-plugin-svelte/2.7.0_ylf6ruhrfmzhqqfhhqx55xyklq:
+    resolution: {integrity: sha512-fQhhZICprZot2IqEyoiUYLTRdumULGRvw0o4dzl5jt0jfzVWdGqeYW27QTWAeXhoupEZJULmNoH3ueJwUWFLIA==}
+    peerDependencies:
+      prettier: ^1.16.4 || ^2.0.0
+      svelte: ^3.2.0
+    dependencies:
+      prettier: /wp-prettier/2.6.2
+      svelte: 3.49.0
+    dev: true
+
+  /svelte/3.49.0:
+    resolution: {integrity: sha512-+lmjic1pApJWDfPCpUUTc1m8azDqYCG1JN9YEngrx/hUyIcFJo6VZhj0A1Ai0wqoHcEIuQy+e9tk+4uDgdtsFA==}
+    engines: {node: '>= 8'}
+    dev: true
 
   /wp-prettier/2.6.2:
     resolution: {integrity: sha512-AV33EzqiFJ3fj+mPlKABN59YFPReLkDxQnj067Z3uEOeRQf3g05WprL0RDuqM7UBhSRo9W1rMSC2KvZmjE5UOA==}
