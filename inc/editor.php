@@ -59,11 +59,13 @@ function print_assets(): void {
 		// phpcs:disable WordPress.Security.NonceVerification.Recommended
 		'post_id' => isset( $_REQUEST['id'] ) ? (int) $_REQUEST['id'] : 0,
 		'l10n' => [
+			'close_settings' => __( 'Close settings' ),
 			'content_region_title' => __( 'Editor content' ),
 			'document' => __( 'Document' ),
 			'editor_title' => $post_type_object->labels->add_new_item,
 			'header_title' => __( 'Editor top bar' ),
 			'header_toolbar_title' => __( 'Document tools' ),
+			'permalink' => __( 'Permalink' ),
 			'preview' => __( 'Preview' ),
 			'publish' => __( 'Publish' ),
 			'save_draft' => __( 'Save draft' ),
@@ -71,6 +73,8 @@ function print_assets(): void {
 			'sidebar_title' => __( 'Editor settings' ),
 			'status_panel_title' => __( 'Status & visibility' ),
 			'title_input_placeholder' => __( 'Add title' ),
+			'url_slug' => __( 'URL Slug' ),
+			'visibility' => __( 'Visibility' ),
 		],
 	];
 	?>
