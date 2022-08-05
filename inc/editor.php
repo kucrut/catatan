@@ -25,6 +25,8 @@ function bootstrap(): void {
  */
 function load(): void {
 	enqueue_assets();
+
+	add_action( 'admin_print_scripts', __NAMESPACE__ . '\\print_assets' );
 }
 
 /**
@@ -39,6 +41,21 @@ function enqueue_assets(): void {
 	wp_enqueue_style( 'wp-edit-post' );
 }
 
+/**
+ * Print assets
+ *
+ * TODO: Use vite-for-wp for this
+ *
+ * @since 0.0.1
+ *
+ * @return void
+ */
+function print_assets(): void {
+	?>
+<script type="module" src="http://localhost:5173/@vite/client"></script>
+<script type="module" src="http://localhost:5173/src/main.ts"></script>
+	<?php
+}
 
 /**
  * Render editor page
@@ -48,6 +65,17 @@ function enqueue_assets(): void {
  * @return void
  */
 function render_page(): void {
+	echo '<div id="app"></div>';
+}
+
+/**
+ * Render editor page
+ *
+ * @since 0.0.1
+ *
+ * @return void
+ */
+function render_page_temp(): void {
 	?>
 <div class="block-editor">
 	<h1 class="screen-reader-text">Add New Page</h1>
