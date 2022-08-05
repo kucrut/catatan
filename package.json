@@ -13,7 +13,9 @@
 		"editor",
 		"markdown"
 	],
-	"scripts": {},
+	"scripts": {
+		"format:check": "prettier --check ."
+	},
 	"devDependencies": {
 		"eslint": "^8.21.0",
 		"eslint-plugin-prettier": "^4.2.1",
