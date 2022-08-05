@@ -1,3 +1,4 @@
+**/dist/**
 **/vendor/**
 composer.lock
 pnpm-lock.yaml
