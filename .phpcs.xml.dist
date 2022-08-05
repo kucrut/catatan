@@ -5,7 +5,9 @@
 	<arg name="extensions" value="php" />
 
 	<rule ref="WordPress-Extra">
+		<exclude name="Generic.Arrays.DisallowShortArraySyntax.Found" />
 		<exclude name="Generic.Formatting.MultipleStatementAlignment.NotSameWarning" />
+		<exclude name="WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned" />
 		<exclude name="WordPress.PHP.YodaConditions.NotYoda" />
 	</rule>
 
