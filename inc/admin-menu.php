@@ -4,7 +4,6 @@ declare( strict_types = 1 );
 namespace Catatan\Admin_Menu;
 
 use Catatan;
-use Catatan\Settings;
 use WP_Post_Type;
 
 /**
