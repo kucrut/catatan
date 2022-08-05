@@ -13,7 +13,26 @@ use Catatan;
  * @return void
  */
 function bootstrap(): void {
+	add_action( 'load-post-new.php', __NAMESPACE__ . '\\redirect_editor' );
 	add_filter( 'get_edit_post_link', __NAMESPACE__ . '\\edit_post_link', 10, 3 );
+}
+
+/**
+ * Redirect editor
+ *
+ * @since 0.0.1
+ *
+ * @return void
+ */
+function redirect_editor(): void {
+	$screen = get_current_screen();
+
+	if ( ! Catatan\is_post_type_supported( $screen->post_type ) ) {
+		return;
+	}
+
+	wp_safe_redirect( Catatan\get_editor_url( $screen->post_type ), 302, 'Catatan' );
+	exit;
 }
 
 /**
