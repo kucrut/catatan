@@ -36,6 +36,19 @@ function register_menu(): void {
 }
 
 /**
+ * Generate option name
+ *
+ * @since 0.0.1
+ *
+ * @param string $id Field ID.
+ *
+ * @return string
+ */
+function generate_option_name( string $id ): string {
+	return sprintf( '%s__%s', OPTION_NAME, $id );
+}
+
+/**
  * Get settings sections
  *
  * @since 0.0.1
@@ -62,7 +75,7 @@ function get_fields(): array {
 	return [
 		[
 			'callback' => __NAMESPACE__ . '\\render_field_post_types',
-			'id' => sprintf( '%s__post_types', OPTION_NAME ),
+			'id' => generate_option_name( 'post_types' ),
 			'section' => 'general',
 			'title' => __( 'Post types', 'catatan' ),
 			'args' => [
@@ -71,7 +84,7 @@ function get_fields(): array {
 				'sanitize_callback' => __NAMESPACE__ . '\\sanitize_post_types',
 				'type' => 'array',
 				'show_in_rest' => [
-					'name' => sprintf( '%s__post_types', OPTION_NAME ),
+					'name' => generate_option_name( 'post_types' ),
 					'schema' => [
 						'type' => 'array',
 						'items' => [ 'type' => 'string' ],
