@@ -3,6 +3,8 @@ declare( strict_types = 1 );
 
 namespace Catatan;
 
+use Catatan\Settings;
+
 /**
  * Get editor page slug
  *
@@ -41,4 +43,23 @@ function get_editor_url( string $post_type, int $id = 0 ): string {
 	}
 
 	return add_query_arg( $args, admin_url( 'edit.php' ) );
+}
+
+/**
+ * Check if post type is supported
+ *
+ * @since 0.0.1
+ *
+ * @param string $post_type Post type name to check.
+ *
+ * @return bool
+ */
+function is_post_type_supported( string $post_type ): bool {
+	$supported = Settings\get_value( 'post_types' );
+
+	if ( empty( $supported ) ) {
+		return false;
+	}
+
+	return in_array( $post_type, $supported, true );
 }

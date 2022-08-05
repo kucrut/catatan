@@ -4,7 +4,6 @@ declare( strict_types = 1 );
 namespace Catatan\Overrides;
 
 use Catatan;
-use Catatan\Settings;
 
 /**
  * Overrides bootstrapper
@@ -29,19 +28,9 @@ function bootstrap(): void {
  * @return string
  */
 function edit_post_link( string $link, int $post_id, string $context ): string {
-	$supported = Settings\get_value( 'post_types' );
-
-	if ( empty( $supported ) ) {
-		return $link;
-	}
-
 	$post_type = get_post_type( $post_id );
 
-	if ( ! $post_type ) {
-		return $link;
-	}
-
-	if ( ! in_array( $post_type, $supported, true ) ) {
+	if ( ! ( $post_type && Catatan\is_post_type_supported( $post_type ) ) ) {
 		return $link;
 	}
 
