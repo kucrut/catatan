@@ -3,7 +3,7 @@ declare( strict_types = 1 );
 
 namespace Catatan\Admin_Menu;
 
-use Catatan\Editor;
+use Catatan;
 use Catatan\Settings;
 use WP_Post_Type;
 
@@ -49,7 +49,7 @@ function replace_add_new_submenu( string $post_type, WP_Post_Type $post_type_obj
 			$post_type_object->labels->add_new_item,
 			$post_type_object->labels->add_new,
 			$post_type_object->cap->create_posts,
-			sprintf( '%s--%s', $post_type, Editor\PAGE_SUFFIX ),
+			Catatan\get_editor_page_slug( $post_type ),
 			'\\Catatan\\Editor\\render_page',
 			1
 		);
