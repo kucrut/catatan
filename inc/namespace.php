@@ -5,7 +5,7 @@ namespace Catatan;
 
 use Catatan\Settings;
 
-const EDITOR_PAGE_SLUG = 'catatan-editor';
+const EDITOR_ID = 'catatan-editor';
 
 /**
  * Get editor page slug
@@ -17,7 +17,7 @@ const EDITOR_PAGE_SLUG = 'catatan-editor';
  * @return string
  */
 function get_editor_page_slug( string $post_type ): string {
-	return sprintf( '%s--%s', EDITOR_PAGE_SLUG, $post_type );
+	return sprintf( '%s--%s', EDITOR_ID, $post_type );
 }
 
 /**
@@ -28,7 +28,7 @@ function get_editor_page_slug( string $post_type ): string {
  * @return string
  */
 function get_editor_page_load_hookname(): string {
-	return sprintf( 'load-%s', EDITOR_PAGE_SLUG );
+	return sprintf( 'load-%s', EDITOR_ID );
 }
 
 /**
