@@ -3,8 +3,8 @@ declare( strict_types = 1 );
 
 namespace Catatan\Settings;
 
-const OPTION_NAME = 'catatan';
-const PAGE_SLUG = OPTION_NAME . '-settings';
+const OPTION_NAME_PREFIX = 'catatan';
+const PAGE_SLUG = OPTION_NAME_PREFIX . '-settings';
 
 /**
  * Settings bootstrapper
@@ -45,7 +45,7 @@ function register_menu(): void {
  * @return string
  */
 function generate_option_name( string $id ): string {
-	return sprintf( '%s__%s', OPTION_NAME, $id );
+	return sprintf( '%s__%s', OPTION_NAME_PREFIX, $id );
 }
 
 /**
