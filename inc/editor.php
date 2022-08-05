@@ -3,7 +3,7 @@ declare( strict_types = 1 );
 
 namespace Catatan\Editor;
 
-const PAGE_SUFFIX = 'catatan';
+use Catatan;
 
 /**
  * Editor bootstrapper
@@ -13,7 +13,18 @@ const PAGE_SUFFIX = 'catatan';
  * @return void
  */
 function bootstrap(): void {
-	add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\\enqueue_assets' );
+	add_action( Catatan\get_editor_page_load_hookname(), __NAMESPACE__ . '\\load' );
+}
+
+/**
+ * Load editor page
+ *
+ * @since 0.0.1
+ *
+ * @return void
+ */
+function load(): void {
+	enqueue_assets();
 }
 
 /**
@@ -24,13 +35,10 @@ function bootstrap(): void {
  * @return void
  */
 function enqueue_assets(): void {
-	if ( strpos( get_current_screen()->id, PAGE_SUFFIX ) === false ) {
-		return;
-	}
-
 	wp_enqueue_style( 'wp-components' );
 	wp_enqueue_style( 'wp-edit-post' );
 }
+
 
 /**
  * Render editor page

@@ -41,7 +41,9 @@ function replace_add_new_submenu( string $post_type, WP_Post_Type $post_type_obj
 			$original_submenu_slug = "{$original_submenu_slug}?post_type={$post_type}";
 		}
 
-		add_submenu_page(
+		remove_submenu_page( $parent, $original_submenu_slug );
+
+		$hook = add_submenu_page(
 			$parent,
 			$post_type_object->labels->add_new_item,
 			$post_type_object->labels->add_new,
@@ -51,7 +53,9 @@ function replace_add_new_submenu( string $post_type, WP_Post_Type $post_type_obj
 			1
 		);
 
-		remove_submenu_page( $parent, $original_submenu_slug );
+		add_action( "load-{$hook}", function () use ( $post_type ): void {
+			do_action( Catatan\get_editor_page_load_hookname(), $post_type );
+		} );
 	};
 
 	add_action( 'admin_menu', $callback );

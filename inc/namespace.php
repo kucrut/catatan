@@ -5,6 +5,8 @@ namespace Catatan;
 
 use Catatan\Settings;
 
+const EDITOR_PAGE_SLUG = 'catatan-editor';
+
 /**
  * Get editor page slug
  *
@@ -15,7 +17,18 @@ use Catatan\Settings;
  * @return string
  */
 function get_editor_page_slug( string $post_type ): string {
-	return "catatan--{$post_type}";
+	return sprintf( '%s--%s', EDITOR_PAGE_SLUG, $post_type );
+}
+
+/**
+ * Get editor page's load hookname
+ *
+ * @since 0.0.1
+ *
+ * @return string
+ */
+function get_editor_page_load_hookname(): string {
+	return sprintf( 'load-%s', EDITOR_PAGE_SLUG );
 }
 
 /**
@@ -29,14 +42,13 @@ function get_editor_page_slug( string $post_type ): string {
  * @return string
  */
 function get_editor_url( string $post_type, int $id = 0 ): string {
-	$args = [ 'page' => get_editor_page_slug( $post_type ) ];
+	$args = [];
 
 	if ( $post_type !== 'post' ) {
-		$args = array_merge(
-			[ 'post_type' => $post_type ],
-			$args
-		);
+		$args['post_type'] = $post_type;
 	}
+
+	$args = [ 'page' => get_editor_page_slug( $post_type ) ];
 
 	if ( $id > 0 ) {
 		$args['id'] = $id;
