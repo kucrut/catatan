@@ -28,12 +28,14 @@ function bootstrap(): void {
  * @return void
  */
 function replace_add_new_submenu( string $post_type, WP_Post_Type $post_type_object ): void {
+	// phpcs:disable
 	// if ( ! $post_type_object->show_in_menu ) {
+	// phpcs:enable
 	if ( $post_type !== 'post' ) {
 		return;
 	}
 
-	add_action( 'admin_menu', function () use ( $post_type, $post_type_object ): void {
+	$callback = function () use ( $post_type, $post_type_object ): void {
 		$parent = 'edit.php';
 		$original_submenu_slug = 'post-new.php';
 
@@ -53,5 +55,7 @@ function replace_add_new_submenu( string $post_type, WP_Post_Type $post_type_obj
 		);
 
 		remove_submenu_page( $parent, $original_submenu_slug );
-	} );
+	};
+
+	add_action( 'admin_menu', $callback );
 }
