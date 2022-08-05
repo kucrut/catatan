@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<ruleset name="catatan">
+	<description>PHPCS rules for Catatan</description>
+
+	<arg name="extensions" value="php" />
+
+	<rule ref="WordPress-Extra">
+		<exclude name="Generic.Formatting.MultipleStatementAlignment.NotSameWarning" />
+		<exclude name="WordPress.PHP.YodaConditions.NotYoda" />
+	</rule>
+
+	<!-- Ignored files & directories -->
+	<exclude-pattern>*/assets/*</exclude-pattern>
+	<exclude-pattern>*/node_modules/*</exclude-pattern>
+	<exclude-pattern>*/vendor/*</exclude-pattern>
+</ruleset>
