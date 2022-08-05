@@ -1,0 +1,17 @@
+{
+	"name": "@kucrut/catatan",
+	"description": "Write in WordPress with editor of your choice.",
+	"author": "Dzikri Aziz",
+	"license": "GPL-2.0-only",
+	"version": "0.0.0",
+	"private": true,
+	"engines": {
+		"pnpm": ">=7.5.0"
+	},
+	"keywords": [
+		"wordpress",
+		"editor",
+		"markdown"
+	],
+	"scripts": {}
+}
