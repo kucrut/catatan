@@ -49,6 +49,19 @@ function generate_option_name( string $id ): string {
 }
 
 /**
+ * Get option value
+ *
+ * @since 0.0.1
+ *
+ * @param string $id Field ID.
+ *
+ * @return mixed
+ */
+function get_value( string $id ) {
+	return get_option( generate_option_name( $id ) );
+}
+
+/**
  * Get settings sections
  *
  * @since 0.0.1
