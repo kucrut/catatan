@@ -51,14 +51,33 @@ function enqueue_assets(): void {
  * @return void
  */
 function print_assets(): void {
+	$screen = get_current_screen();
+	$post_type_object = get_post_type_object( $screen->post_type ? $screen->post_type : 'post' );
+
 	$data = [
 		'editor_id' => CATATAN\EDITOR_ID,
+		// phpcs:disable WordPress.Security.NonceVerification.Recommended
 		'post_id' => isset( $_REQUEST['id'] ) ? (int) $_REQUEST['id'] : 0,
+		'l10n' => [
+			'content_region_title' => __( 'Editor content' ),
+			'document' => __( 'Document' ),
+			'editor_title' => $post_type_object->labels->add_new_item,
+			'header_title' => __( 'Editor top bar' ),
+			'header_toolbar_title' => __( 'Document tools' ),
+			'preview' => __( 'Preview' ),
+			'publish' => __( 'Publish' ),
+			'save_draft' => __( 'Save draft' ),
+			'settings' => __( 'Settings' ),
+			'sidebar_title' => __( 'Editor settings' ),
+			'status_panel_title' => __( 'Status & visibility' ),
+			'title_input_placeholder' => __( 'Add title' ),
+		],
 	];
 	?>
 <script>
-	var catatanEditor = <?php echo json_encode( $data ); ?>;
+	var catatanEditor = <?php echo wp_json_encode( $data ); ?>;
 </script>
+<?php // phpcs:disable WordPress.WP.EnqueuedResources.NonEnqueuedScript ?>
 <script type="module" src="http://localhost:5173/@vite/client"></script>
 <script type="module" src="http://localhost:5173/src/main.ts"></script>
 	<?php
