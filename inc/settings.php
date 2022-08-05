@@ -121,25 +121,15 @@ function register_sections_and_fields(): void {
  */
 function render_page(): void {
 	?>
-	<h1><?php esc_html_e( 'Catatan Settings', 'catatan' ); ?></h1>
+	<div class="wrap">
+		<h1><?php esc_html_e( 'Catatan Settings', 'catatan' ); ?></h1>
 
-	<ul class="nav-tab-wrapper wp-clearfix" aria-label="<?php esc_attr_e( 'Secondary menu' ); ?>">
-		<?php foreach ( get_sections() as $index => $section ) : ?>
-			<?php
-			printf(
-				'<button class="nav-tab %s">%s</button>',
-				esc_attr( $index === 0 ? 'nav-tab-active' : '' ),
-				esc_html( $section['title'] )
-			);
-			?>
-		<?php endforeach; ?>
-	</ul>
-
-	<form action="options.php" method="post">
-		<?php settings_fields( PAGE_SLUG ); ?>
-		<?php do_settings_sections( PAGE_SLUG ); ?>
-		<?php submit_button(); ?>
-	</form>
+		<form action="options.php" method="post">
+			<?php settings_fields( PAGE_SLUG ); ?>
+			<?php do_settings_sections( PAGE_SLUG ); ?>
+			<?php submit_button(); ?>
+		</form>
+	</div>
 	<?php
 }
 
