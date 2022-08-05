@@ -13,5 +13,8 @@
 		"editor",
 		"markdown"
 	],
-	"scripts": {}
+	"scripts": {},
+	"devDependencies": {
+		"prettier": "npm:wp-prettier@^2.6.2"
+	}
 }
