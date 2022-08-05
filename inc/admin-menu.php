@@ -4,6 +4,7 @@ declare( strict_types = 1 );
 namespace Catatan\Admin_Menu;
 
 use Catatan\Editor;
+use Catatan\Settings;
 use WP_Post_Type;
 
 /**
@@ -28,10 +29,9 @@ function bootstrap(): void {
  * @return void
  */
 function replace_add_new_submenu( string $post_type, WP_Post_Type $post_type_object ): void {
-	// phpcs:disable
-	// if ( ! $post_type_object->show_in_menu ) {
-	// phpcs:enable
-	if ( $post_type !== 'post' ) {
+	$post_types = Settings\get_value( 'post_types' );
+
+	if ( empty( $post_types ) ) {
 		return;
 	}
 
