@@ -3,7 +3,7 @@ declare( strict_types = 1 );
 
 namespace Catatan\Editor;
 
-const PAGE_SUFFIX = 'catat-editor';
+const PAGE_SUFFIX = 'catatan';
 
 /**
  * Editor bootstrapper
