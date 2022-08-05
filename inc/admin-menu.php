@@ -53,9 +53,12 @@ function replace_add_new_submenu( string $post_type, WP_Post_Type $post_type_obj
 			1
 		);
 
-		add_action( "load-{$hook}", function () use ( $post_type ): void {
-			do_action( Catatan\get_editor_page_load_hookname(), $post_type );
-		} );
+		add_action(
+			"load-{$hook}",
+			function () use ( $post_type ): void {
+				do_action( Catatan\get_editor_page_load_hookname(), $post_type );
+			}
+		);
 	};
 
 	add_action( 'admin_menu', $callback );
