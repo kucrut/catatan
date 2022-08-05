@@ -51,7 +51,14 @@ function enqueue_assets(): void {
  * @return void
  */
 function print_assets(): void {
+	$data = [
+		'editor_id' => CATATAN\EDITOR_ID,
+		'post_id' => isset( $_REQUEST['id'] ) ? (int) $_REQUEST['id'] : 0,
+	];
 	?>
+<script>
+	var catatanEditor = <?php echo json_encode( $data ); ?>;
+</script>
 <script type="module" src="http://localhost:5173/@vite/client"></script>
 <script type="module" src="http://localhost:5173/src/main.ts"></script>
 	<?php
@@ -65,7 +72,7 @@ function print_assets(): void {
  * @return void
  */
 function render_page(): void {
-	echo '<div id="app"></div>';
+	printf( '<div id="%s"></div>', esc_attr( CATATAN\EDITOR_ID ) );
 }
 
 /**
