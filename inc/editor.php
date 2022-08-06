@@ -113,9 +113,29 @@ function get_config( WP_Post_Type $post_type ): array {
  * @return void
  */
 function load( WP_Post_Type $post_type ): void {
+	check_permission( $post_type );
 	enqueue_assets();
 
 	add_action( 'admin_print_scripts', fn () => print_assets( $post_type ) );
+}
+
+/**
+ * Check permission
+ *
+ * @since 0.0.1
+ *
+ * @param WP_Post_Type $post_type Current post type object.
+ *
+ * @return void
+ */
+function check_permission( WP_Post_Type $post_type ): void {
+	if ( ! current_user_can( $post_type->cap->edit_posts ) || ! current_user_can( $post_type->cap->create_posts ) ) {
+		wp_die(
+			'<h1>' . __( 'You need a higher level of permission.' ) . '</h1>' .
+			'<p>' . __( 'Sorry, you are not allowed to create posts as this user.' ) . '</p>',
+			403
+		);
+	}
 }
 
 /**
