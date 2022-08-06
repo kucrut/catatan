@@ -13,15 +13,15 @@ const EDITOR_ID = 'catatan-editor';
  * @since 0.0.1
  *
  * @param string $post_type Post type name.
- * @param string $is_edit   Whether to get URL for edit or create action.
+ * @param string $for_edit  Whether to get URL for edit or create action.
  *
  * @return string
  */
-function get_editor_page_slug( string $post_type, $is_edit = true ): string {
+function get_editor_page_slug( string $post_type, $for_edit = true ): string {
 	return sprintf(
 		'%s--%s-%s',
 		EDITOR_ID,
-		$is_edit ? 'edit' : 'new',
+		$for_edit ? 'edit' : 'new',
 		$post_type
 	);
 }
