@@ -64,9 +64,9 @@ function register_menu( string $post_type, WP_Post_Type $post_type_object ): voi
  *
  * @param string $post_type Post type name.
  *
- * @return void
+ * @return array
  */
-function get_config( string $post_type ) {
+function get_config( string $post_type ): array {
 	$post_type_object = get_post_type_object( $post_type );
 
 	$config = [
