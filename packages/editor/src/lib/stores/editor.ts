@@ -110,6 +110,10 @@ export default function create_document_store( { post_id, rest_path }: EditorSto
 		...editor,
 		fetch: original_store.fetch,
 
+		clear() {
+			changes_store.delete();
+		},
+
 		async save() {
 			try {
 				update( $editor => ( { ...$editor, is_saving: true, was_saving: false } ) );
