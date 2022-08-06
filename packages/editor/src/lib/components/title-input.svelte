@@ -6,8 +6,10 @@
 </script>
 
 <div class="edit-post-visual-editor__post-title-wrapper">
+	<label for="post-title" class="screen-reader-text">{l10n.post_title}</label>
 	<input
 		class="wp-block wp-block-post-title block-editor-block-list__block editor-post-title editor-post-title__input"
+		id="post-title"
 		placeholder={l10n.title_input_placeholder}
 	/>
 </div>

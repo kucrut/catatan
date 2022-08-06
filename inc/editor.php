@@ -97,6 +97,7 @@ function get_config( WP_Post_Type $post_type ): array {
 			'header_title' => __( 'Editor top bar' ),
 			'header_toolbar_title' => __( 'Document tools' ),
 			'permalink' => __( 'Permalink' ),
+			'post_title' => __( 'Post Title' ),
 			'preview' => __( 'Preview' ),
 			'publish' => __( 'Publish' ),
 			'save_draft' => __( 'Save draft' ),
