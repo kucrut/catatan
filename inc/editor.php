@@ -233,6 +233,7 @@ function check_permission( WP_Post_Type $post_type, bool $is_edit = true ): void
  * @return void
  */
 function enqueue_assets(): void {
+	wp_enqueue_global_styles_css_custom_properties();
 	wp_enqueue_style( 'wp-components' );
 	wp_enqueue_style( 'wp-edit-post' );
 }
