@@ -169,6 +169,10 @@ function load( WP_Post_Type $post_type, bool $is_edit = true ): void {
  *
  * @since 0.0.1
  *
+ * The checks are mostly taken from wp-admin/post.php.
+ *
+ * @todo Check for post lock.
+ *
  * @param WP_Post_Type $post_type Current post type object.
  * @param bool         $is_edit   Is this the edit page?
  *
@@ -190,6 +194,34 @@ function check_permission( WP_Post_Type $post_type, bool $is_edit = true ): void
 	if ( ! isset( $_GET['id'] ) ) {
 		wp_safe_redirect( Catatan\get_editor_url( $post_type->name ), 302, 'Catatan' );
 		exit;
+	}
+
+	$post_id = (int) $_GET['id'];
+
+	if ( $post_id < 1 ) {
+		wp_die( esc_html__( 'Invalid post ID.', 'catatan' ) );
+	}
+
+	$post = get_post( $post_id );
+
+	if ( ! $post ) {
+		wp_die( esc_html__( 'You attempted to edit an item that does not exist. Perhaps it was deleted?' ) );
+	}
+
+	if ( $post->post_type !== $post_type->name ) {
+		wp_die(
+			esc_html__( 'A post type mismatch has been detected.' ),
+			esc_html__( 'Sorry, you are not allowed to edit this item.' ),
+			400
+		);
+	}
+
+	if ( ! current_user_can( 'edit_post', $post_id ) ) {
+		wp_die( esc_html__( 'Sorry, you are not allowed to edit this item.' ) );
+	}
+
+	if ( 'trash' === $post->post_status ) {
+		wp_die( esc_html__( 'You cannot edit this item because it is in the Trash. Please restore it and try again.' ) );
 	}
 }
 
