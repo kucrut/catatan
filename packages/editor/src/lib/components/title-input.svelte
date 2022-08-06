@@ -6,7 +6,7 @@
 	const doc = getContext< DocumentStore >( 'document' );
 	const l10n = getContext< Config[ 'l10n' ] >( 'l10n' );
 
-	function handle_change( event: Event & { currentTarget: HTMLInputElement } ) {
+	function handle_input( event: Event & { currentTarget: HTMLInputElement } ) {
 		doc.update( { title: event.currentTarget.value } );
 	}
 </script>
@@ -18,7 +18,7 @@
 		id="post-title"
 		placeholder={l10n.title_input_placeholder}
 		value={$doc.data.title}
-		on:change={handle_change}
+		on:input={handle_input}
 	/>
 </div>
 
