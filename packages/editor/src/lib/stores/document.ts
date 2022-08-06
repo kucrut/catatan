@@ -33,6 +33,7 @@ function create_original_post_store( post_id: number, rest_path: string ) {
 
 	const original_store = {
 		...store,
+
 		async fetch() {
 			try {
 				const data = await api_fetch( { parse: true, path: api_path } );
@@ -41,6 +42,20 @@ function create_original_post_store( post_id: number, rest_path: string ) {
 				// TODO: Display error in notice section.
 				// eslint-disable-next-line no-console
 				console.error( error );
+			}
+		},
+
+		async save( changes: Changes ) {
+			try {
+				const data = await api_fetch( {
+					data: changes,
+					method: post_id > 0 ? 'PATCH' : 'POST',
+					parse: true,
+					path: api_path,
+				} );
+				this.update( () => data );
+			} catch ( error ) {
+				throw error;
 			}
 		},
 	};
@@ -66,30 +81,34 @@ export default function create_document_store( { post_id, rest_path }: DocumentS
 	);
 
 	original.subscribe( ( { content, status, title } ) => {
-		update( () => ( {
+		update( value => ( {
+			...value,
 			data: {
 				status,
 				content: content?.raw || '',
 				title: title?.raw || '',
 			},
 			is_dirty: false,
-			is_saved: false,
 		} ) );
 	} );
 
+	let current_value: DocumentStoreValue;
+
+	store.subscribe( value => ( current_value = value ) );
+
 	return {
 		...store,
+		fetch: original.fetch,
 
-		clear_changes() {
-			update( ( value: DocumentStoreValue ) => ( {
-				...value,
-				changes: {},
-				is_dirty: false,
-			} ) );
-		},
-
-		set_original( data: Post ) {
-			original.set( data );
+		async save() {
+			try {
+				await original.save( current_value.data );
+				update( value => ( { ...value, is_saved: true } ) );
+			} catch ( error ) {
+				// TODO: Display error in notice section.
+				// eslint-disable-next-line no-console
+				console.error( error );
+			}
 		},
 
 		update( changes: Changes ) {
