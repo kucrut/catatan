@@ -4,9 +4,14 @@ import type { WP_REST_API_Post } from 'wp-types';
 
 type Post = Partial< WP_REST_API_Post >;
 
+interface Changes extends Omit< Post, 'content' | 'title' > {
+	content?: string;
+	title?: string;
+}
+
 export interface DocumentStoreValue {
 	original: Post;
-	changes: Post;
+	changes: Changes;
 	is_dirty: boolean;
 }
 
@@ -41,7 +46,7 @@ export default function create_document_store( post_id: number ) {
 			} ) );
 		},
 
-		update( new_changes: Post ) {
+		update( new_changes: Changes ) {
 			update( ( { changes, ...rest }: DocumentStoreValue ) => ( {
 				...rest,
 				changes: {
