@@ -102,9 +102,24 @@ export default function create_document_store( { post_id, rest_path }: EditorSto
 		} ) ),
 	);
 
+	const prompt_if_dirty = event => {
+		event.preventDefault();
+		event.returnValue = 'ciao!';
+
+		return 'ciao!';
+	};
+
 	let current_value: EditorStoreValue;
 
-	editor.subscribe( value => ( current_value = value ) );
+	editor.subscribe( $editor => {
+		current_value = $editor;
+
+		if ( $editor.is_dirty ) {
+			window.addEventListener( 'beforeunload', prompt_if_dirty, { capture: true } );
+		} else {
+			window.removeEventListener( 'beforeunload', prompt_if_dirty, { capture: true } );
+		}
+	} );
 
 	return {
 		...editor,

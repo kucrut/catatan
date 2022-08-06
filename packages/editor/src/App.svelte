@@ -7,10 +7,13 @@
 	export let config: Omit< Config, 'editor_id' | 'nonce' | 'rest_url' >;
 
 	const { l10n, ...editor_config } = config;
+	const editor = create_editor_store( editor_config );
 
-	setContext( 'editor', create_editor_store( editor_config ) );
+	setContext( 'editor', editor );
 	setContext( 'l10n', l10n );
 </script>
+
+<svelte:window on:unload={() => editor.clear()} />
 
 <div class="block-editor">
 	<h1 class="screen-reader-text">{l10n.editor_title}</h1>
