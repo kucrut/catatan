@@ -89,6 +89,7 @@ function get_config( WP_Post_Type $post_type ): array {
 		'editor_id' => CATATAN\EDITOR_ID,
 		// phpcs:disable WordPress.Security.NonceVerification.Recommended
 		'post_id' => isset( $_REQUEST['id'] ) ? (int) $_REQUEST['id'] : 0,
+		'post_type' => $post_type->name,
 		'l10n' => [
 			'close_settings' => __( 'Close settings' ),
 			'content_region_title' => __( 'Editor content' ),
