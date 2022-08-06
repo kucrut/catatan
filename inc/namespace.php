@@ -43,7 +43,7 @@ function get_editor_url( string $post_type, int $id = 0 ): string {
 		$args['post_type'] = $post_type;
 	}
 
-	$args = [ 'page' => get_editor_page_slug( $post_type, $id > 0 ) ];
+	$args['page'] = get_editor_page_slug( $post_type, $id > 0 );
 
 	if ( $id > 0 ) {
 		$args['id'] = $id;

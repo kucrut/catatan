@@ -60,7 +60,7 @@ function register_page( WP_Post_Type $post_type, bool $for_edit = true ): void {
 		$parent,
 		$post_type->labels->{ $for_edit ? 'edit_item' : 'add_new_item' },
 		$post_type->labels->{ $for_edit ? 'edit_item' : 'add_new' },
-		$post_type->cap->create_posts,
+		$post_type->cap->{ $for_edit ? 'edit_posts' : 'create_posts' },
 		$page_slug,
 		__NAMESPACE__ . '\\render_page',
 		1
