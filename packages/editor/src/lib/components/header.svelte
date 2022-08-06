@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
 	import Button from './button.svelte';
+	import PublishButton from './publish-button.svelte';
 	import SaveButton from './save-button.svelte';
 	import type { Config } from '$types';
 	import ui from '$lib/stores/ui';
@@ -23,7 +24,7 @@
 		<div class="edit-post-header__settings">
 			<SaveButton />
 			<Button is_tertiary>{l10n.preview}</Button>
-			<Button is_primary>{l10n.publish}</Button>
+			<PublishButton />
 			<div class="interface-pinned-items">
 				<Button
 					aria-pressed={$ui.is_sidebar_open}
