@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Editor from './editor.svelte';
+	import ContentInput from './content-input.svelte';
 	import TitleInput from './title-input.svelte';
 </script>
 
@@ -7,7 +7,7 @@
 	<div class="is-desktop-preview">
 		<div class="editor-styles-wrapper block-editor-writing-flow">
 			<TitleInput />
-			<Editor />
+			<ContentInput />
 		</div>
 	</div>
 </div>
