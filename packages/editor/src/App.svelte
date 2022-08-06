@@ -6,9 +6,9 @@
 
 	export let config: Config;
 
-	const { l10n, post_id } = config;
+	const { l10n, ...rest_config } = config;
 
-	setContext( 'document', create_document_store( post_id ) );
+	setContext( 'document', create_document_store( rest_config ) );
 	setContext( 'l10n', l10n );
 </script>
 

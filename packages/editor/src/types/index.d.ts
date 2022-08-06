@@ -1,7 +1,11 @@
 export interface Config {
 	editor_id: string;
 	l10n: Record< string, string >;
+	nonce: string;
 	post_id: number;
+	post_type: string;
+	rest_path: string;
+	rest_url: string;
 }
 
 export interface UiState {
