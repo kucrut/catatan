@@ -11,6 +11,9 @@
 	$: icon = '';
 	$: is_disabled = true;
 	$: text = l10n.save_draft;
+	$: handle_click = () => {
+		editor.save();
+	};
 
 	$: {
 		if ( $editor.is_saved ) {
@@ -37,13 +40,19 @@
 		}
 
 		if ( $editor.data.status && $editor.data.status !== 'draft' ) {
+			icon = '';
+			is_disabled = false;
 			text = l10n.switch_to_draft;
+			handle_click = () => {
+				editor.update( { status: 'draft' } );
+				editor.save();
+			};
 		}
 
 		cls += ' editor-post-saved-state';
 	}
 </script>
 
-<Button {icon} is_tertiary aria-disabled={is_disabled} class={cls} disabled={is_disabled} on:click={() => editor.save()}
+<Button {icon} is_tertiary aria-disabled={is_disabled} class={cls} disabled={is_disabled} on:click={handle_click}
 	>{text}</Button
 >
