@@ -113,6 +113,7 @@ function get_config( WP_Post_Type $post_type ): array {
 			'status_panel_title' => __( 'Status & visibility' ),
 			'switch_to_draft' => __( 'Switch to draft' ),
 			'title_input_placeholder' => __( 'Add title' ),
+			'update' => __( 'Update' ),
 			'url_slug' => __( 'URL Slug' ),
 			'visibility' => __( 'Visibility' ),
 		],

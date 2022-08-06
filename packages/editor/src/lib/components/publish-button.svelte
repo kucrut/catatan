@@ -9,6 +9,8 @@
 
 	$: cls = 'editor-post-publish-button__button';
 	$: is_disabled = ! ( $editor.data.content || $editor.data.title );
+	// TODO: Schedule.
+	$: text = $editor.data.status && $editor.data.status !== 'draft' ? l10n.update : l10n.publish;
 
 	function handle_click() {
 		editor.update( { status: 'publish' } );
@@ -16,6 +18,5 @@
 	}
 </script>
 
-<Button is_primary aria-disabled={is_disabled} class={cls} disabled={is_disabled} on:click={handle_click}
-	>{l10n.publish}</Button
+<Button is_primary aria-disabled={is_disabled} class={cls} disabled={is_disabled} on:click={handle_click}>{text}</Button
 >
