@@ -140,8 +140,8 @@ function load( WP_Post_Type $post_type ): void {
 function check_permission( WP_Post_Type $post_type ): void {
 	if ( ! current_user_can( $post_type->cap->edit_posts ) || ! current_user_can( $post_type->cap->create_posts ) ) {
 		wp_die(
-			'<h1>' . __( 'You need a higher level of permission.' ) . '</h1>' .
-			'<p>' . __( 'Sorry, you are not allowed to create posts as this user.' ) . '</p>',
+			'<h1>' . esc_html__( 'You need a higher level of permission.' ) . '</h1>' .
+			'<p>' . esc_html__( 'Sorry, you are not allowed to create posts as this user.' ) . '</p>',
 			403
 		);
 	}
