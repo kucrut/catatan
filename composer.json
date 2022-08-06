@@ -1,6 +1,6 @@
 {
 	"name": "kucrut/catatan",
-	"description": "Write content in WordPress with editor of your choice.",
+	"description": "Simple post editor for WordPress",
 	"type": "wordpress-plugin",
 	"require": {
 		"php": ">=7.4.0"

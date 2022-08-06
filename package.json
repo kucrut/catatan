@@ -1,6 +1,6 @@
 {
 	"name": "@kucrut/catatan",
-	"description": "Write in WordPress with editor of your choice.",
+	"description": "Simple post editor for WordPress",
 	"author": "Dzikri Aziz",
 	"license": "GPL-2.0-only",
 	"version": "0.0.0",
