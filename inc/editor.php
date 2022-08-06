@@ -55,17 +55,17 @@ function register_page( WP_Post_Type $post_type ): void {
 
 	remove_submenu_page( $parent, $original_submenu_slug );
 
-	$hook = add_submenu_page(
+	$hook_suffix = add_submenu_page(
 		$parent,
 		$post_type->labels->add_new_item,
 		$post_type->labels->add_new,
 		$post_type->cap->create_posts,
-		Catatan\get_editor_page_slug( $post_type->name ),
+		Catatan\get_editor_page_slug( $post_type->name, false ),
 		__NAMESPACE__ . '\\render_page',
 		1
 	);
 
-	add_action( "load-{$hook}", fn () => load( $post_type ) );
+	add_action( "load-{$hook_suffix}", fn () => load( $post_type ) );
 }
 
 /**
