@@ -90,6 +90,9 @@ function get_config( WP_Post_Type $post_type ): array {
 		// phpcs:disable WordPress.Security.NonceVerification.Recommended
 		'post_id' => isset( $_REQUEST['id'] ) ? (int) $_REQUEST['id'] : 0,
 		'post_type' => $post_type->name,
+		'rest_path' => "{$post_type->rest_namespace}/{$post_type->rest_base}",
+		'rest_url' => rest_url(),
+		'nonce' => wp_create_nonce( 'wp_rest' ),
 		'l10n' => [
 			'close_settings' => __( 'Close settings' ),
 			'content_region_title' => __( 'Editor content' ),
