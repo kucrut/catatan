@@ -32,7 +32,7 @@ function register_menu( string $post_type, WP_Post_Type $post_type_object ): voi
 		return;
 	}
 
-	add_action( 'admin_menu', fn () => register_page( $post_type_object ) );
+	add_action( 'admin_menu', fn () => register_page( $post_type_object, true ) );
 	add_action( 'admin_menu', fn () => register_page( $post_type_object, false ) );
 }
 
