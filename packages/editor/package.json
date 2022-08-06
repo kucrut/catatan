@@ -12,6 +12,7 @@
 		"preview": "vite preview",
 		"lint:css": "stylelint '**/*.html' '**/*.css' '**/*.svelte'",
 		"lint:js": "eslint .",
+		"lint": "pnpm lint:css && pnpm lint:js",
 		"types:check": "svelte-check --tsconfig ./tsconfig.json"
 	},
 	"devDependencies": {
