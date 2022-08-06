@@ -2,8 +2,8 @@ import { persist, localStorage } from '@macfja/svelte-persistent-store';
 import { writable } from 'svelte/store';
 import type { UiState } from '$types';
 
-function create_store() {
-	const store = persist(
+function create_ui_store() {
+	const { update, ...store } = persist(
 		writable< UiState >( {
 			is_sidebar_open: false,
 		} ),
@@ -13,15 +13,16 @@ function create_store() {
 
 	return {
 		...store,
+		update,
 		close_sidebar() {
-			this.update( value => ( {
+			update( value => ( {
 				...value,
 				is_sidebar_open: false,
 			} ) );
 		},
 
 		toggle_sidebar() {
-			this.update( value => ( {
+			update( value => ( {
 				...value,
 				is_sidebar_open: ! value.is_sidebar_open,
 			} ) );
@@ -29,4 +30,4 @@ function create_store() {
 	};
 }
 
-export default create_store();
+export default create_ui_store();
