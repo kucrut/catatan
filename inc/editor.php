@@ -142,7 +142,7 @@ function load( WP_Post_Type $post_type, bool $is_edit = true ): void {
 	 */
 	do_action( 'catatan__before_load_editor', $post_type, $is_edit );
 
-	check_permission( $post_type );
+	check_permission( $post_type, $is_edit );
 	enqueue_assets();
 
 	add_action( 'admin_print_scripts', fn () => print_assets( $post_type ) );
@@ -170,16 +170,26 @@ function load( WP_Post_Type $post_type, bool $is_edit = true ): void {
  * @since 0.0.1
  *
  * @param WP_Post_Type $post_type Current post type object.
+ * @param bool         $is_edit   Is this the edit page?
  *
  * @return void
  */
-function check_permission( WP_Post_Type $post_type ): void {
+function check_permission( WP_Post_Type $post_type, bool $is_edit = true ): void {
 	if ( ! current_user_can( $post_type->cap->edit_posts ) || ! current_user_can( $post_type->cap->create_posts ) ) {
 		wp_die(
 			'<h1>' . esc_html__( 'You need a higher level of permission.' ) . '</h1>' .
 			'<p>' . esc_html__( 'Sorry, you are not allowed to create posts as this user.' ) . '</p>',
 			403
 		);
+	}
+
+	if ( ! $is_edit ) {
+		return;
+	}
+
+	if ( ! isset( $_GET['id'] ) ) {
+		wp_safe_redirect( Catatan\get_editor_url( $post_type->name ), 302, 'Catatan' );
+		exit;
 	}
 }
 
