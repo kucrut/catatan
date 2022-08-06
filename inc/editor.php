@@ -127,27 +127,27 @@ function get_config( WP_Post_Type $post_type ): array {
  * @since 0.0.1
  *
  * @param WP_Post_Type $post_type Current post type object.
- * @param bool         $for_edit  Are we loading the edit page?
+ * @param bool         $is_edit   Are we loading the edit page?
  *
  * @return void
  */
-function load( WP_Post_Type $post_type, bool $for_edit = true ): void {
+function load( WP_Post_Type $post_type, bool $is_edit = true ): void {
 	/**
 	 * Fire before the load actions are run
 	 *
 	 * @since 0.0.1
 	 *
 	 * @param WP_Post_Type $post_type Current post type object.
-	 * @param bool         $for_edit  Are we loading the edit page?
+	 * @param bool         $is_edit  Are we loading the edit page?
 	 */
-	do_action( 'catatan__before_load_editor', $post_type, $for_edit );
+	do_action( 'catatan__before_load_editor', $post_type, $is_edit );
 
 	check_permission( $post_type );
 	enqueue_assets();
 
 	add_action( 'admin_print_scripts', fn () => print_assets( $post_type ) );
 
-	if ( $for_edit ) {
+	if ( $is_edit ) {
 		// Bacuse we've removed the page from admin menus, WP does not have the page title anymore, so we need to fix it here.
 		add_filter( 'admin_title', fn ( string $admin_title ): string => "{$post_type->labels->edit_item} {$admin_title}" );
 	}
@@ -158,9 +158,9 @@ function load( WP_Post_Type $post_type, bool $for_edit = true ): void {
 	 * @since 0.0.1
 	 *
 	 * @param WP_Post_Type $post_type Current post type object.
-	 * @param bool         $for_edit  Are we loading the edit page?
+	 * @param bool         $is_edit  Are we loading the edit page?
 	 */
-	do_action( 'catatan__after_load_editor', $post_type, $for_edit );
+	do_action( 'catatan__after_load_editor', $post_type, $is_edit );
 }
 
 
