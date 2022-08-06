@@ -1,8 +1,14 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
 	import type { Config } from '$types';
+	import type { DocumentStore } from '$lib/stores/document';
 
+	const doc = getContext< DocumentStore >( 'document' );
 	const l10n = getContext< Config[ 'l10n' ] >( 'l10n' );
+
+	function handle_change( event: Event & { currentTarget: HTMLInputElement } ) {
+		doc.update( { title: event.currentTarget.value } );
+	}
 </script>
 
 <div class="edit-post-visual-editor__post-title-wrapper">
@@ -11,6 +17,8 @@
 		class="wp-block wp-block-post-title block-editor-block-list__block editor-post-title editor-post-title__input"
 		id="post-title"
 		placeholder={l10n.title_input_placeholder}
+		value={$doc.changes.title || $doc.original?.title?.raw || ''}
+		on:change={handle_change}
 	/>
 </div>
 
