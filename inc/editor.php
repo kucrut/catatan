@@ -33,6 +33,7 @@ function register_menu( string $post_type, WP_Post_Type $post_type_object ): voi
 	}
 
 	add_action( 'admin_menu', fn () => register_page( $post_type_object ) );
+	add_action( 'admin_menu', fn () => register_page( $post_type_object, false ) );
 }
 
 /**
@@ -41,10 +42,11 @@ function register_menu( string $post_type, WP_Post_Type $post_type_object ): voi
  * @since 0.0.1
  *
  * @param WP_Post_Type $post_type Post type object.
+ * @param bool         $for_edit  Whether to register page for edit or create action.
  *
  * @return void
  */
-function register_page( WP_Post_Type $post_type ): void {
+function register_page( WP_Post_Type $post_type, bool $for_edit = true ): void {
 	$parent = 'edit.php';
 	$original_submenu_slug = 'post-new.php';
 
@@ -53,17 +55,24 @@ function register_page( WP_Post_Type $post_type ): void {
 		$original_submenu_slug = "{$original_submenu_slug}?post_type={$post_type->name}";
 	}
 
-	remove_submenu_page( $parent, $original_submenu_slug );
-
+	$page_slug = Catatan\get_editor_page_slug( $post_type->name, $for_edit );
 	$hook_suffix = add_submenu_page(
 		$parent,
-		$post_type->labels->add_new_item,
-		$post_type->labels->add_new,
+		$post_type->labels->{ $for_edit ? 'edit_item' : 'add_new_item' },
+		$post_type->labels->{ $for_edit ? 'edit_item' : 'add_new' },
 		$post_type->cap->create_posts,
-		Catatan\get_editor_page_slug( $post_type->name, false ),
+		$page_slug,
 		__NAMESPACE__ . '\\render_page',
 		1
 	);
+
+	if ( $for_edit ) {
+		// We don't want our edit page to be added to the menu.
+		remove_submenu_page( $parent, $page_slug );
+	} else {
+		// We want to replace core's "Add new" sub menu.
+		remove_submenu_page( $parent, $original_submenu_slug );
+	}
 
 	add_action( "load-{$hook_suffix}", fn () => load( $post_type ) );
 }
