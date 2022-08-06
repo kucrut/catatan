@@ -21,7 +21,7 @@ export interface EditorStoreValue {
 
 export type EditorStore = ReturnType< typeof create_document_store >;
 
-export type EditorStoreParams = Pick< Config, 'post_id' | 'post_type' | 'rest_path' >;
+export type EditorStoreParams = Pick< Config, 'edit_link_template' | 'post_id' | 'post_type' | 'rest_path' >;
 
 function create_original_post_store( post_id: number, rest_path: string ) {
 	const store = writable< Post >( {} );
@@ -69,7 +69,7 @@ function create_original_post_store( post_id: number, rest_path: string ) {
 	return original_store;
 }
 
-export default function create_document_store( { post_id, rest_path }: EditorStoreParams ) {
+export default function create_document_store( { edit_link_template, post_id, rest_path }: EditorStoreParams ) {
 	const changes_store = persist( writable< Changes >( {} ), localStorage(), `catatan-document-${ post_id }` );
 	const original_store = create_original_post_store( post_id, rest_path );
 
@@ -82,10 +82,11 @@ export default function create_document_store( { post_id, rest_path }: EditorSto
 	} );
 
 	// Update editor's data when original store value is updated.
-	original_store.subscribe( ( { content, status, title } ) => {
+	original_store.subscribe( ( { content, id, status, title } ) => {
 		update( $editor => ( {
 			...$editor,
 			data: {
+				id,
 				status,
 				content: content?.raw || '',
 				title: title?.raw || '',
@@ -131,9 +132,19 @@ export default function create_document_store( { post_id, rest_path }: EditorSto
 
 		async save() {
 			try {
+				const { data } = current_value;
+				const { id: current_id } = data;
+
 				update( $editor => ( { ...$editor, is_saving: true, was_saving: false } ) );
-				await original_store.save( current_value.data );
+
+				await original_store.save( data );
+
 				update( $editor => ( { ...$editor, is_saved: true, was_saving: true } ) );
+
+				// We've just created a new post.
+				if ( ! current_id && current_value.data.id ) {
+					window.history.pushState( {}, '', edit_link_template.replace( '<id>', current_value.data.id.toString() ) );
+				}
 			} catch ( error ) {
 				// TODO: Display error in notice section.
 				// eslint-disable-next-line no-console

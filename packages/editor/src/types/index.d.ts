@@ -1,4 +1,5 @@
 export interface Config {
+	edit_link_template: string;
 	editor_id: string;
 	l10n: Record< string, string >;
 	nonce: string;
