@@ -1,0 +1,28 @@
+{
+	"extends": [ "stylelint-config-standard-scss", "@wordpress/stylelint-config" ],
+	"plugins": [ "stylelint-use-logical" ],
+	"rules": {
+		"alpha-value-notation": "number",
+		"color-function-notation": "legacy",
+		"custom-property-empty-line-before": "never",
+		"function-parentheses-space-inside": "always-single-line",
+		"indentation": "tab",
+		"media-feature-parentheses-space-inside": "always",
+		"selector-pseudo-class-no-unknown": [
+			true,
+			{
+				"ignorePseudoClasses": [ "global" ]
+			}
+		],
+		"selector-pseudo-class-parentheses-space-inside": "always",
+		"string-quotes": "single",
+		"csstools/use-logical": "always",
+		"scss/at-import-partial-extension": null
+	},
+	"overrides": [
+		{
+			"files": [ "**/*.html", "**/*.svelte" ],
+			"customSyntax": "postcss-html"
+		}
+	]
+}
