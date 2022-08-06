@@ -106,6 +106,7 @@ function get_config( WP_Post_Type $post_type ): array {
 			'publish' => __( 'Publish' ),
 			'saved' => __( 'Saved' ),
 			'save_draft' => __( 'Save draft' ),
+			'saving' => __( 'Saving' ),
 			'settings' => __( 'Settings' ),
 			'sidebar_title' => __( 'Editor settings' ),
 			'status_panel_title' => __( 'Status & visibility' ),
