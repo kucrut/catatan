@@ -1,10 +1,9 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
-	import Editor from './editor.svelte';
+	import ContentArea from './content-area.svelte';
 	import Header from './header.svelte';
 	import Notices from './notices.svelte';
 	import Sidebar from './sidebar.svelte';
-	import TitleInput from './title-input.svelte';
 	import type { Config } from '$types';
 	import ui from '$lib/stores/ui';
 
@@ -24,14 +23,7 @@
 					tabindex="-1"
 				>
 					<div class="edit-post-visual-editor">
-						<div class="edit-post-visual-editor__content-area">
-							<div class="is-desktop-preview">
-								<div class="editor-styles-wrapper block-editor-writing-flow">
-									<TitleInput />
-									<Editor />
-								</div>
-							</div>
-						</div>
+						<ContentArea />
 					</div>
 				</div>
 				<Sidebar />
@@ -39,14 +31,3 @@
 		</div>
 	</div>
 </div>
-
-<style>
-	.is-desktop-preview {
-		height: 100%;
-		width: 100%;
-		margin: 0;
-		display: flex;
-		flex-flow: column nowrap;
-		background: white none repeat scroll 0% 0%;
-	}
-</style>
