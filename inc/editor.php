@@ -32,31 +32,40 @@ function register_menu( string $post_type, WP_Post_Type $post_type_object ): voi
 		return;
 	}
 
-	$callback = function () use ( $post_type, $post_type_object ): void {
-		$parent = 'edit.php';
-		$original_submenu_slug = 'post-new.php';
+	add_action( 'admin_menu', fn () => register_page( $post_type_object ) );
+}
 
-		if ( $post_type !== 'post' ) {
-			$parent = "{$parent}?post_type={$post_type}";
-			$original_submenu_slug = "{$original_submenu_slug}?post_type={$post_type}";
-		}
+/**
+ * Register page
+ *
+ * @since 0.0.1
+ *
+ * @param WP_Post_Type $post_type Post type object.
+ *
+ * @return void
+ */
+function register_page( WP_Post_Type $post_type ): void {
+	$parent = 'edit.php';
+	$original_submenu_slug = 'post-new.php';
 
-		remove_submenu_page( $parent, $original_submenu_slug );
+	if ( $post_type->name !== 'post' ) {
+		$parent = "{$parent}?post_type={$post_type->name}";
+		$original_submenu_slug = "{$original_submenu_slug}?post_type={$post_type->name}";
+	}
 
-		$hook = add_submenu_page(
-			$parent,
-			$post_type_object->labels->add_new_item,
-			$post_type_object->labels->add_new,
-			$post_type_object->cap->create_posts,
-			Catatan\get_editor_page_slug( $post_type ),
-			__NAMESPACE__ . '\\render_page',
-			1
-		);
+	remove_submenu_page( $parent, $original_submenu_slug );
 
-		add_action( "load-{$hook}", fn () => load( $post_type_object ) );
-	};
+	$hook = add_submenu_page(
+		$parent,
+		$post_type->labels->add_new_item,
+		$post_type->labels->add_new,
+		$post_type->cap->create_posts,
+		Catatan\get_editor_page_slug( $post_type->name ),
+		__NAMESPACE__ . '\\render_page',
+		1
+	);
 
-	add_action( 'admin_menu', $callback );
+	add_action( "load-{$hook}", fn () => load( $post_type ) );
 }
 
 /**
