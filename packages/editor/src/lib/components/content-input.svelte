@@ -12,9 +12,7 @@
 </script>
 
 <div class="is-root-container block-editor-block-list__layout">
-	<textarea class="widefat" on:change={handle_change}
-		>{$doc.changes.content || $doc.original.content?.raw || ''}</textarea
-	>
+	<textarea class="widefat" on:change={handle_change}>{$doc.data.content}</textarea>
 </div>
 
 <style>

@@ -17,7 +17,7 @@
 		class="wp-block wp-block-post-title block-editor-block-list__block editor-post-title editor-post-title__input"
 		id="post-title"
 		placeholder={l10n.title_input_placeholder}
-		value={$doc.changes.title || $doc.original?.title?.raw || ''}
+		value={$doc.data.title}
 		on:change={handle_change}
 	/>
 </div>

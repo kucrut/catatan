@@ -10,26 +10,36 @@ interface Changes extends Omit< Post, 'content' | 'title' > {
 }
 
 export interface DocumentStoreValue {
-	original: Post;
-	changes: Changes;
+	data: Changes;
 	is_dirty: boolean;
 }
 
 export type DocumentStore = ReturnType< typeof create_document_store >;
 
 export default function create_document_store( post_id: number ) {
-	const { update, ...store } = persist(
+	const original = writable< Post >( {} );
+
+	const { update, ...document_store } = persist(
 		writable< DocumentStoreValue >( {
-			changes: {},
+			data: {},
 			is_dirty: false,
-			original: {},
 		} ),
 		localStorage(),
 		`catatan-document-${ post_id }`,
 	);
 
+	original.subscribe( ( { content, title } ) => {
+		update( () => ( {
+			data: {
+				content: content?.raw || '',
+				title: title?.raw || '',
+			},
+			is_dirty: false,
+		} ) );
+	} );
+
 	return {
-		...store,
+		...document_store,
 
 		clear_changes() {
 			update( ( value: DocumentStoreValue ) => ( {
@@ -39,19 +49,16 @@ export default function create_document_store( post_id: number ) {
 			} ) );
 		},
 
-		set_original( original: Post ) {
-			update( ( value: DocumentStoreValue ) => ( {
-				...value,
-				original,
-			} ) );
+		set_original( data: Post ) {
+			original.set( data );
 		},
 
-		update( new_changes: Changes ) {
-			update( ( { changes, ...rest }: DocumentStoreValue ) => ( {
+		update( changes: Changes ) {
+			update( ( { data, ...rest }: DocumentStoreValue ) => ( {
 				...rest,
-				changes: {
+				data: {
+					...data,
 					...changes,
-					...new_changes,
 				},
 				is_dirty: true,
 			} ) );
