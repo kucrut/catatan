@@ -3,10 +3,8 @@
 	import Button from './button.svelte';
 	import SaveButton from './save-button.svelte';
 	import type { Config } from '$types';
-	import type { DocumentStore } from '$lib/stores/document';
 	import ui from '$lib/stores/ui';
 
-	const doc = getContext< DocumentStore >( 'document' );
 	const l10n = getContext< Config[ 'l10n' ] >( 'l10n' );
 </script>
 
