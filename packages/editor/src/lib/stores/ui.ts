@@ -1,12 +1,15 @@
-// TODO: Integrate with localstorage
-
+import { persist, localStorage } from '@macfja/svelte-persistent-store';
 import { writable } from 'svelte/store';
 import type { UiState } from '$types';
 
 function create_store() {
-	const store = writable< UiState >( {
-		is_sidebar_open: false,
-	} );
+	const store = persist(
+		writable< UiState >( {
+			is_sidebar_open: false,
+		} ),
+		localStorage(),
+		'catatan-ui',
+	);
 
 	return {
 		...store,
