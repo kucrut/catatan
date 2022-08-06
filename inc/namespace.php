@@ -21,17 +21,6 @@ function get_editor_page_slug( string $post_type ): string {
 }
 
 /**
- * Get editor page's load hookname
- *
- * @since 0.0.1
- *
- * @return string
- */
-function get_editor_page_load_hookname(): string {
-	return sprintf( 'load-%s', EDITOR_ID );
-}
-
-/**
  * Get editor URL
  *
  * @since 0.0.1
