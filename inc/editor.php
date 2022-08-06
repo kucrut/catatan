@@ -4,6 +4,7 @@ declare( strict_types = 1 );
 namespace Catatan\Editor;
 
 use Catatan;
+use WP_Post_Type;
 
 /**
  * Editor bootstrapper
@@ -13,7 +14,49 @@ use Catatan;
  * @return void
  */
 function bootstrap(): void {
-	add_action( Catatan\get_editor_page_load_hookname(), __NAMESPACE__ . '\\load' );
+	add_action( 'registered_post_type', __NAMESPACE__ . '\\register_menu', 10, 2 );
+}
+
+/**
+ * Replace post type's "Add new" submenu
+ *
+ * @since 0.0.1
+ *
+ * @param string       $post_type Post type name.
+ * @param WP_Post_Type $post_type_object Post type object.
+ *
+ * @return void
+ */
+function register_menu( string $post_type, WP_Post_Type $post_type_object ): void {
+	if ( ! Catatan\is_post_type_supported( $post_type ) ) {
+		return;
+	}
+
+	$callback = function () use ( $post_type, $post_type_object ): void {
+		$parent = 'edit.php';
+		$original_submenu_slug = 'post-new.php';
+
+		if ( $post_type !== 'post' ) {
+			$parent = "{$parent}?post_type={$post_type}";
+			$original_submenu_slug = "{$original_submenu_slug}?post_type={$post_type}";
+		}
+
+		remove_submenu_page( $parent, $original_submenu_slug );
+
+		$hook = add_submenu_page(
+			$parent,
+			$post_type_object->labels->add_new_item,
+			$post_type_object->labels->add_new,
+			$post_type_object->cap->create_posts,
+			Catatan\get_editor_page_slug( $post_type ),
+			__NAMESPACE__ . '\\render_page',
+			1
+		);
+
+		add_action( "load-{$hook}", fn() => load( $post_type ) );
+	};
+
+	add_action( 'admin_menu', $callback );
 }
 
 /**
@@ -21,9 +64,11 @@ function bootstrap(): void {
  *
  * @since 0.0.1
  *
+ * @param string $post_type Current post type.
+ *
  * @return void
  */
-function load(): void {
+function load( string $post_type ): void {
 	enqueue_assets();
 
 	add_action( 'admin_print_scripts', __NAMESPACE__ . '\\print_assets' );
