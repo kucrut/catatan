@@ -4,7 +4,7 @@ declare( strict_types = 1 );
 namespace Catatan\Settings;
 
 const OPTION_NAME_PREFIX = 'catatan';
-const PAGE_SLUG = OPTION_NAME_PREFIX . '-settings';
+const PAGE_SLUG = 'writing';
 
 /**
  * Settings bootstrapper
@@ -15,24 +15,6 @@ const PAGE_SLUG = OPTION_NAME_PREFIX . '-settings';
  */
 function bootstrap(): void {
 	add_action( 'admin_init', __NAMESPACE__ . '\\register_sections_and_fields' );
-	add_action( 'admin_menu', __NAMESPACE__ . '\\register_menu' );
-}
-
-/**
- * Register settings menu
- *
- * @since 0.0.1
- *
- * @return void
- */
-function register_menu(): void {
-	add_options_page(
-		__( 'Catatan Settings', 'catatan' ),
-		__( 'Catatan', 'catatan' ),
-		'manage_options',
-		PAGE_SLUG,
-		__NAMESPACE__ . '\\render_page'
-	);
 }
 
 /**
@@ -71,8 +53,8 @@ function get_value( string $id ) {
 function get_sections(): array {
 	return [
 		[
-			'id' => 'general',
-			'title' => __( 'General' ),
+			'id' => OPTION_NAME_PREFIX,
+			'title' => 'Catatan',
 		],
 	];
 }
@@ -89,8 +71,8 @@ function get_fields(): array {
 		[
 			'callback' => __NAMESPACE__ . '\\render_field_post_types',
 			'id' => generate_option_name( 'post_types' ),
-			'section' => 'general',
-			'title' => __( 'Post types', 'catatan' ),
+			'section' => OPTION_NAME_PREFIX,
+			'title' => __( 'Supported post types', 'catatan' ),
 			'args' => [
 				'default' => [],
 				'description' => __( 'Post types supported by Catatan', 'catatan' ),
@@ -136,27 +118,6 @@ function register_sections_and_fields(): void {
 			[ 'id' => $field['id'] ]
 		);
 	}
-}
-
-/**
- * Render settings page
- *
- * @since 0.0.1
- *
- * @return void
- */
-function render_page(): void {
-	?>
-	<div class="wrap">
-		<h1><?php esc_html_e( 'Catatan Settings', 'catatan' ); ?></h1>
-
-		<form action="options.php" method="post">
-			<?php settings_fields( PAGE_SLUG ); ?>
-			<?php do_settings_sections( PAGE_SLUG ); ?>
-			<?php submit_button(); ?>
-		</form>
-	</div>
-	<?php
 }
 
 /**
