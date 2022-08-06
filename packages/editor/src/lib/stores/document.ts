@@ -33,8 +33,14 @@ function create_original_post_store( post_id: number, rest_path: string ) {
 	const original_store = {
 		...store,
 		async fetch() {
-			const data = await api_fetch( { path: api_path } );
-			this.update( () => data );
+			try {
+				const data = await api_fetch( { parse: true, path: api_path } );
+				this.update( () => data );
+			} catch ( error ) {
+				// TODO: Display error in notice section.
+				// eslint-disable-next-line no-console
+				console.error( error );
+			}
 		},
 	};
 
