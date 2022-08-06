@@ -4,7 +4,7 @@
 	import create_document_store from '$lib/stores/document';
 	import type { Config } from '$types';
 
-	export let config: Config;
+	export let config: Omit< Config, 'editor_id' | 'nonce' | 'rest_url' >;
 
 	const { l10n, ...rest_config } = config;
 

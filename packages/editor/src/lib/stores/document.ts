@@ -18,7 +18,7 @@ export interface DocumentStoreValue {
 
 export type DocumentStore = ReturnType< typeof create_document_store >;
 
-export type DocumentStoreParams = Omit< Config, 'editor_id' | 'l10n' >;
+export type DocumentStoreParams = Pick< Config, 'post_id' | 'post_type' | 'rest_path' >;
 
 function create_original_post_store( post_id: number, rest_path: string ) {
 	const store = writable< Post >( {} );
@@ -45,10 +45,7 @@ function create_original_post_store( post_id: number, rest_path: string ) {
 	return original_store;
 }
 
-export default function create_document_store( { nonce, post_id, rest_path, rest_url }: DocumentStoreParams ) {
-	api_fetch.use( api_fetch.createRootURLMiddleware( rest_url ) );
-	api_fetch.use( api_fetch.createNonceMiddleware( nonce ) );
-
+export default function create_document_store( { post_id, rest_path }: DocumentStoreParams ) {
 	const original = create_original_post_store( post_id, rest_path );
 
 	const { update, ...store } = persist(
