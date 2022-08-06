@@ -53,7 +53,7 @@ function register_menu( string $post_type, WP_Post_Type $post_type_object ): voi
 			1
 		);
 
-		add_action( "load-{$hook}", fn () => load( $post_type ) );
+		add_action( "load-{$hook}", fn () => load( $post_type_object ) );
 	};
 
 	add_action( 'admin_menu', $callback );
@@ -62,13 +62,11 @@ function register_menu( string $post_type, WP_Post_Type $post_type_object ): voi
 /**
  * Get editor config
  *
- * @param string $post_type Post type name.
+ * @param WP_Post_Type $post_type Post type object.
  *
  * @return array
  */
-function get_config( string $post_type ): array {
-	$post_type_object = get_post_type_object( $post_type );
-
+function get_config( WP_Post_Type $post_type ): array {
 	$config = [
 		'editor_id' => CATATAN\EDITOR_ID,
 		// phpcs:disable WordPress.Security.NonceVerification.Recommended
@@ -77,7 +75,7 @@ function get_config( string $post_type ): array {
 			'close_settings' => __( 'Close settings' ),
 			'content_region_title' => __( 'Editor content' ),
 			'document' => __( 'Document' ),
-			'editor_title' => $post_type_object->labels->add_new_item,
+			'editor_title' => $post_type->labels->add_new_item,
 			'header_title' => __( 'Editor top bar' ),
 			'header_toolbar_title' => __( 'Document tools' ),
 			'permalink' => __( 'Permalink' ),
@@ -110,11 +108,11 @@ function get_config( string $post_type ): array {
  *
  * @since 0.0.1
  *
- * @param string $post_type Current post type.
+ * @param WP_Post_Type $post_type Current post type object.
  *
  * @return void
  */
-function load( string $post_type ): void {
+function load( WP_Post_Type $post_type ): void {
 	enqueue_assets();
 
 	add_action( 'admin_print_scripts', fn () => print_assets( $post_type ) );
@@ -139,11 +137,11 @@ function enqueue_assets(): void {
  *
  * @since 0.0.1
  *
- * @param string $post_type Current post type.
+ * @param WP_Post_Type $post_type Current post type object.
  *
  * @return void
  */
-function print_assets( string $post_type ): void {
+function print_assets( WP_Post_Type $post_type ): void {
 	?>
 <script>
 	var catatanEditor = <?php echo wp_json_encode( get_config( $post_type ) ); ?>;
