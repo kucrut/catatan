@@ -82,11 +82,12 @@ export default function create_document_store( { edit_link_template, post_id, re
 	} );
 
 	// Update editor's data when original store value is updated.
-	original_store.subscribe( ( { content, id, status, title } ) => {
+	original_store.subscribe( ( { content, id, link, status, title } ) => {
 		update( $editor => ( {
 			...$editor,
 			data: {
 				id,
+				link,
 				status,
 				content: content?.raw || '',
 				title: title?.raw || '',
