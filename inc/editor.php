@@ -74,7 +74,7 @@ function register_page( WP_Post_Type $post_type, bool $for_edit = true ): void {
 		remove_submenu_page( $parent, $original_submenu_slug );
 	}
 
-	add_action( "load-{$hook_suffix}", fn () => load( $post_type ) );
+	add_action( "load-{$hook_suffix}", fn () => load( $post_type, $for_edit ) );
 }
 
 /**
@@ -127,15 +127,22 @@ function get_config( WP_Post_Type $post_type ): array {
  * @since 0.0.1
  *
  * @param WP_Post_Type $post_type Current post type object.
+ * @param bool         $for_edit  Are we loading the edit page?
  *
  * @return void
  */
-function load( WP_Post_Type $post_type ): void {
+function load( WP_Post_Type $post_type, bool $for_edit = true ): void {
 	check_permission( $post_type );
 	enqueue_assets();
 
 	add_action( 'admin_print_scripts', fn () => print_assets( $post_type ) );
+
+	if ( $for_edit ) {
+		// Bacuse we've removed the page from admin menus, WP does not have the page title anymore, so we need to fix it here.
+		add_filter( 'admin_title', fn ( string $admin_title ): string => "{$post_type->labels->edit_item} {$admin_title}" );
+	}
 }
+
 
 /**
  * Check permission
