@@ -13,7 +13,10 @@
 	$: text = $editor.data.status && $editor.data.status !== 'draft' ? l10n.update : l10n.publish;
 
 	function handle_click() {
-		editor.update( { status: 'publish' } );
+		if ( $editor.data.status === 'draft' ) {
+			editor.update( { status: 'publish' } );
+		}
+
 		editor.save();
 	}
 </script>
