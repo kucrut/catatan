@@ -86,6 +86,7 @@ function register_page( WP_Post_Type $post_type, bool $for_edit = true ): void {
  */
 function get_config( WP_Post_Type $post_type ): array {
 	$config = [
+		'edit_link_template' => preg_replace( '/(\d+)$/', '<id>', Catatan\get_editor_url( $post_type->name, 1 ) ),
 		'editor_id' => CATATAN\EDITOR_ID,
 		// phpcs:disable WordPress.Security.NonceVerification.Recommended
 		'post_id' => isset( $_REQUEST['id'] ) ? (int) $_REQUEST['id'] : 0,
