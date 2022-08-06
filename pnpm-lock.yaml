@@ -16,7 +16,7 @@ importers:
       prettier-plugin-svelte: 2.7.0_ylf6ruhrfmzhqqfhhqx55xyklq
       svelte: 3.49.0
 
-  assets/packages/editor:
+  packages/editor:
     specifiers:
       '@babel/core': ^7.18.10
       '@sveltejs/vite-plugin-svelte': ^1.0.1
