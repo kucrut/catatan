@@ -20,6 +20,6 @@
 		margin: 0;
 		display: flex;
 		flex-flow: column nowrap;
-		background: white none repeat scroll 0% 0%;
+		background: #fff none repeat scroll 0% 0%;
 	}
 </style>
