@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
 	import Button from './button.svelte';
+	import SaveButton from './save-button.svelte';
 	import type { Config } from '$types';
 	import type { DocumentStore } from '$lib/stores/document';
 	import ui from '$lib/stores/ui';
@@ -22,7 +23,7 @@
 			</div>
 		</div>
 		<div class="edit-post-header__settings">
-			<Button is_tertiary aria-disabled={! $doc.is_dirty} disabled={! $doc.is_dirty}>{l10n.save_draft}</Button>
+			<SaveButton />
 			<Button is_tertiary>{l10n.preview}</Button>
 			<Button is_primary>{l10n.publish}</Button>
 			<div class="interface-pinned-items">
