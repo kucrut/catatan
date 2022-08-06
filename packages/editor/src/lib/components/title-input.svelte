@@ -5,25 +5,24 @@
 	const l10n = getContext< Config[ 'l10n' ] >( 'l10n' );
 </script>
 
-<div class="edit-post-visual-editor__post-title-wrapper" contenteditable="false">
-	<h1
-		class="wp-block wp-block-post-title block-editor-block-list__block editor-post-title editor-post-title__input rich-text is-selected"
-		aria-label={l10n.title_input_placeholder}
-		role="textbox"
-		aria-multiline="true"
-		contenteditable="true"
-	>
-		<span data-rich-text-placeholder={l10n.title_input_placeholder} contenteditable="false" />
-	</h1>
+<div class="edit-post-visual-editor__post-title-wrapper">
+	<input
+		class="wp-block wp-block-post-title block-editor-block-list__block editor-post-title editor-post-title__input"
+		placeholder={l10n.title_input_placeholder}
+	/>
 </div>
 
 <style>
-	div {
-		padding: 0 60px;
+	.edit-post-visual-editor__post-title-wrapper {
+		margin-block-start: 2rem;
+		margin-block-end: 0.5rem;
 	}
 
-	span {
-		pointer-events: none;
-		user-select: none;
+	input {
+		border: unset;
+		font-family: var( --wp--preset--font-family--source-serif-pro );
+		font-size: var( --wp--custom--typography--font-size--gigantic );
+		font-weight: 300;
+		line-height: var( --wp--custom--typography--line-height--tiny );
 	}
 </style>

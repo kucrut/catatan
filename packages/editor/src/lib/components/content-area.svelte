@@ -15,11 +15,20 @@
 <style>
 	/* TODO: Make this toggleable via the "Preview" button. */
 	.is-desktop-preview {
+		box-sizing: border-box;
 		height: 100%;
 		width: 100%;
 		margin: 0;
 		display: flex;
 		flex-flow: column nowrap;
+		align-items: center;
+		padding-inline-start: 1rem;
+		padding-inline-end: 1rem;
 		background: #fff none repeat scroll 0% 0%;
+	}
+
+	.editor-styles-wrapper {
+		max-width: 920px;
+		flex: 1 1 0%;
 	}
 </style>
