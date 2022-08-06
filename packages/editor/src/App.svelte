@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { setContext } from 'svelte';
 	import Container from '$lib/components/container.svelte';
-	import create_document_store from '$lib/stores/document';
+	import create_editor_store from '$lib/stores/editor';
 	import type { Config } from '$types';
 
 	export let config: Omit< Config, 'editor_id' | 'nonce' | 'rest_url' >;
 
-	const { l10n, ...rest_config } = config;
+	const { l10n, ...editor_config } = config;
 
-	setContext( 'document', create_document_store( rest_config ) );
+	setContext( 'editor', create_editor_store( editor_config ) );
 	setContext( 'l10n', l10n );
 </script>
 

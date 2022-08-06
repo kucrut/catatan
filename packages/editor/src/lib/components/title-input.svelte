@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
 	import type { Config } from '$types';
-	import type { DocumentStore } from '$lib/stores/document';
+	import type { EditorStore } from '$lib/stores/editor';
 
-	const doc = getContext< DocumentStore >( 'document' );
+	const editor = getContext< EditorStore >( 'editor' );
 	const l10n = getContext< Config[ 'l10n' ] >( 'l10n' );
 
 	function handle_input( event: Event & { currentTarget: HTMLInputElement } ) {
-		doc.update( { title: event.currentTarget.value } );
+		editor.update( { title: event.currentTarget.value } );
 	}
 </script>
 
@@ -17,7 +17,7 @@
 		class="wp-block wp-block-post-title block-editor-block-list__block editor-post-title editor-post-title__input"
 		id="post-title"
 		placeholder={l10n.title_input_placeholder}
-		value={$doc.data.title}
+		value={$editor.data.title}
 		on:input={handle_input}
 	/>
 </div>

@@ -2,9 +2,9 @@
 	import { getContext } from 'svelte';
 	import Button from './button.svelte';
 	import type { Config } from '$types';
-	import type { DocumentStore } from '$lib/stores/document';
+	import type { EditorStore } from '$lib/stores/editor';
 
-	const doc = getContext< DocumentStore >( 'document' );
+	const editor = getContext< EditorStore >( 'editor' );
 	const l10n = getContext< Config[ 'l10n' ] >( 'l10n' );
 
 	$: cls = '';
@@ -13,30 +13,30 @@
 	$: text = l10n.save_draft;
 
 	$: {
-		if ( $doc.is_saved ) {
+		if ( $editor.is_saved ) {
 			cls = 'is-saved';
 		}
 
-		if ( $doc.was_saving ) {
+		if ( $editor.was_saving ) {
 			icon = 'check';
 			text = l10n.saved;
 		}
 
-		if ( $doc.is_dirty ) {
+		if ( $editor.is_dirty ) {
 			cls = '';
 			icon = '';
 			is_disabled = false;
 			text = l10n.save_draft;
 		}
 
-		if ( $doc.is_saving ) {
+		if ( $editor.is_saving ) {
 			cls = 'is-saving components-animate__loading';
 			icon = 'cloud';
 			is_disabled = true;
 			text = l10n.saving;
 		}
 
-		if ( $doc.data.status && $doc.data.status !== 'draft' ) {
+		if ( $editor.data.status && $editor.data.status !== 'draft' ) {
 			text = l10n.switch_to_draft;
 		}
 
@@ -44,6 +44,6 @@
 	}
 </script>
 
-<Button {icon} is_tertiary aria-disabled={is_disabled} class={cls} disabled={is_disabled} on:click={() => doc.save()}
+<Button {icon} is_tertiary aria-disabled={is_disabled} class={cls} disabled={is_disabled} on:click={() => editor.save()}
 	>{text}</Button
 >

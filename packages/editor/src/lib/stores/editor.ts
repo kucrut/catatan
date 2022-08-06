@@ -11,7 +11,7 @@ interface Changes extends Omit< Post, 'content' | 'title' > {
 	title?: string;
 }
 
-export interface DocumentStoreValue {
+export interface EditorStoreValue {
 	data: Changes;
 	is_dirty: boolean;
 	is_saved: boolean;
@@ -19,9 +19,9 @@ export interface DocumentStoreValue {
 	was_saving: boolean;
 }
 
-export type DocumentStore = ReturnType< typeof create_document_store >;
+export type EditorStore = ReturnType< typeof create_document_store >;
 
-export type DocumentStoreParams = Pick< Config, 'post_id' | 'post_type' | 'rest_path' >;
+export type EditorStoreParams = Pick< Config, 'post_id' | 'post_type' | 'rest_path' >;
 
 function create_original_post_store( post_id: number, rest_path: string ) {
 	const store = writable< Post >( {} );
@@ -69,11 +69,11 @@ function create_original_post_store( post_id: number, rest_path: string ) {
 	return original_store;
 }
 
-export default function create_document_store( { post_id, rest_path }: DocumentStoreParams ) {
+export default function create_document_store( { post_id, rest_path }: EditorStoreParams ) {
 	const changes_store = persist( writable< Changes >( {} ), localStorage(), `catatan-document-${ post_id }` );
 	const original_store = create_original_post_store( post_id, rest_path );
 
-	const { update, ...editor } = writable< DocumentStoreValue >( {
+	const { update, ...editor } = writable< EditorStoreValue >( {
 		data: {},
 		is_dirty: false,
 		is_saved: false,
@@ -102,7 +102,7 @@ export default function create_document_store( { post_id, rest_path }: DocumentS
 		} ) ),
 	);
 
-	let current_value: DocumentStoreValue;
+	let current_value: EditorStoreValue;
 
 	editor.subscribe( value => ( current_value = value ) );
 
