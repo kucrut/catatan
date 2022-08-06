@@ -8,6 +8,12 @@
 		"function-parentheses-space-inside": "always-single-line",
 		"indentation": "tab",
 		"media-feature-parentheses-space-inside": "always",
+		"selector-class-pattern": [
+			"^([a-z][a-z0-9]*)([-_]{0,2}[a-z0-9]+)*$",
+			{
+				"message": "Selector should use lowercase and separate words with hyphens or underscores (selector-class-pattern)"
+			}
+		],
 		"selector-pseudo-class-no-unknown": [
 			true,
 			{
