@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
 	import Button from './button.svelte';
+	import PreviewButton from './preview-button.svelte';
 	import PublishButton from './publish-button.svelte';
 	import SaveButton from './save-button.svelte';
 	import type { Config } from '$types';
@@ -23,7 +24,7 @@
 		</div>
 		<div class="edit-post-header__settings">
 			<SaveButton />
-			<Button is_tertiary>{l10n.preview}</Button>
+			<PreviewButton />
 			<PublishButton />
 			<div class="interface-pinned-items">
 				<Button
