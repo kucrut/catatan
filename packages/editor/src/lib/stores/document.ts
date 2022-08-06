@@ -14,6 +14,7 @@ interface Changes extends Omit< Post, 'content' | 'title' > {
 export interface DocumentStoreValue {
 	data: Changes;
 	is_dirty: boolean;
+	is_saved: boolean;
 }
 
 export type DocumentStore = ReturnType< typeof create_document_store >;
@@ -58,18 +59,21 @@ export default function create_document_store( { post_id, rest_path }: DocumentS
 		writable< DocumentStoreValue >( {
 			data: {},
 			is_dirty: false,
+			is_saved: false,
 		} ),
 		localStorage(),
 		`catatan-document-${ post_id }`,
 	);
 
-	original.subscribe( ( { content, title } ) => {
+	original.subscribe( ( { content, status, title } ) => {
 		update( () => ( {
 			data: {
+				status,
 				content: content?.raw || '',
 				title: title?.raw || '',
 			},
 			is_dirty: false,
+			is_saved: false,
 		} ) );
 	} );
 
