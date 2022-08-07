@@ -122,7 +122,6 @@ function get_config( WP_Post_Type $post_type ): array {
 			'close_settings' => __( 'Close settings' ),
 			'content_region_title' => __( 'Editor content' ),
 			'document' => __( 'Document' ),
-			'editor_title' => $post_type->labels->add_new_item,
 			'header_title' => __( 'Editor top bar' ),
 			'header_toolbar_title' => __( 'Document tools' ),
 			'opens_in_a_new_tab' => __( 'opens in a new tab' ),
