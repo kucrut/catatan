@@ -1,5 +1,6 @@
 <script lang="ts">
 	import paths from './paths.json';
+
 	let cls = '';
 
 	export let icon: string;
@@ -10,9 +11,9 @@
 </script>
 
 <svg
-	{width}
 	{height}
 	{viewBox}
+	{width}
 	aria-hidden="true"
 	class={cls}
 	focusable="false"

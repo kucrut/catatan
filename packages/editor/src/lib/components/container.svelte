@@ -17,9 +17,9 @@
 			<div class="interface-interface-skeleton__body">
 				<Notices />
 				<div
+					aria-label={l10n.content_region_title}
 					class="interface-interface-skeleton__content"
 					role="region"
-					aria-label={l10n.content_region_title}
 					tabindex="-1"
 				>
 					<div class="edit-post-visual-editor">

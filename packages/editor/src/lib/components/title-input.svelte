@@ -6,7 +6,7 @@
 	const editor = getContext< EditorStore >( 'editor' );
 	const l10n = getContext< Config[ 'l10n' ] >( 'l10n' );
 
-	function handle_input( event: Event & { currentTarget: HTMLInputElement } ) {
+	function handle_input( event: InputEvent & { currentTarget: HTMLInputElement } ) {
 		editor.update( { title: event.currentTarget.value } );
 	}
 </script>

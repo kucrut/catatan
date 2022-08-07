@@ -26,7 +26,13 @@
 					<Button class="edit-post-sidebar__panel-tab is-active">{l10n.document}</Button>
 				</li>
 			</ul>
-			<Button aria-label={l10n.close_settings} icon="close" on:click={() => ui.close_sidebar()} />
+			<Button
+				aria-label={l10n.close_settings}
+				icon="close"
+				on:click={() => {
+					ui.close_sidebar();
+				}}
+			/>
 		</div>
 		<Panel title={l10n.status_panel_title} let:is_expanded>
 			<PanelRow {is_expanded}>
