@@ -10,14 +10,14 @@
 	const l10n = getContext< Config[ 'l10n' ] >( 'l10n' );
 </script>
 
-<div class="interface-interface-skeleton__header" role="region" aria-label={l10n.header_title} tabindex="-1">
+<div aria-label={l10n.header_title} class="interface-interface-skeleton__header" role="region" tabindex="-1">
 	<div class="edit-post-header">
 		<div class="edit-post-header__toolbar">
 			<div
-				role="toolbar"
-				aria-orientation="horizontal"
 				aria-label={l10n.header_toolbar_title}
+				aria-orientation="horizontal"
 				class="components-accessible-toolbar edit-post-header-toolbar"
+				role="toolbar"
 			>
 				<div class="edit-post-header-toolbar__left" />
 			</div>
@@ -28,10 +28,10 @@
 			<PublishButton />
 			<div class="interface-pinned-items">
 				<Button
-					aria-pressed={$ui.is_sidebar_open}
 					aria-expanded={$ui.is_sidebar_open}
-					class={$ui.is_sidebar_open ? 'is-pressed' : ''}
 					aria-label={l10n.settings}
+					aria-pressed={$ui.is_sidebar_open}
+					class={$ui.is_sidebar_open ? 'is-pressed' : ''}
 					icon="gear"
 					on:click={() => ui.toggle_sidebar()}
 				/>
