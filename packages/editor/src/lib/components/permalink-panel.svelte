@@ -34,7 +34,7 @@
 				>Read about permalinks</ExternalLink
 			>
 		</p>
-		<h3 class="edit-post-post-link__preview-label">{l10n.type_labels.view_item}</h3>
+		<h3 class="edit-post-post-link__preview-label">{$editor.type?.labels?.view_item}</h3>
 		<div class="edit-post-post-link__preview-link-container">
 			<ExternalLink href={$editor.data.link}>{$editor.data.link}</ExternalLink>
 		</div>
