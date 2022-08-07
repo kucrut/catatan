@@ -85,11 +85,22 @@ function register_page( WP_Post_Type $post_type, bool $for_edit = true ): void {
  * @return array
  */
 function get_config( WP_Post_Type $post_type ): array {
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	if ( isset( $_GET['id'] ) ) {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$post_id = (int) $_GET['id'];
+
+		if ( $post_id < 1 ) {
+			$post_id = 0;
+		}
+	} else {
+		$post_id = 0;
+	}
+
 	$config = [
 		'edit_link_template' => preg_replace( '/(\d+)$/', '<id>', Catatan\get_editor_url( $post_type->name, 1 ) ),
 		'editor_id' => CATATAN\EDITOR_ID,
-		// phpcs:disable WordPress.Security.NonceVerification.Recommended
-		'post_id' => isset( $_REQUEST['id'] ) ? (int) $_REQUEST['id'] : 0,
+		'post_id' => $post_id,
 		'post_type' => $post_type->name,
 		'rest_path' => "{$post_type->rest_namespace}/{$post_type->rest_base}",
 		'rest_url' => rest_url(),
@@ -124,10 +135,11 @@ function get_config( WP_Post_Type $post_type ): array {
 	 *
 	 * @since 0.0.1
 	 *
-	 * @param array        $config Editor config.
+	 * @param array        $config    Editor config.
 	 * @param WP_Post_Type $post_type Post type object.
+	 * @param int          $post_id   Post ID being edited (0 on the create post screen).
 	 */
-	$config = apply_filters( 'catatan__editor_config', $config, $post_type );
+	$config = apply_filters( 'catatan__editor_config', $config, $post_type, $post_id );
 
 	return $config;
 }
