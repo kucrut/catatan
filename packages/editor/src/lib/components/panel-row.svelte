@@ -1,7 +1,9 @@
 <script lang="ts">
+	let cls = 'components-panel__row';
+	export { cls as class };
 	export let is_expanded = false;
 </script>
 
-<div class="components-panel__row" class:hidden={! is_expanded}>
+<div class={cls} class:hidden={! is_expanded}>
 	<slot />
 </div>
