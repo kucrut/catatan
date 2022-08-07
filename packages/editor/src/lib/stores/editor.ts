@@ -18,18 +18,22 @@ export interface EditorStoreParams extends Pick< Config, 'edit_link_template' | 
 export default function create_editor_store( params: EditorStoreParams ) {
 	const { edit_link_template, post_id, post_store } = params;
 
-	const store = persist( writable< Changes >( null ), localStorage(), `catatan-document-${ post_id }` );
+	const changes = persist( writable< Changes >( {} ), localStorage(), `catatan-document-${ post_id }` );
 
 	const { update, ...editor } = writable< EditorStoreValue >( {
-		data: null,
+		data: {},
 		is_dirty: false,
 		is_saved: false,
 		is_saving: false,
 		was_saving: false,
 	} );
 
-	// Update editor's data when original store value is updated.
+	// Update editor's data when post store value is updated.
 	post_store.subscribe( $original => {
+		if ( ! $original ) {
+			return;
+		}
+
 		const { content, id, link, slug, status, title } = $original;
 
 		update( $editor => ( {
@@ -47,12 +51,12 @@ export default function create_editor_store( params: EditorStoreParams ) {
 	} );
 
 	// Update editor's data when changes store value is updated.
-	store.subscribe( $changes =>
+	changes.subscribe( $changes => {
 		update( ( { data, ...$document } ) => ( {
 			...$document,
 			data: { ...data, ...$changes },
-		} ) ),
-	);
+		} ) );
+	} );
 
 	const prompt_if_dirty = ( event: BeforeUnloadEvent ) => {
 		event.preventDefault();
@@ -74,7 +78,7 @@ export default function create_editor_store( params: EditorStoreParams ) {
 	} );
 
 	window.addEventListener( 'unload', () => {
-		store.delete();
+		changes.delete();
 	} );
 
 	return {
@@ -82,7 +86,7 @@ export default function create_editor_store( params: EditorStoreParams ) {
 		fetch: post_store.fetch,
 
 		clear() {
-			store.delete();
+			changes.delete();
 		},
 
 		async save() {
@@ -110,7 +114,8 @@ export default function create_editor_store( params: EditorStoreParams ) {
 		},
 
 		update( new_changes: Changes ) {
-			store.update( $changes => ( { ...$changes, ...new_changes } ) );
+			changes.update( $changes => ( { ...$changes, ...new_changes } ) );
+
 			update( $editor => ( {
 				...$editor,
 				is_dirty: true,
