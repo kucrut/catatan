@@ -20,4 +20,10 @@
 	}
 </script>
 
-<Button is_primary aria-disabled={is_disabled} disabled={is_disabled} on:click={handle_click}>{text}</Button>
+<Button
+	is_primary
+	aria-disabled={is_disabled}
+	disabled={is_disabled}
+	is_busy={$editor.is_saving}
+	on:click={handle_click}>{text}</Button
+>
