@@ -8,6 +8,7 @@
 	export let icon = '';
 	export let icon_class = '';
 	export let type = 'button';
+	export let is_busy = false;
 	export let is_primary = false;
 	export let is_tertiary = false;
 
@@ -19,6 +20,7 @@
 	this={tag}
 	class={class_names( cls, 'components-button' )}
 	class:has-icon={icon && ! icon_class}
+	class:is-busy={is_busy}
 	class:is-primary={is_primary}
 	class:is-tertiary={is_tertiary}
 	{...props}
