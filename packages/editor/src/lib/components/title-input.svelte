@@ -30,9 +30,10 @@
 
 	input {
 		border: unset;
+		font-weight: 300;
+		/* stylelint-disable custom-property-pattern */
 		font-family: var( --wp--preset--font-family--source-serif-pro );
 		font-size: var( --wp--custom--typography--font-size--gigantic );
-		font-weight: 300;
 		line-height: var( --wp--custom--typography--line-height--tiny );
 	}
 </style>
