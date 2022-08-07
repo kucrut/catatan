@@ -78,13 +78,13 @@ function register_page( WP_Post_Type $post_type, bool $for_edit = true ): void {
 }
 
 /**
- * Get editor config
+ * Get post ID being edited
  *
- * @param WP_Post_Type $post_type Post type object.
+ * @since 0.0.1
  *
- * @return array
+ * @return int
  */
-function get_config( WP_Post_Type $post_type ): array {
+function get_post_id(): int {
 	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 	if ( isset( $_GET['id'] ) ) {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
@@ -97,6 +97,18 @@ function get_config( WP_Post_Type $post_type ): array {
 		$post_id = 0;
 	}
 
+	return $post_id;
+}
+
+/**
+ * Get editor config
+ *
+ * @param WP_Post_Type $post_type Post type object.
+ *
+ * @return array
+ */
+function get_config( WP_Post_Type $post_type ): array {
+	$post_id = get_post_id();
 	$config = [
 		'edit_link_template' => preg_replace( '/(\d+)$/', '<id>', Catatan\get_editor_url( $post_type->name, 1 ) ),
 		'editor_id' => CATATAN\EDITOR_ID,
