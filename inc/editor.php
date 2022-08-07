@@ -118,7 +118,6 @@ function get_config( WP_Post_Type $post_type ): array {
 		'rest_url' => rest_url(),
 		'nonce' => wp_create_nonce( 'wp_rest' ),
 		'l10n' => [
-			'type_labels' => $post_type->labels,
 			'close_settings' => __( 'Close settings' ),
 			'content_region_title' => __( 'Editor content' ),
 			'document' => __( 'Document' ),
