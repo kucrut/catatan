@@ -124,9 +124,10 @@ function get_config( WP_Post_Type $post_type ): array {
 	 *
 	 * @since 0.0.1
 	 *
-	 * @param array $config Editor config.
+	 * @param array        $config Editor config.
+	 * @param WP_Post_Type $post_type Post type object.
 	 */
-	$config = apply_filters( 'catatan__editor_config', $config );
+	$config = apply_filters( 'catatan__editor_config', $config, $post_type );
 
 	return $config;
 }
