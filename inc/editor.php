@@ -124,6 +124,7 @@ function get_config( WP_Post_Type $post_type ): array {
 			'editor_title' => $post_type->labels->add_new_item,
 			'header_title' => __( 'Editor top bar' ),
 			'header_toolbar_title' => __( 'Document tools' ),
+			'opens_in_a_new_tab' => __( 'opens in a new tab' ),
 			'permalink' => __( 'Permalink' ),
 			'post_title' => __( 'Post Title' ),
 			'preview' => __( 'Preview' ),
