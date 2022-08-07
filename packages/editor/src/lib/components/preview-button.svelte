@@ -9,7 +9,7 @@
 	const l10n = getContext< Config[ 'l10n' ] >( 'l10n' );
 
 	function get_url() {
-		const url = new URL( $editor.data.link.toString() );
+		const url = new URL( $editor.data.link );
 		url.searchParams.append( 'preview', 'true' );
 
 		return url.toString();
