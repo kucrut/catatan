@@ -226,12 +226,14 @@ function check_permission( WP_Post_Type $post_type, bool $is_edit = true ): void
 		return;
 	}
 
-	if ( ! isset( $_GET['id'] ) ) {
+	// From here on, we're dealing with edit screen.
+
+	$post_id = get_post_id();
+
+	if ( $post_id === 0 ) {
 		wp_safe_redirect( Catatan\get_editor_url( $post_type->name ), 302, 'Catatan' );
 		exit;
 	}
-
-	$post_id = (int) $_GET['id'];
 
 	if ( $post_id < 1 ) {
 		wp_die( esc_html__( 'Invalid post ID.', 'catatan' ) );
