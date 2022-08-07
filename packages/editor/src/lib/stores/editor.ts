@@ -107,7 +107,7 @@ export default function create_document_store( { edit_link_template, post_id, re
 		} ) ),
 	);
 
-	const prompt_if_dirty = event => {
+	const prompt_if_dirty = ( event: BeforeUnloadEvent ) => {
 		event.preventDefault();
 		event.returnValue = 'ciao!';
 
