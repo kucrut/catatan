@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Button from './button.svelte';
-	import Icon from './icons/icon.svelte';
 	export let title: string;
 
 	let is_expanded = false;
@@ -15,11 +14,12 @@
 	<div class="components-panel__body" class:is-opened={is_expanded}>
 		<h2 class="components-panel__body-title">
 			<Button
+				{icon}
 				aria-expanded={is_expanded}
-				class="components-button components-panel__body-toggle"
+				class="components-panel__body-toggle"
+				icon_class="components-panel__arrow"
 				on:click={handle_click_button}
 			>
-				<span aria-hidden="true"><Icon {icon} class="components-panel__arrow" /></span>
 				{title}
 			</Button>
 		</h2>
