@@ -1,8 +1,7 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
 	import Button from './button.svelte';
-	import Panel from './panel.svelte';
-	import PanelRow from './panel-row.svelte';
+	import PermalinkPanel from './permalink-panel.svelte';
 	import type { Config } from '$types';
 	import ui from '$lib/stores/ui';
 
@@ -35,11 +34,7 @@
 			/>
 		</div>
 		<!-- <StatusPanel /> -->
-		<Panel title={l10n.permalink} let:is_expanded>
-			<PanelRow {is_expanded}>
-				<p>{l10n.url_slug}</p>
-			</PanelRow>
-		</Panel>
+		<PermalinkPanel />
 	</div>
 </div>
 
