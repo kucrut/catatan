@@ -1,8 +1,8 @@
 import { persist, localStorage } from '@macfja/svelte-persistent-store';
-import { writable } from 'svelte/store';
+import { readable, writable } from 'svelte/store';
 import api_fetch from '@wordpress/api-fetch';
 import type { BetterOmit, Config } from '$types';
-import type { WP_REST_API_Post } from 'wp-types';
+import type { WP_REST_API_Post, WP_REST_API_Type } from 'wp-types';
 
 type Post = Partial< WP_REST_API_Post >;
 
@@ -13,6 +13,7 @@ interface Changes extends BetterOmit< Post, 'content' | 'title' > {
 
 export interface EditorStoreValue {
 	data: Changes;
+	type: WP_REST_API_Type;
 	is_dirty: boolean;
 	is_saved: boolean;
 	is_saving: boolean;
@@ -22,6 +23,19 @@ export interface EditorStoreValue {
 export type EditorStore = ReturnType< typeof create_document_store >;
 
 export type EditorStoreParams = Pick< Config, 'edit_link_template' | 'post_id' | 'post_type' | 'rest_path' >;
+
+function create_type_store( post_type: string ) {
+	const store = readable< WP_REST_API_Type >( null, set => {
+		api_fetch< WP_REST_API_Type >( {
+			parse: true,
+			path: `/wp/v2/types/${ post_type }?context=edit`,
+		} ).then( data => {
+			set( data );
+		} );
+	} );
+
+	return store;
+}
 
 function create_original_post_store( post_id: number, rest_path: string ) {
 	const store = writable< Post >( {} );
@@ -69,16 +83,27 @@ function create_original_post_store( post_id: number, rest_path: string ) {
 	return original_store;
 }
 
-export default function create_document_store( { edit_link_template, post_id, rest_path }: EditorStoreParams ) {
+export default function create_document_store( params: EditorStoreParams ) {
+	const { edit_link_template, post_id, post_type, rest_path } = params;
+
+	const type_store = create_type_store( post_type );
 	const changes_store = persist( writable< Changes >( {} ), localStorage(), `catatan-document-${ post_id }` );
 	const original_store = create_original_post_store( post_id, rest_path );
 
 	const { update, ...editor } = writable< EditorStoreValue >( {
 		data: {},
+		type: null,
 		is_dirty: false,
 		is_saved: false,
 		is_saving: false,
 		was_saving: false,
+	} );
+
+	type_store.subscribe( $type => {
+		update( $editor => ( {
+			...$editor,
+			type: $type,
+		} ) );
 	} );
 
 	// Update editor's data when original store value is updated.
