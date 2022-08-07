@@ -1,12 +1,12 @@
 import { persist, localStorage } from '@macfja/svelte-persistent-store';
 import { writable } from 'svelte/store';
 import api_fetch from '@wordpress/api-fetch';
-import type { Config } from '$types';
+import type { BetterOmit, Config } from '$types';
 import type { WP_REST_API_Post } from 'wp-types';
 
 type Post = Partial< WP_REST_API_Post >;
 
-interface Changes extends Omit< Post, 'content' | 'title' > {
+interface Changes extends BetterOmit< Post, 'content' | 'title' > {
 	content?: string;
 	title?: string;
 }
