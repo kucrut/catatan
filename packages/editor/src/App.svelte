@@ -1,21 +1,41 @@
 <script lang="ts">
-	import { setContext } from 'svelte';
+	import { onMount } from 'svelte';
 	import Container from '$lib/components/container.svelte';
-	import create_editor_store from '$lib/stores/editor';
+	import create_editor_store, { type EditorStore } from '$lib/stores/editor';
+	import create_post_store, { type PostStore } from '$lib/stores/post';
+	import create_post_type_store, { type PostTypeStore } from '$lib/stores/post-type';
 	import type { Config } from '$types';
 
 	export let config: Omit< Config, 'editor_id' | 'nonce' | 'rest_url' >;
 
-	const { l10n, ...editor_config } = config;
-	const editor = create_editor_store( editor_config );
+	const { l10n, post_id, post_type, ...editor_config } = config;
 
-	setContext( 'editor', editor );
-	setContext( 'l10n', l10n );
+	let editor_store: EditorStore;
+	let is_ready = false;
+	let loading_error: Error;
+	let post_store: PostStore;
+	let post_type_store: PostTypeStore;
+
+	onMount( async () => {
+		try {
+			post_type_store = create_post_type_store( post_type );
+			await post_type_store.fetch();
+
+			post_store = create_post_store( post_id, $post_type_store );
+			await post_store.fetch();
+
+			editor_store = create_editor_store( { post_id, post_store, ...editor_config } );
+			is_ready = true;
+		} catch ( error ) {
+			loading_error = error;
+		}
+	} );
 </script>
 
-<svelte:window on:unload={() => editor.clear()} />
-
-<div class="block-editor">
-	<h1 class="screen-reader-text">{$editor.type?.labels?.edit_item}</h1>
-	<Container />
-</div>
+{#if is_ready}
+	<Container {editor_store} {l10n} {post_store} {post_type_store} />
+{:else if loading_error}
+	<p>{loading_error.message}</p>
+{:else}
+	<p>Loading...</p>
+{/if}

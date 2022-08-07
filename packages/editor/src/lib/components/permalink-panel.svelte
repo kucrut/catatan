@@ -6,9 +6,11 @@
 	import PanelRow from './panel-row.svelte';
 	import type { Config } from '$types';
 	import type { EditorStore } from '$lib/stores/editor';
+	import type { PostTypeStore } from '$lib/stores/post-type';
 
 	const id = 'catatan-post-slug-input';
 	const editor = getContext< EditorStore >( 'editor' );
+	const post_type = getContext< PostTypeStore >( 'post_type' );
 	const l10n = getContext< Config[ 'l10n' ] >( 'l10n' );
 
 	function handle_input( event: InputEvent & { currentTarget: HTMLInputElement } ) {
@@ -25,7 +27,7 @@
 				class="components-text-control__input"
 				spellcheck="false"
 				type="text"
-				value={$editor.data.slug}
+				value={$editor.data.slug || ''}
 				on:input={handle_input}
 			/>
 		</BaseControl>
@@ -34,9 +36,11 @@
 				>Read about permalinks</ExternalLink
 			>
 		</p>
-		<h3 class="edit-post-post-link__preview-label">{$editor.type?.labels?.view_item}</h3>
-		<div class="edit-post-post-link__preview-link-container">
-			<ExternalLink href={$editor.data.link}>{$editor.data.link}</ExternalLink>
-		</div>
+		{#if $editor.data.link}
+			<h3 class="edit-post-post-link__preview-label">{$post_type.labels.view_item}</h3>
+			<div class="edit-post-post-link__preview-link-container">
+				<ExternalLink href={$editor.data.link}>{$editor.data.link}</ExternalLink>
+			</div>
+		{/if}
 	</PanelRow>
 </Panel>

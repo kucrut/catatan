@@ -1,113 +1,35 @@
 import { persist, localStorage } from '@macfja/svelte-persistent-store';
-import { readable, writable } from 'svelte/store';
-import api_fetch from '@wordpress/api-fetch';
-import type { BetterOmit, Config } from '$types';
-import type { WP_REST_API_Post, WP_REST_API_Type } from 'wp-types';
-
-type Post = Partial< WP_REST_API_Post >;
-
-interface Changes extends BetterOmit< Post, 'content' | 'title' > {
-	content?: string;
-	title?: string;
-}
+import { writable } from 'svelte/store';
+import type { Changes, Config } from '$types';
+import type { PostStore } from './post';
 
 export interface EditorStoreValue {
 	data: Changes;
-	type: WP_REST_API_Type;
 	is_dirty: boolean;
 	is_saved: boolean;
 	is_saving: boolean;
 	was_saving: boolean;
 }
 
-export type EditorStore = ReturnType< typeof create_document_store >;
-
-export type EditorStoreParams = Pick< Config, 'edit_link_template' | 'post_id' | 'post_type' | 'rest_path' >;
-
-function create_type_store( post_type: string ) {
-	const store = readable< WP_REST_API_Type >( null, set => {
-		api_fetch< WP_REST_API_Type >( {
-			parse: true,
-			path: `/wp/v2/types/${ post_type }?context=edit`,
-		} ).then( data => {
-			set( data );
-		} );
-	} );
-
-	return store;
+export interface EditorStoreParams extends Pick< Config, 'edit_link_template' | 'post_id' > {
+	post_store: PostStore;
 }
 
-function create_original_post_store( post_id: number, rest_path: string ) {
-	const store = writable< Post >( {} );
-	let api_path = rest_path;
+export default function create_editor_store( params: EditorStoreParams ) {
+	const { edit_link_template, post_id, post_store } = params;
 
-	if ( post_id > 0 ) {
-		api_path = `${ rest_path }/${ post_id }`;
-	}
-
-	api_path = `${ api_path }?context=edit`;
-
-	const original_store = {
-		...store,
-
-		async fetch() {
-			try {
-				const data = await api_fetch( { parse: true, path: api_path } );
-				this.update( () => data );
-			} catch ( error ) {
-				// TODO: Display error in notice section.
-				// eslint-disable-next-line no-console
-				console.error( error );
-			}
-		},
-
-		async save( changes: Changes ) {
-			try {
-				const data = await api_fetch( {
-					data: changes,
-					method: post_id > 0 ? 'PATCH' : 'POST',
-					parse: true,
-					path: api_path,
-				} );
-				this.update( () => data );
-			} catch ( error ) {
-				throw error;
-			}
-		},
-	};
-
-	if ( post_id > 0 ) {
-		original_store.fetch();
-	}
-
-	return original_store;
-}
-
-export default function create_document_store( params: EditorStoreParams ) {
-	const { edit_link_template, post_id, post_type, rest_path } = params;
-
-	const type_store = create_type_store( post_type );
-	const changes_store = persist( writable< Changes >( {} ), localStorage(), `catatan-document-${ post_id }` );
-	const original_store = create_original_post_store( post_id, rest_path );
+	const store = persist( writable< Changes >( null ), localStorage(), `catatan-document-${ post_id }` );
 
 	const { update, ...editor } = writable< EditorStoreValue >( {
-		data: {},
-		type: null,
+		data: null,
 		is_dirty: false,
 		is_saved: false,
 		is_saving: false,
 		was_saving: false,
 	} );
 
-	type_store.subscribe( $type => {
-		update( $editor => ( {
-			...$editor,
-			type: $type,
-		} ) );
-	} );
-
 	// Update editor's data when original store value is updated.
-	original_store.subscribe( $original => {
+	post_store.subscribe( $original => {
 		const { content, id, link, slug, status, title } = $original;
 
 		update( $editor => ( {
@@ -125,7 +47,7 @@ export default function create_document_store( params: EditorStoreParams ) {
 	} );
 
 	// Update editor's data when changes store value is updated.
-	changes_store.subscribe( $changes =>
+	store.subscribe( $changes =>
 		update( ( { data, ...$document } ) => ( {
 			...$document,
 			data: { ...data, ...$changes },
@@ -151,12 +73,16 @@ export default function create_document_store( params: EditorStoreParams ) {
 		}
 	} );
 
+	window.addEventListener( 'unload', () => {
+		store.delete();
+	} );
+
 	return {
 		...editor,
-		fetch: original_store.fetch,
+		fetch: post_store.fetch,
 
 		clear() {
-			changes_store.delete();
+			store.delete();
 		},
 
 		async save() {
@@ -166,7 +92,7 @@ export default function create_document_store( params: EditorStoreParams ) {
 
 				update( $editor => ( { ...$editor, is_saving: true, was_saving: false } ) );
 
-				await original_store.save( data );
+				await post_store.save( data );
 
 				update( $editor => ( { ...$editor, is_saved: true, was_saving: true } ) );
 
@@ -184,7 +110,7 @@ export default function create_document_store( params: EditorStoreParams ) {
 		},
 
 		update( new_changes: Changes ) {
-			changes_store.update( $changes => ( { ...$changes, ...new_changes } ) );
+			store.update( $changes => ( { ...$changes, ...new_changes } ) );
 			update( $editor => ( {
 				...$editor,
 				is_dirty: true,
@@ -194,3 +120,5 @@ export default function create_document_store( params: EditorStoreParams ) {
 		},
 	};
 }
+
+export type EditorStore = ReturnType< typeof create_editor_store >;

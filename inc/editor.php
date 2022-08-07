@@ -114,7 +114,6 @@ function get_config( WP_Post_Type $post_type ): array {
 		'editor_id' => CATATAN\EDITOR_ID,
 		'post_id' => $post_id,
 		'post_type' => $post_type->name,
-		'rest_path' => "{$post_type->rest_namespace}/{$post_type->rest_base}",
 		'rest_url' => rest_url(),
 		'nonce' => wp_create_nonce( 'wp_rest' ),
 		'l10n' => [
