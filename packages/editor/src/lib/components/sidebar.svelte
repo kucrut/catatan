@@ -3,6 +3,7 @@
 	import Button from './button.svelte';
 	import Panel from './panel.svelte';
 	import PanelRow from './panel-row.svelte';
+	import StatusPanel from './status-panel.svelte';
 	import type { Config } from '$types';
 	import ui from '$lib/stores/ui';
 
@@ -34,14 +35,7 @@
 				}}
 			/>
 		</div>
-		<Panel title={l10n.status_panel_title} let:is_expanded>
-			<PanelRow {is_expanded}>
-				<span>{l10n.visibility}</span>
-			</PanelRow>
-			<PanelRow {is_expanded}>
-				<span>{l10n.publish}</span>
-			</PanelRow>
-		</Panel>
+		<StatusPanel />
 		<Panel title={l10n.permalink} let:is_expanded>
 			<PanelRow {is_expanded}>
 				<p>{l10n.url_slug}</p>
