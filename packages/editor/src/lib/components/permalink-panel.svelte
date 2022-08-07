@@ -17,24 +17,26 @@
 </script>
 
 <Panel title={l10n.permalink} let:is_expanded>
-	<PanelRow {is_expanded}>
-		<div class="editor-post-link">
-			<BaseControl {id} label={l10n.url_slug}>
-				<input
-					{id}
-					autocomplete="off"
-					class="components-text-control__input"
-					spellcheck="false"
-					type="text"
-					value={$editor.data.slug}
-					on:input={handle_input}
-				/>
-			</BaseControl>
-			<p>
-				The last part of the URL. <ExternalLink href="https://wordpress.org/support/article/settings-sidebar/#permalink"
-					>Read about permalinks</ExternalLink
-				>
-			</p>
+	<PanelRow class="editor-post-link" {is_expanded}>
+		<BaseControl {id} label={l10n.url_slug}>
+			<input
+				{id}
+				autocomplete="off"
+				class="components-text-control__input"
+				spellcheck="false"
+				type="text"
+				value={$editor.data.slug}
+				on:input={handle_input}
+			/>
+		</BaseControl>
+		<p>
+			The last part of the URL. <ExternalLink href="https://wordpress.org/support/article/settings-sidebar/#permalink"
+				>Read about permalinks</ExternalLink
+			>
+		</p>
+		<h3 class="edit-post-post-link__preview-label">View Page</h3>
+		<div class="edit-post-post-link__preview-link-container">
+			<ExternalLink href={$editor.data.link}>{$editor.data.link}</ExternalLink>
 		</div>
 	</PanelRow>
 </Panel>
