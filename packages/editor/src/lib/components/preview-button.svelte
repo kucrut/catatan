@@ -8,21 +8,14 @@
 	const editor = getContext< EditorStore >( 'editor' );
 	const l10n = getContext< Config[ 'l10n' ] >( 'l10n' );
 
-	$: cls = 'editor-post-publish-button__button';
-	$: is_disabled = ! $editor.data.id;
-
 	function get_url() {
 		const url = new URL( $editor.data.link.toString() );
 		url.searchParams.append( 'preview', 'true' );
 
 		return url.toString();
 	}
+
+	$: props = $editor.data.link ? { href: get_url(), target: '_blank' } : { 'aria-disabled': true, 'disabled': true };
 </script>
 
-{#if is_disabled}
-	<Button is_tertiary aria-disabled={is_disabled} class={cls} disabled={is_disabled}
-		>{l10n.preview} <Icon icon="external" /></Button
-	>
-{:else}
-	<a class="components-button is-tertiary" href={get_url()} target="_blank">{l10n.preview} <Icon icon="external" /></a>
-{/if}
+<Button is_tertiary {...props}>{l10n.preview} <Icon icon="external" /></Button>
