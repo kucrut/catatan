@@ -11,7 +11,7 @@
 <a {href} class="components-external-link" target="_blank" rel="external noreferrer noopener"
 	><slot /><span class="screen-reader-text">({l10n.opens_in_a_new_tab})</span><Icon
 		class="components-external-link__icon"
-		icon="external-small"
+		icon="external"
 	/></a
 >
 
