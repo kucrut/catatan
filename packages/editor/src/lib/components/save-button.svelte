@@ -10,10 +10,16 @@
 	$: cls = '';
 	$: icon = '';
 	$: is_disabled = true;
+	$: is_not_draft = $editor.data.status && $editor.data.status !== 'draft';
 	$: text = l10n.save_draft;
-	$: handle_click = () => {
+
+	function handle_click() {
+		if ( is_not_draft ) {
+			editor.update( { status: 'draft' } );
+		}
+
 		editor.save();
-	};
+	}
 
 	$: {
 		if ( $editor.is_saved ) {
@@ -39,14 +45,10 @@
 			text = l10n.saving;
 		}
 
-		if ( $editor.data.status && $editor.data.status !== 'draft' ) {
+		if ( is_not_draft ) {
 			icon = '';
 			is_disabled = false;
 			text = l10n.switch_to_draft;
-			handle_click = () => {
-				editor.update( { status: 'draft' } );
-				editor.save();
-			};
 		}
 
 		cls += ' editor-post-saved-state';
