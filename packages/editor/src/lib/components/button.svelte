@@ -4,18 +4,23 @@
 
 	let cls = '';
 	export { cls as class };
+	export let href = '';
 	export let icon = '';
 	export let type = 'button';
 	export let is_primary = false;
 	export let is_tertiary = false;
+
+	$: tag = href ? 'a' : 'button';
+	$: props = tag === 'a' ? { href } : { type };
 </script>
 
-<button
-	{type}
+<svelte:element
+	this={tag}
 	class={class_names( cls, 'components-button' )}
 	class:has-icon={icon !== ''}
 	class:is-primary={is_primary}
 	class:is-tertiary={is_tertiary}
+	{...props}
 	{...$$restProps}
 	on:click
 >
@@ -23,4 +28,4 @@
 		<Icon {icon} />
 	{/if}
 	<slot />
-</button>
+</svelte:element>
