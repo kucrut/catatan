@@ -16,6 +16,6 @@
 <svelte:window on:unload={() => editor.clear()} />
 
 <div class="block-editor">
-	<h1 class="screen-reader-text">{l10n.type_labels.edit_item}</h1>
+	<h1 class="screen-reader-text">{$editor.type?.labels?.edit_item}</h1>
 	<Container />
 </div>
