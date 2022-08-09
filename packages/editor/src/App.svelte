@@ -27,7 +27,13 @@
 			post_store = create_post_store( post_id, $post_type_store );
 			await post_store.fetch();
 
-			editor_store = create_editor_store( { notices_store, post_id, post_store, ...editor_config } );
+			editor_store = create_editor_store( {
+				notices_store,
+				post_id,
+				post_store,
+				post_type_store,
+				...editor_config,
+			} );
 			is_ready = true;
 		} catch ( error ) {
 			loading_error = error;
