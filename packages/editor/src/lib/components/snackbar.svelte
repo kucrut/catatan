@@ -21,7 +21,7 @@
 		cancel_scheduled_removal();
 		timeout_id = setTimeout( () => {
 			notices.remove( id );
-		}, 1500 );
+		}, 3333 );
 	}
 
 	onMount( schedule_removal );
