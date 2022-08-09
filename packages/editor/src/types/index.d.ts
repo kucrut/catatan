@@ -5,6 +5,7 @@ export type BetterOmit< T, K extends PropertyKey > = { [ P in keyof T as Exclude
 
 export interface Changes extends BetterOmit< Partial< WP_REST_API_Post >, 'content' | 'title' > {
 	content?: string;
+	excerpt?: string;
 	title?: string;
 }
 
