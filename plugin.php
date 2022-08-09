@@ -5,6 +5,7 @@
  * Author: Dzikri Aziz
  * Author URI: https://dz.aziz.im
  * Version: 0.0.0
+ * Text Domain: catatan
  */
 
 declare( strict_types = 1 );
