@@ -7,6 +7,10 @@ export interface Notice {
 	type: 'error' | 'info';
 }
 
+function remove_item( $items: Notice[], item_id: Notice[ 'id' ] ) {
+	return $items.filter( ( { id } ) => item_id !== id );
+}
+
 export default function create_store() {
 	const { update, ...store } = writable< Notice[] >( [] );
 
@@ -14,11 +18,11 @@ export default function create_store() {
 		...store,
 
 		add( item: Notice ) {
-			update( items => items.concat( item ) );
+			update( $items => [ ...remove_item( $items, item.id ), item ] );
 		},
 
 		remove( item_id: Notice[ 'id' ] ) {
-			update( items => items.filter( ( { id } ) => item_id !== id ) );
+			update( $items => remove_item( $items, item_id ) );
 		},
 	};
 }
