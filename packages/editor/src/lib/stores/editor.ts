@@ -151,7 +151,7 @@ export default function create_editor_store( params: EditorStoreParams ) {
 					content: notice_content,
 					id: 'saved',
 					type: 'snack',
-					link: notice_link_text ? { text: notice_link_text, url: data.link } : undefined,
+					link: post_type.viewable && notice_link_text ? { text: notice_link_text, url: data.link } : undefined,
 				} );
 			} catch ( error ) {
 				notices_store.add( {
