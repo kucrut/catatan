@@ -1,20 +1,31 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
 	import Notice from './notice.svelte';
+	import Snackbar from './snackbar.svelte';
 	import type { NoticesStore } from '$lib/stores/notices';
 
 	const notices = getContext< NoticesStore >( 'notices' );
 
-	$: dismissible_items = $notices.filter( ( { dismissible } ) => dismissible );
+	$: dismissibles = $notices.filter( ( { dismissible, type } ) => dismissible && type !== 'snack' );
+	$: snacks = $notices.filter( ( { type } ) => type === 'snack' );
 </script>
 
 {#if $notices.length}
 	<div class="interface-interface-skeleton__notices">
-		{#if dismissible_items.length}
+		{#if dismissibles.length}
 			<div class="components-notice-list components-editor-notices__dismissible">
-				{#each dismissible_items as item}
+				{#each dismissibles as item}
 					<Notice {item} />
 				{/each}
+			</div>
+		{/if}
+		{#if snacks.length}
+			<div class="components-snackbar-list components-editor-notices__snackbar" tabindex="-1">
+				<div class="components-snackbar-list__notice-container">
+					{#each snacks as item}
+						<Snackbar {item} />
+					{/each}
+				</div>
 			</div>
 		{/if}
 	</div>
