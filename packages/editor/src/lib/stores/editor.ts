@@ -36,7 +36,7 @@ export default function create_editor_store( params: EditorStoreParams ) {
 			return;
 		}
 
-		const { content, id, link, slug, status, title } = $original;
+		const { content, excerpt, id, link, slug, status, title } = $original;
 
 		update( $editor => ( {
 			...$editor,
@@ -46,6 +46,7 @@ export default function create_editor_store( params: EditorStoreParams ) {
 				slug,
 				status,
 				content: content?.raw || '',
+				excerpt: excerpt?.raw || '',
 				title: title?.raw || '',
 			},
 			is_dirty: false,
