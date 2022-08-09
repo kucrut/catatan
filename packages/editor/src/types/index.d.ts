@@ -12,7 +12,6 @@ export interface Changes extends BetterOmit< Partial< WP_REST_API_Post >, 'conte
 export interface Config {
 	edit_link_template: string;
 	editor_id: string;
-	l10n: Record< string, string >;
 	nonce: string;
 	post_id: number;
 	post_type: string;

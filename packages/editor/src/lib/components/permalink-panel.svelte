@@ -1,26 +1,25 @@
 <script lang="ts">
+	import { __ } from '@wordpress/i18n';
 	import { getContext } from 'svelte';
 	import BaseControl from './base-control.svelte';
 	import ExternalLink from './external-link.svelte';
 	import Panel from './panel.svelte';
 	import PanelRow from './panel-row.svelte';
-	import type { Config } from '$types';
 	import type { EditorStore } from '$lib/stores/editor';
 	import type { PostTypeStore } from '$lib/stores/post-type';
 
 	const id = 'catatan-post-slug-input';
 	const editor = getContext< EditorStore >( 'editor' );
 	const post_type = getContext< PostTypeStore >( 'post_type' );
-	const l10n = getContext< Config[ 'l10n' ] >( 'l10n' );
 
 	function handle_input( event: InputEvent & { currentTarget: HTMLInputElement } ) {
 		editor.update( { slug: event.currentTarget.value } );
 	}
 </script>
 
-<Panel title={l10n.permalink} let:is_expanded>
+<Panel title={__( 'Permalink' )} let:is_expanded>
 	<PanelRow class="editor-post-link" {is_expanded}>
-		<BaseControl {id} label={l10n.url_slug}>
+		<BaseControl {id} label={__( 'URL Slug' )}>
 			<input
 				{id}
 				autocomplete="off"
@@ -32,8 +31,9 @@
 			/>
 		</BaseControl>
 		<p>
-			The last part of the URL. <ExternalLink href="https://wordpress.org/support/article/settings-sidebar/#permalink"
-				>Read about permalinks</ExternalLink
+			{__( 'The last part of the URL.' )}
+			<ExternalLink href="https://wordpress.org/support/article/settings-sidebar/#permalink"
+				>{__( 'Read about permalinks' )}</ExternalLink
 			>
 		</p>
 		{#if $editor.data.link}

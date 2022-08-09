@@ -9,7 +9,7 @@
 
 	export let config: Omit< Config, 'editor_id' | 'nonce' | 'rest_url' >;
 
-	const { l10n, post_id, post_type, ...editor_config } = config;
+	const { post_id, post_type, ...editor_config } = config;
 
 	let editor_store: EditorStore;
 	let is_ready = false;
@@ -36,7 +36,7 @@
 </script>
 
 {#if is_ready}
-	<Container {editor_store} {l10n} {notices_store} {post_store} {post_type_store} />
+	<Container {editor_store} {notices_store} {post_store} {post_type_store} />
 {:else if loading_error}
 	<p>{loading_error.message}</p>
 {:else}

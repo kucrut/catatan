@@ -1,18 +1,17 @@
 <script lang="ts">
+	import { __ } from '@wordpress/i18n';
 	import { getContext } from 'svelte';
 	import Button from './button.svelte';
 	import ExcerptPanel from './excerpt-panel.svelte';
 	import PermalinkPanel from './permalink-panel.svelte';
-	import type { Config } from '$types';
 	import type { PostTypeStore } from '$lib/stores/post-type';
 	import ui from '$lib/stores/ui';
 
-	const l10n = getContext< Config[ 'l10n' ] >( 'l10n' );
 	const post_type = getContext< PostTypeStore >( 'post_type' );
 </script>
 
 <div
-	aria-label={l10n.sidebar_title}
+	aria-label={__( 'Editor settings' )}
 	class="interface-interface-skeleton__sidebar"
 	class:hidden={! $ui.is_sidebar_open}
 	role="region"
@@ -25,11 +24,11 @@
 		>
 			<ul>
 				<li>
-					<Button class="edit-post-sidebar__panel-tab is-active">{l10n.document}</Button>
+					<Button class="edit-post-sidebar__panel-tab is-active">{$post_type.labels.singular_name}</Button>
 				</li>
 			</ul>
 			<Button
-				aria-label={l10n.close_settings}
+				aria-label={__( 'Close settings' )}
 				icon="close"
 				on:click={() => {
 					ui.close_sidebar();

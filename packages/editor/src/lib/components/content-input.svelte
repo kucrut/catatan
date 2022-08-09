@@ -1,11 +1,9 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
-	// import type { Config } from '$types';
 	import textarea_autosize from '@github/textarea-autosize';
 	import type { EditorStore } from '$lib/stores/editor';
 
 	const editor = getContext< EditorStore >( 'editor' );
-	// const l10n = getContext< Config[ 'l10n' ] >( 'l10n' );
 
 	function autosize( node: HTMLTextAreaElement ) {
 		textarea_autosize( node );

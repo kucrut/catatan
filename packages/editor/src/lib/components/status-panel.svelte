@@ -1,17 +1,14 @@
 <script lang="ts">
-	import { getContext } from 'svelte';
+	import { __ } from '@wordpress/i18n';
 	import Panel from './panel.svelte';
 	import PanelRow from './panel-row.svelte';
-	import type { Config } from '$types';
-
-	const l10n = getContext< Config[ 'l10n' ] >( 'l10n' );
 </script>
 
-<Panel title={l10n.status_panel_title} let:is_expanded>
+<Panel title={__( 'Status & visibility' )} let:is_expanded>
 	<PanelRow {is_expanded}>
-		<span>{l10n.visibility}</span>
+		<span>{__( 'Visibility' )}</span>
 	</PanelRow>
 	<PanelRow {is_expanded}>
-		<span>{l10n.publish}</span>
+		<span>{__( 'Publish' )}</span>
 	</PanelRow>
 </Panel>

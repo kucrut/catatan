@@ -1,24 +1,23 @@
 <script lang="ts">
+	import { __ } from '@wordpress/i18n';
 	import { getContext } from 'svelte';
 	import BaseControl from './base-control.svelte';
 	import ExternalLink from './external-link.svelte';
 	import Panel from './panel.svelte';
 	import PanelRow from './panel-row.svelte';
-	import type { Config } from '$types';
 	import type { EditorStore } from '$lib/stores/editor';
 
 	const id = 'catatan-post-excerpt-input';
 	const editor = getContext< EditorStore >( 'editor' );
-	const l10n = getContext< Config[ 'l10n' ] >( 'l10n' );
 
 	function handle_input( event: InputEvent & { currentTarget: HTMLTextAreaElement } ) {
 		editor.update( { excerpt: event.currentTarget.value } );
 	}
 </script>
 
-<Panel title={l10n.excerpt} let:is_expanded>
+<Panel title={__( 'Excerpt' )} let:is_expanded>
 	<PanelRow class="editor-post-excerpt" {is_expanded}>
-		<BaseControl {id} label={l10n.write_an_excerpt}>
+		<BaseControl {id} label={__( 'Write an excerpt (optional)' )}>
 			<textarea
 				{id}
 				class="components-textarea-control__input "
@@ -28,7 +27,7 @@
 			/>
 		</BaseControl>
 		<ExternalLink href="https://wordpress.org/support/article/settings-sidebar/#excerpt"
-			>Learn more about manual excerpts</ExternalLink
+			>{__( 'Learn more about manual excerpts' )}</ExternalLink
 		>
 	</PanelRow>
 </Panel>
