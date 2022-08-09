@@ -1,11 +1,14 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
 	import Button from './button.svelte';
+	import ExcerptPanel from './excerpt-panel.svelte';
 	import PermalinkPanel from './permalink-panel.svelte';
 	import type { Config } from '$types';
+	import type { PostTypeStore } from '$lib/stores/post-type';
 	import ui from '$lib/stores/ui';
 
 	const l10n = getContext< Config[ 'l10n' ] >( 'l10n' );
+	const post_type = getContext< PostTypeStore >( 'post_type' );
 </script>
 
 <div
@@ -35,6 +38,9 @@
 		</div>
 		<!-- <StatusPanel /> -->
 		<PermalinkPanel />
+		{#if $post_type.supports.excerpt}
+			<ExcerptPanel />
+		{/if}
 	</div>
 </div>
 
