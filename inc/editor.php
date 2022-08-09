@@ -121,6 +121,7 @@ function get_config( WP_Post_Type $post_type ): array {
 			'content_region_title' => __( 'Editor content' ),
 			'document' => __( 'Document' ),
 			'dismiss_this_notice' => __( 'Dismiss this notice' ),
+			'excerpt' => __( 'Excerpt' ),
 			'header_title' => __( 'Editor top bar' ),
 			'header_toolbar_title' => __( 'Document tools' ),
 			'opens_in_a_new_tab' => __( 'opens in a new tab' ),
@@ -139,6 +140,7 @@ function get_config( WP_Post_Type $post_type ): array {
 			'update' => __( 'Update' ),
 			'url_slug' => __( 'URL Slug' ),
 			'visibility' => __( 'Visibility' ),
+			'write_an_excerpt' => __( 'Write an excerpt (optional)' ),
 		],
 	];
 
