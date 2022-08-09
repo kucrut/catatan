@@ -1,13 +1,20 @@
 <script lang="ts">
 	import ContentInput from './content-input.svelte';
 	import TitleInput from './title-input.svelte';
+
+	export let with_editor: boolean;
+	export let with_title: boolean;
 </script>
 
 <div class="edit-post-visual-editor__content-area">
 	<div class="is-desktop-preview">
 		<div class="editor-styles-wrapper block-editor-writing-flow">
-			<TitleInput />
-			<ContentInput />
+			{#if with_title}
+				<TitleInput />
+			{/if}
+			{#if with_editor}
+				<ContentInput />
+			{/if}
 		</div>
 	</div>
 </div>

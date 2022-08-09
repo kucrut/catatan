@@ -20,10 +20,12 @@
 	setContext( 'notices', notices_store );
 	setContext( 'post', post_store );
 	setContext( 'post_type', post_type_store );
+
+	const { labels, supports } = $post_type_store;
 </script>
 
 <div class="block-editor">
-	<h1 class="screen-reader-text">{$post_type_store.labels.edit_item}</h1>
+	<h1 class="screen-reader-text">{labels.edit_item}</h1>
 	<div class="block-editor__container">
 		<div class="edit-post-layout interface-interface-skeleton" class:is-sidebar-opened={$ui.is_sidebar_open}>
 			<div class="interface-interface-skeleton__editor">
@@ -37,7 +39,7 @@
 					>
 						<Notices />
 						<div class="edit-post-visual-editor">
-							<ContentArea />
+							<ContentArea with_editor={supports.editor === true} with_title={supports.title === true} />
 						</div>
 					</div>
 					<Sidebar />
