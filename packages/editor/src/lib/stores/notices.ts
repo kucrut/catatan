@@ -2,9 +2,13 @@ import { writable } from 'svelte/store';
 
 export interface Notice {
 	content: string;
-	dismissible: boolean;
+	dismissible?: boolean;
 	id: string;
-	type: 'error' | 'info';
+	link?: {
+		text: string;
+		url: string;
+	};
+	type: 'error' | 'info' | 'snack';
 }
 
 function remove_item( $items: Notice[], item_id: Notice[ 'id' ] ) {
