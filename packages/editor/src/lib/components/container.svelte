@@ -32,13 +32,13 @@
 			<div class="interface-interface-skeleton__editor">
 				<Header />
 				<div class="interface-interface-skeleton__body">
-					<Notices />
 					<div
 						aria-label={l10n.content_region_title}
 						class="interface-interface-skeleton__content"
 						role="region"
 						tabindex="-1"
 					>
+						<Notices />
 						<div class="edit-post-visual-editor">
 							<ContentArea />
 						</div>
