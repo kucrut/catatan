@@ -6,18 +6,21 @@
 	import Sidebar from './sidebar.svelte';
 	import type { Config } from '$types';
 	import type { EditorStore } from '$lib/stores/editor';
+	import type { NoticesStore } from '$lib/stores/notices';
 	import type { PostStore } from '$lib/stores/post';
 	import type { PostTypeStore } from '$lib/stores/post-type';
 	import ui from '$lib/stores/ui';
 
 	export let editor_store: EditorStore;
 	export let l10n: Config[ 'l10n' ];
+	export let notices_store: NoticesStore;
 	export let post_store: PostStore;
 	export let post_type_store: PostTypeStore;
 
 	setContext( 'l10n', l10n );
 
 	setContext( 'editor', editor_store );
+	setContext( 'notices', notices_store );
 	setContext( 'post', post_store );
 	setContext( 'post_type', post_type_store );
 </script>
