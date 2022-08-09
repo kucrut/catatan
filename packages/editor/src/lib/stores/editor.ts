@@ -28,6 +28,16 @@ function prompt_if_dirty( event: BeforeUnloadEvent ) {
 	return 'ciao!';
 }
 
+/**
+ * Create editor store
+ *
+ * @todo is_dirty: Compare changes and saved_post, ensure content, excerpt and title are not empty.
+ * @todo can_save: Ensure content, excerpt and title are not empty. Also check is_dirty.
+ * @todo Handle (un)scheduling
+ *
+ * @param {EditorStoreParams} params Parameters.
+ * @return {EditorStore} Editor store.
+ */
 export default function create_editor_store( params: EditorStoreParams ) {
 	const { edit_link_template, notices_store, post_id, post_store, post_type_store } = params;
 
@@ -136,7 +146,6 @@ export default function create_editor_store( params: EditorStoreParams ) {
 					notice_content = __( 'Draft saved' );
 					notice_link_text = __( 'View Preview' );
 				}
-				// TODO: (un)Scheduled.
 
 				notices_store.add( {
 					content: notice_content,
