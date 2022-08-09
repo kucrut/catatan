@@ -2,6 +2,7 @@ import { persist, localStorage } from '@macfja/svelte-persistent-store';
 import { writable } from 'svelte/store';
 import type { Changes, Config } from '$types';
 import type { PostStore } from './post';
+import type { NoticesStore } from './notices';
 
 export interface EditorStoreValue {
 	data: Changes;
@@ -12,11 +13,12 @@ export interface EditorStoreValue {
 }
 
 export interface EditorStoreParams extends Pick< Config, 'edit_link_template' | 'post_id' > {
+	notices_store: NoticesStore;
 	post_store: PostStore;
 }
 
 export default function create_editor_store( params: EditorStoreParams ) {
-	const { edit_link_template, post_id, post_store } = params;
+	const { edit_link_template, notices_store, post_id, post_store } = params;
 
 	const changes = persist( writable< Changes >( {} ), localStorage(), `catatan-document-${ post_id }` );
 
@@ -105,9 +107,12 @@ export default function create_editor_store( params: EditorStoreParams ) {
 					window.history.pushState( {}, '', edit_link_template.replace( '<id>', current_value.data.id.toString() ) );
 				}
 			} catch ( error ) {
-				// TODO: Display error in notice section.
-				// eslint-disable-next-line no-console
-				console.error( error );
+				notices_store.add( {
+					content: error.message,
+					dismissible: true,
+					id: 'save-error',
+					type: 'error',
+				} );
 			} finally {
 				update( $editor => ( { ...$editor, is_saving: false } ) );
 			}
