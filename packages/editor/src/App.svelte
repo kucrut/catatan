@@ -24,8 +24,6 @@
 			post_type_store = create_post_type_store( post_type );
 			await post_type_store.fetch();
 
-			console.log( $post_type_store );
-
 			post_store = create_post_store( post_id, $post_type_store );
 			await post_store.fetch();
 

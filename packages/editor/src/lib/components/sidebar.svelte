@@ -36,7 +36,9 @@
 			/>
 		</div>
 		<!-- <StatusPanel /> -->
-		<PermalinkPanel />
+		{#if $post_type.viewable}
+			<PermalinkPanel />
+		{/if}
 		{#if $post_type.supports.excerpt}
 			<ExcerptPanel />
 		{/if}
