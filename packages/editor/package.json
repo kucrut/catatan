@@ -25,6 +25,7 @@
 		"@typescript-eslint/parser": "^5.33.0",
 		"@wordpress/api-fetch": "^6.11.0",
 		"@wordpress/eslint-plugin": "^12.8.0",
+		"@wordpress/i18n": "^4.14.0",
 		"@wordpress/stylelint-config": "^20.0.2",
 		"autoprefixer": "^10.4.8",
 		"eslint": "^8.21.0",
