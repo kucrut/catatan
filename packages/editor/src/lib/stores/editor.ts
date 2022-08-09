@@ -156,6 +156,14 @@ export default function create_editor_store( params: EditorStoreParams ) {
 			}
 		},
 
+		/**
+		 * Update changes
+		 *
+		 * This method overrides the original 'update' method because we only want to allow consumers
+		 * to update the data property (changes store). Other properties are for internal use only.
+		 *
+		 * @param {Changes} new_changes Changes made to the post.
+		 */
 		update( new_changes: Changes ) {
 			changes.update( $changes => ( { ...$changes, ...new_changes } ) );
 
