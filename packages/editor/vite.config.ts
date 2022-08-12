@@ -1,16 +1,8 @@
-import { defineConfig } from 'vite';
 import { resolve } from 'node:path';
 import { svelte } from '@sveltejs/vite-plugin-svelte';
+import create_config from '@kucrut/vite-for-wp';
 
-// https://vitejs.dev/config/
-export default defineConfig( {
-	build: {
-		manifest: true,
-		polyfillModulePreload: false,
-		rollupOptions: {
-			input: 'src/main.ts',
-		},
-	},
+const config = create_config( 'src/main.ts', 'dist', {
 	plugins: [ svelte() ],
 	resolve: {
 		alias: {
@@ -19,3 +11,5 @@ export default defineConfig( {
 		},
 	},
 } );
+
+export default config;
