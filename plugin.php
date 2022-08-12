@@ -12,6 +12,7 @@ declare( strict_types = 1 );
 
 namespace Catatan;
 
+require_once __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/inc/editor.php';
 require_once __DIR__ . '/inc/namespace.php';
 require_once __DIR__ . '/inc/overrides.php';
