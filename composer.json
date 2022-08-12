@@ -2,9 +2,6 @@
 	"name": "kucrut/catatan",
 	"description": "Simple post editor for WordPress",
 	"type": "wordpress-plugin",
-	"require": {
-		"php": ">=7.4.0"
-	},
 	"license": "GPL-2.0-only",
 	"authors": [
 		{
@@ -12,7 +9,17 @@
 			"email": "dzikri.aziz@gmail.com"
 		}
 	],
+	"repositories": [
+		{
+			"type": "path",
+			"url": "../vite-for-wp/php"
+		}
+	],
+	"require": {
+		"php": ">=7.4.0"
+	},
 	"require-dev": {
+		"kucrut/vite-for-wp": "@dev",
 		"wp-coding-standards/wpcs": "^2.3",
 		"dealerdirect/phpcodesniffer-composer-installer": "^0.7.2"
 	},

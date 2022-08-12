@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "58f973f39a8259742ba27311a33bcd65",
+    "content-hash": "a7f9256658cbe0bb3252c98075c1a06b",
     "packages": [],
     "packages-dev": [
         {
@@ -81,6 +81,42 @@
                 "source": "https://github.com/dealerdirect/phpcodesniffer-composer-installer"
             },
             "time": "2022-02-04T12:51:07+00:00"
+        },
+        {
+            "name": "kucrut/vite-for-wp",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "../vite-for-wp/php",
+                "reference": "07f71523aa1561c76ec4f1feacaa26767dbdc3a9"
+            },
+            "require-dev": {
+                "dealerdirect/phpcodesniffer-composer-installer": "^0.7.2",
+                "wp-coding-standards/wpcs": "^2.3"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/namespace.php"
+                ]
+            },
+            "scripts": {
+                "lint": [
+                    "phpcs"
+                ]
+            },
+            "license": [
+                "GPL-v2"
+            ],
+            "authors": [
+                {
+                    "name": "Dzikri Aziz"
+                }
+            ],
+            "description": "Vite integration helpers for WordPress.",
+            "transport-options": {
+                "relative": true
+            }
         },
         {
             "name": "squizlabs/php_codesniffer",
@@ -192,12 +228,14 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "kucrut/vite-for-wp": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
         "php": ">=7.4.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.2.0"
 }
