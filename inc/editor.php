@@ -4,6 +4,7 @@ declare( strict_types = 1 );
 namespace Catatan\Editor;
 
 use Catatan;
+use Kucrut\Vite;
 use WP_Post_Type;
 
 /**
@@ -154,9 +155,7 @@ function load( WP_Post_Type $post_type, bool $is_edit = true ): void {
 	do_action( 'catatan__before_load_editor', $post_type, $is_edit );
 
 	check_permission( $post_type, $is_edit );
-	enqueue_assets();
-
-	add_action( 'admin_print_scripts', fn () => print_assets( $post_type ) );
+	enqueue_assets( $post_type );
 
 	if ( $is_edit ) {
 		// Bacuse we've removed the page from admin menus, WP does not have the page title anymore, so we need to fix it here.
@@ -243,34 +242,28 @@ function check_permission( WP_Post_Type $post_type, bool $is_edit = true ): void
  *
  * @since 0.0.1
  *
- * @return void
- */
-function enqueue_assets(): void {
-	wp_enqueue_global_styles_css_custom_properties();
-	wp_enqueue_style( 'wp-components' );
-	wp_enqueue_style( 'wp-edit-post' );
-}
-
-/**
- * Print assets
- *
- * TODO: Use vite-for-wp for this
- *
- * @since 0.0.1
- *
  * @param WP_Post_Type $post_type Current post type object.
  *
  * @return void
  */
-function print_assets( WP_Post_Type $post_type ): void {
-	?>
-<script>
-	var catatanEditor = <?php echo wp_json_encode( get_config( $post_type ) ); ?>;
-</script>
-<?php // phpcs:disable WordPress.WP.EnqueuedResources.NonEnqueuedScript ?>
-<script type="module" src="http://localhost:5173/@vite/client"></script>
-<script type="module" src="http://localhost:5173/src/main.ts"></script>
-	<?php
+function enqueue_assets( WP_Post_Type $post_type ): void {
+	wp_enqueue_global_styles_css_custom_properties();
+
+	Vite\enqueue_asset(
+		dirname( __DIR__ ) . '/packages/editor/dist',
+		'src/main.ts',
+		[
+			'css-dependencies' => [ 'wp-components', 'wp-edit-post' ],
+			'handle' => Catatan\EDITOR_ID,
+			'in-footer' => true,
+		]
+	);
+
+	wp_add_inline_script(
+		Catatan\EDITOR_ID,
+		sprintf( 'var catatanEditor = %s;', json_encode( get_config( $post_type ) ) ),
+		'before'
+	);
 }
 
 /**
