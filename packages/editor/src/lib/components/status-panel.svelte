@@ -16,7 +16,7 @@
 	<PanelRow {is_expanded}>
 		<span>{__( 'Publish' )}</span>
 	</PanelRow> -->
-	{#if $editor.data.id}
+	{#if editor.user_can( 'delete' ) && $editor.data.id}
 		<PanelRow {is_expanded}>
 			<Button is_destructive is_secondary class="editor-post-trash">{__( 'Move to trash' )}</Button>
 		</PanelRow>
