@@ -117,17 +117,17 @@ export default function create_editor_store( params: EditorStoreParams ) {
 		async save() {
 			try {
 				const { id: prev_id, status: prev_status } = saved_post;
-				const { data } = current_value;
-				const { id, status } = data;
-
 				update( $editor => ( { ...$editor, is_saving: true, was_saving: false } ) );
 
-				await post_store.save( data );
+				await post_store.save( current_value.data );
+
+				const { data } = current_value;
+				const { id, link, status } = data;
 
 				update( $editor => ( { ...$editor, is_saved: true, was_saving: true } ) );
 
 				// We've just created a new post.
-				if ( ! prev_id && data.id ) {
+				if ( ! prev_id && id ) {
 					window.history.pushState( {}, '', edit_link_template.replace( '<id>', id.toString() ) );
 				}
 
@@ -139,7 +139,7 @@ export default function create_editor_store( params: EditorStoreParams ) {
 					notice_link_text = post_type.labels.view_item;
 				} else if ( prev_status !== 'draft' && status === 'draft' ) {
 					notice_content = sprintf( __( '%s reverted to draft.' ), post_type.labels.singular_name );
-				} else if ( data.status === 'publish' ) {
+				} else if ( status === 'publish' ) {
 					notice_content = post_type.labels.item_updated;
 					notice_link_text = post_type.labels.view_item;
 				} else {
@@ -151,7 +151,7 @@ export default function create_editor_store( params: EditorStoreParams ) {
 					content: notice_content,
 					id: 'saved',
 					type: 'snack',
-					link: post_type.viewable && notice_link_text ? { text: notice_link_text, url: data.link } : undefined,
+					link: post_type.viewable && notice_link_text ? { text: notice_link_text, url: link } : undefined,
 				} );
 			} catch ( error ) {
 				notices_store.add( {
