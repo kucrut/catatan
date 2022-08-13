@@ -4,6 +4,7 @@
 	import Button from './button.svelte';
 	import ExcerptPanel from './excerpt-panel.svelte';
 	import PermalinkPanel from './permalink-panel.svelte';
+	import StatusPanel from './status-panel.svelte';
 	import type { PostTypeStore } from '$lib/stores/post-type';
 	import ui from '$lib/stores/ui';
 
@@ -35,7 +36,7 @@
 				}}
 			/>
 		</div>
-		<!-- <StatusPanel /> -->
+		<StatusPanel />
 		{#if $post_type.viewable}
 			<PermalinkPanel />
 		{/if}
