@@ -7,15 +7,12 @@ import type { Notice, NoticesStore } from './notices';
 import type { PostTypeStore } from './post-type';
 import type { WP_REST_API_Post, WP_REST_API_Type } from 'wp-types';
 
-export interface State {
+export interface EditorStoreValue {
+	data: Changes;
 	is_dirty: boolean;
 	is_saved: boolean;
 	is_saving: boolean;
 	was_saving: boolean;
-}
-
-export interface EditorStoreValue extends State {
-	data: Changes;
 }
 
 export interface EditorStoreParams extends Pick< Config, 'edit_link_template' | 'post_id' > {
