@@ -7,18 +7,31 @@ import type { Notice, NoticesStore } from './notices';
 import type { PostTypeStore } from './post-type';
 import type { WP_REST_API_Post, WP_REST_API_Type } from 'wp-types';
 
-export interface EditorStoreValue {
-	data: Changes;
+export interface State {
 	is_dirty: boolean;
 	is_saved: boolean;
 	is_saving: boolean;
 	was_saving: boolean;
 }
 
+export interface EditorStoreValue extends State {
+	data: Changes;
+}
+
 export interface EditorStoreParams extends Pick< Config, 'edit_link_template' | 'post_id' > {
 	notices_store: NoticesStore;
 	post_store: PostStore;
 	post_type_store: PostTypeStore;
+}
+
+function create_changes_store( post_id: number ) {
+	const store = persist( writable< Changes >( {} ), localStorage(), `catatan-document-${ post_id }` );
+
+	window.addEventListener( 'unload', () => {
+		store.delete();
+	} );
+
+	return store;
 }
 
 function prompt_if_dirty( event: BeforeUnloadEvent ) {
@@ -49,7 +62,7 @@ function toggle_beforeunload_listener( $editor: EditorStoreValue ) {
 export default function create_editor_store( params: EditorStoreParams ) {
 	const { edit_link_template, notices_store, post_id, post_store, post_type_store } = params;
 
-	const changes = persist( writable< Changes >( {} ), localStorage(), `catatan-document-${ post_id }` );
+	const changes = create_changes_store( post_id );
 
 	const { update, ...editor } = writable< EditorStoreValue >( {
 		data: {},
@@ -99,10 +112,6 @@ export default function create_editor_store( params: EditorStoreParams ) {
 	editor.subscribe( toggle_beforeunload_listener );
 	editor.subscribe( $editor => ( $store = $editor ) );
 	post_type_store.subscribe( $type => ( $post_type = $type ) );
-
-	window.addEventListener( 'unload', () => {
-		changes.delete();
-	} );
 
 	return {
 		...editor,
