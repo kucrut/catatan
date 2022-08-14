@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { __ } from '@wordpress/i18n';
 	import { getContext } from 'svelte';
-	import Button from './button.svelte';
+	import TrashButton from './trash-button.svelte';
 	import Panel from './panel.svelte';
 	import PanelRow from './panel-row.svelte';
 	import type { EditorStore } from '$lib/stores/editor';
@@ -18,7 +18,7 @@
 	</PanelRow> -->
 	{#if editor.user_can( 'delete' ) && $editor.data.id}
 		<PanelRow {is_expanded}>
-			<Button is_destructive is_secondary class="editor-post-trash" on:click={() => { editor.trash(); }}>{__( 'Move to trash' )}</Button>
+			<TrashButton />
 		</PanelRow>
 	{/if}
 </Panel>
