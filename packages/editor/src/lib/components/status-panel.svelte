@@ -9,16 +9,17 @@
 	const editor = getContext< EditorStore >( 'editor' );
 </script>
 
-<Panel title={__( 'Status & visibility' )}>
-	<!-- <PanelRow>
+<!-- TODO: Remove this check when we have other rows ready. -->
+{#if editor.user_can( 'delete' ) && $editor.data.id}
+	<Panel title={__( 'Status & visibility' )}>
+		<!-- <PanelRow>
 		<span>{__( 'Visibility' )}</span>
 	</PanelRow>
 	<PanelRow>
 		<span>{__( 'Publish' )}</span>
 	</PanelRow> -->
-	{#if editor.user_can( 'delete' ) && $editor.data.id}
 		<PanelRow>
 			<TrashButton />
 		</PanelRow>
-	{/if}
-</Panel>
+	</Panel>
+{/if}
