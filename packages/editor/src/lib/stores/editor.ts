@@ -109,6 +109,7 @@ export default function create_editor_store( params: EditorStoreParams ) {
 	return {
 		...editor,
 		fetch: post_store.fetch,
+		trash: post_store.trash,
 		user_can: post_store.user_can,
 
 		clear() {
