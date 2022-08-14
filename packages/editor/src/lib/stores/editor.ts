@@ -15,7 +15,7 @@ export interface EditorStoreValue {
 	was_saving: boolean;
 }
 
-export interface EditorStoreParams extends Pick< Config, 'edit_link_template' | 'post_id' > {
+export interface EditorStoreParams extends Pick< Config, 'edit_link_template' | 'post_id' | 'post_list_url' > {
 	notices_store: NoticesStore;
 	post_store: PostStore;
 	post_type_store: PostTypeStore;
@@ -47,7 +47,7 @@ function toggle_beforeunload_listener( $editor: EditorStoreValue ) {
  * @return {EditorStore} Editor store.
  */
 export default function create_editor_store( params: EditorStoreParams ) {
-	const { edit_link_template, notices_store, post_id, post_store, post_type_store } = params;
+	const { edit_link_template, notices_store, post_id, post_list_url, post_store, post_type_store } = params;
 
 	const changes = create_changes_store( post_id );
 
@@ -103,7 +103,6 @@ export default function create_editor_store( params: EditorStoreParams ) {
 	return {
 		...editor,
 		fetch: post_store.fetch,
-		trash: post_store.trash,
 		user_can: post_store.user_can,
 
 		clear() {
@@ -158,6 +157,25 @@ export default function create_editor_store( params: EditorStoreParams ) {
 				} );
 			} finally {
 				update( $editor => ( { ...$editor, is_saving: false } ) );
+			}
+		},
+
+		async trash() {
+			if ( ! post_store.user_can( 'delete' ) ) {
+				return;
+			}
+
+			try {
+				await post_store.trash();
+
+				window.location.href = post_list_url;
+			} catch ( error ) {
+				notices_store.add( {
+					content: error.message,
+					dismissible: true,
+					id: 'trash-error',
+					type: 'error',
+				} );
 			}
 		},
 

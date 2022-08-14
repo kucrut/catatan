@@ -6,6 +6,7 @@ export interface Config {
 	editor_id: string;
 	nonce: string;
 	post_id: number;
+	post_list_url: string;
 	post_type: string;
 	rest_url: string;
 }
