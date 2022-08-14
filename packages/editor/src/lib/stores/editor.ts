@@ -39,7 +39,7 @@ function toggle_beforeunload_listener( $editor: EditorStoreValue ) {
 /**
  * Create editor store
  *
- * @todo is_dirty: Compare changes and saved_post, ensure content, excerpt and title are not empty.
+ * @todo is_dirty: Compare changes and $saved_post, ensure content, excerpt and title are not empty.
  * @todo can_save: Ensure content, excerpt and title are not empty. Also check is_dirty.
  * @todo Handle (un)scheduling
  *
@@ -59,11 +59,13 @@ export default function create_editor_store( params: EditorStoreParams ) {
 		was_saving: false,
 	} );
 
-	let saved_post: Partial< WP_REST_API_Post >;
+	let $post_type: WP_REST_API_Type;
+	let $saved_post: Partial< WP_REST_API_Post >;
+	let $store: EditorStoreValue;
 
 	// Update editor's data when post store value is updated.
 	post_store.subscribe( $post => {
-		saved_post = $post;
+		$saved_post = $post;
 
 		if ( ! $post ) {
 			return;
@@ -94,12 +96,9 @@ export default function create_editor_store( params: EditorStoreParams ) {
 		} ) );
 	} );
 
-	let current_value: EditorStoreValue;
-	let post_type: WP_REST_API_Type;
-
 	editor.subscribe( toggle_beforeunload_listener );
-	editor.subscribe( $editor => ( current_value = $editor ) );
-	post_type_store.subscribe( $type => ( post_type = $type ) );
+	editor.subscribe( $editor => ( $store = $editor ) );
+	post_type_store.subscribe( $type => ( $post_type = $type ) );
 
 	window.addEventListener( 'unload', () => {
 		changes.delete();
@@ -117,12 +116,12 @@ export default function create_editor_store( params: EditorStoreParams ) {
 
 		async save() {
 			try {
-				const { id: prev_id, status: prev_status } = saved_post;
+				const { id: prev_id, status: prev_status } = $saved_post;
 				update( $editor => ( { ...$editor, is_saving: true, was_saving: false } ) );
 
-				await post_store.save( current_value.data );
+				await post_store.save( $store.data );
 
-				const { data } = current_value;
+				const { data } = $store;
 				const { id, link, status } = data;
 
 				update( $editor => ( { ...$editor, is_saved: true, was_saving: true } ) );
@@ -136,13 +135,13 @@ export default function create_editor_store( params: EditorStoreParams ) {
 				let notice_link_text: Notice[ 'link' ][ 'text' ];
 
 				if ( prev_status === 'draft' && status === 'publish' ) {
-					notice_content = post_type.labels.item_published;
-					notice_link_text = post_type.labels.view_item;
+					notice_content = $post_type.labels.item_published;
+					notice_link_text = $post_type.labels.view_item;
 				} else if ( prev_status !== 'draft' && status === 'draft' ) {
-					notice_content = sprintf( __( '%s reverted to draft.' ), post_type.labels.singular_name );
+					notice_content = sprintf( __( '%s reverted to draft.' ), $post_type.labels.singular_name );
 				} else if ( status === 'publish' ) {
-					notice_content = post_type.labels.item_updated;
-					notice_link_text = post_type.labels.view_item;
+					notice_content = $post_type.labels.item_updated;
+					notice_link_text = $post_type.labels.view_item;
 				} else {
 					notice_content = __( 'Draft saved' );
 					notice_link_text = __( 'View Preview' );
@@ -152,7 +151,7 @@ export default function create_editor_store( params: EditorStoreParams ) {
 					content: notice_content,
 					id: 'saved',
 					type: 'snack',
-					link: post_type.viewable && notice_link_text ? { text: notice_link_text, url: link } : undefined,
+					link: $post_type.viewable && notice_link_text ? { text: notice_link_text, url: link } : undefined,
 				} );
 			} catch ( error ) {
 				notices_store.add( {
