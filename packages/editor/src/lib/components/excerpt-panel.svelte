@@ -15,8 +15,8 @@
 	}
 </script>
 
-<Panel title={__( 'Excerpt' )} let:is_expanded>
-	<PanelRow class="editor-post-excerpt" {is_expanded}>
+<Panel title={__( 'Excerpt' )}>
+	<PanelRow class="editor-post-excerpt">
 		<BaseControl {id} label={__( 'Write an excerpt (optional)' )}>
 			<textarea
 				{id}

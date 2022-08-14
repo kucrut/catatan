@@ -17,8 +17,8 @@
 	}
 </script>
 
-<Panel title={__( 'Permalink' )} let:is_expanded>
-	<PanelRow class="editor-post-link" {is_expanded}>
+<Panel title={__( 'Permalink' )}>
+	<PanelRow class="editor-post-link">
 		<BaseControl {id} label={__( 'URL Slug' )}>
 			<input
 				{id}

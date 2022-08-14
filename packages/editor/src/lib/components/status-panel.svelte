@@ -9,15 +9,15 @@
 	const editor = getContext< EditorStore >( 'editor' );
 </script>
 
-<Panel title={__( 'Status & visibility' )} let:is_expanded>
-	<!-- <PanelRow {is_expanded}>
+<Panel title={__( 'Status & visibility' )}>
+	<!-- <PanelRow>
 		<span>{__( 'Visibility' )}</span>
 	</PanelRow>
-	<PanelRow {is_expanded}>
+	<PanelRow>
 		<span>{__( 'Publish' )}</span>
 	</PanelRow> -->
 	{#if editor.user_can( 'delete' ) && $editor.data.id}
-		<PanelRow {is_expanded}>
+		<PanelRow>
 			<TrashButton />
 		</PanelRow>
 	{/if}

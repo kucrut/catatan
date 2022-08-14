@@ -23,6 +23,8 @@
 				{title}
 			</Button>
 		</h2>
-		<slot {is_expanded} />
+		<div class="components-panel__content" class:hidden={! is_expanded}>
+			<slot />
+		</div>
 	</div>
 </div>
