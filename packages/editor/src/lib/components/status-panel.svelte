@@ -18,7 +18,7 @@
 	</PanelRow> -->
 	{#if editor.user_can( 'delete' ) && $editor.data.id}
 		<PanelRow {is_expanded}>
-			<Button is_destructive is_secondary class="editor-post-trash">{__( 'Move to trash' )}</Button>
+			<Button is_destructive is_secondary class="editor-post-trash" on:click={() => { editor.trash(); }}>{__( 'Move to trash' )}</Button>
 		</PanelRow>
 	{/if}
 </Panel>
