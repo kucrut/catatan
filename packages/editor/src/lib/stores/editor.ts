@@ -28,6 +28,14 @@ function prompt_if_dirty( event: BeforeUnloadEvent ) {
 	return 'ciao!';
 }
 
+function toggle_beforeunload_listener( $editor: EditorStoreValue ) {
+	if ( $editor.is_dirty ) {
+		window.addEventListener( 'beforeunload', prompt_if_dirty, { capture: true } );
+	} else {
+		window.removeEventListener( 'beforeunload', prompt_if_dirty, { capture: true } );
+	}
+}
+
 /**
  * Create editor store
  *
@@ -87,19 +95,10 @@ export default function create_editor_store( params: EditorStoreParams ) {
 	} );
 
 	let current_value: EditorStoreValue;
-
-	editor.subscribe( $editor => {
-		current_value = $editor;
-
-		if ( $editor.is_dirty ) {
-			window.addEventListener( 'beforeunload', prompt_if_dirty, { capture: true } );
-		} else {
-			window.removeEventListener( 'beforeunload', prompt_if_dirty, { capture: true } );
-		}
-	} );
-
 	let post_type: WP_REST_API_Type;
 
+	editor.subscribe( toggle_beforeunload_listener );
+	editor.subscribe( $editor => ( current_value = $editor ) );
 	post_type_store.subscribe( $type => ( post_type = $type ) );
 
 	window.addEventListener( 'unload', () => {
