@@ -54,14 +54,14 @@ export default function create_editor_store( params: EditorStoreParams ) {
 	let saved_post: Partial< WP_REST_API_Post >;
 
 	// Update editor's data when post store value is updated.
-	post_store.subscribe( $original => {
-		saved_post = $original;
+	post_store.subscribe( $post => {
+		saved_post = $post;
 
-		if ( ! $original ) {
+		if ( ! $post ) {
 			return;
 		}
 
-		const { content, excerpt, id, link, slug, status, title } = $original;
+		const { content, excerpt, id, link, slug, status, title } = $post;
 
 		update( $editor => ( {
 			...$editor,
