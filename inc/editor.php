@@ -110,11 +110,18 @@ function get_post_id(): int {
  */
 function get_config( WP_Post_Type $post_type ): array {
 	$post_id = get_post_id();
+	$post_list_url = admin_url('edit.php');
+
+	if ( $post_type->name !== 'post' ) {
+		$post_list_url = add_query_arg( [ 'post_type' => $post_type->name ], $post_list_url );
+	}
+
 	$config = [
 		'edit_link_template' => preg_replace( '/(\d+)$/', '<id>', Catatan\get_editor_url( $post_type->name, 1 ) ),
 		'editor_id' => CATATAN\EDITOR_ID,
 		'nonce' => wp_create_nonce( 'wp_rest' ),
 		'post_id' => $post_id,
+		'post_list_url' => $post_list_url,
 		'post_type' => $post_type->name,
 		'rest_url' => rest_url(),
 	];
