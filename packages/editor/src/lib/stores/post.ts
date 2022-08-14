@@ -66,6 +66,11 @@ export default function create_store( post_id: number, type: Type ) {
 			update( () => data );
 		},
 
+		async trash() {
+			const data = await fetch( { method: 'DELETE' } );
+			update( () => data );
+		},
+
 		user_can( action: keyof typeof actions ) {
 			return allow_list.includes( actions[ action ] );
 		},
