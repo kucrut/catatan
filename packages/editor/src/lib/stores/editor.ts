@@ -1,7 +1,7 @@
 import { __, sprintf } from '@wordpress/i18n';
-import { persist, localStorage } from '@macfja/svelte-persistent-store';
 import { writable } from 'svelte/store';
-import type { Changes, Config } from '$types';
+import create_changes_store, { type Changes } from './changes';
+import type { Config } from '$types';
 import type { PostStore } from './post';
 import type { Notice, NoticesStore } from './notices';
 import type { PostTypeStore } from './post-type';
@@ -22,16 +22,6 @@ export interface EditorStoreParams extends Pick< Config, 'edit_link_template' | 
 	notices_store: NoticesStore;
 	post_store: PostStore;
 	post_type_store: PostTypeStore;
-}
-
-function create_changes_store( post_id: number ) {
-	const store = persist( writable< Changes >( {} ), localStorage(), `catatan-document-${ post_id }` );
-
-	window.addEventListener( 'unload', () => {
-		store.delete();
-	} );
-
-	return store;
 }
 
 function prompt_if_dirty( event: BeforeUnloadEvent ) {

@@ -1,7 +1,7 @@
 import api_fetch, { type APIFetchOptions } from '@wordpress/api-fetch';
 import { writable } from 'svelte/store';
+import type { Changes } from './changes';
 import type { WP_REST_API_Post as Post, WP_REST_API_Type as Type } from 'wp-types';
-import type { Changes } from '$types';
 
 const actions = {
 	create: 'POST',
