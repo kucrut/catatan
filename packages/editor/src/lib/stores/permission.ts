@@ -10,6 +10,7 @@ const actions = {
 };
 
 export type Permission = MapToBoolean< typeof actions >;
+export type PermissionStore = ReturnType< typeof create_store >;
 
 export default function create_store( api_path: string ) {
 	const { update, ...store } = writable< Permission >( {
@@ -53,5 +54,3 @@ export default function create_store( api_path: string ) {
 		},
 	};
 }
-
-export type PostTypeStore = ReturnType< typeof create_store >;
