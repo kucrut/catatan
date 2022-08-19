@@ -132,7 +132,7 @@ export default function create_editor_store( params: EditorStoreParams ) {
 				if ( prev_status === 'draft' && status === 'publish' ) {
 					notice_content = $post_type.labels.item_published;
 					notice_link_text = $post_type.labels.view_item;
-				} else if ( prev_status !== 'draft' && status === 'draft' ) {
+				} else if ( prev_status && prev_status !== 'draft' && status === 'draft' ) {
 					notice_content = sprintf( __( '%s reverted to draft.' ), $post_type.labels.singular_name );
 				} else if ( status === 'publish' ) {
 					notice_content = $post_type.labels.item_updated;
