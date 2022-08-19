@@ -21,7 +21,7 @@ export interface EditorStoreParams extends Pick< Config, 'edit_link_template' | 
 	post_type_store: PostTypeStore;
 }
 
-function prompt_if_dirty( event: BeforeUnloadEvent ) {
+function confirm_leave( event: BeforeUnloadEvent ) {
 	event.preventDefault();
 	event.returnValue = 'ciao!';
 
@@ -30,9 +30,9 @@ function prompt_if_dirty( event: BeforeUnloadEvent ) {
 
 function toggle_beforeunload_listener( $editor: EditorStoreValue ) {
 	if ( $editor.is_dirty ) {
-		window.addEventListener( 'beforeunload', prompt_if_dirty, { capture: true } );
+		window.addEventListener( 'beforeunload', confirm_leave, { capture: true } );
 	} else {
-		window.removeEventListener( 'beforeunload', prompt_if_dirty, { capture: true } );
+		window.removeEventListener( 'beforeunload', confirm_leave, { capture: true } );
 	}
 }
 
