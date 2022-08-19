@@ -11,10 +11,6 @@ export interface Config {
 	rest_url: string;
 }
 
-export interface UiState {
-	is_sidebar_open: boolean;
-}
-
 declare global {
 	interface Window {
 		catatanEditor: Config;

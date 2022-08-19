@@ -1,6 +1,9 @@
 import { persist, localStorage } from '@macfja/svelte-persistent-store';
 import { writable } from 'svelte/store';
-import type { UiState } from '$types';
+
+export interface UiState {
+	is_sidebar_open: boolean;
+}
 
 function create_ui_store() {
 	const { update, ...store } = persist(
