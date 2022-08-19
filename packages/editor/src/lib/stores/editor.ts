@@ -23,9 +23,9 @@ export interface EditorStoreParams extends Pick< Config, 'edit_link_template' | 
 
 function confirm_leave( event: BeforeUnloadEvent ) {
 	event.preventDefault();
-	event.returnValue = 'ciao!';
+	event.returnValue = 'confirm leave';
 
-	return 'ciao!';
+	return 'confirm leave';
 }
 
 function toggle_beforeunload_listener( $editor: EditorStoreValue ) {
