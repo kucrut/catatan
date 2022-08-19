@@ -1,45 +1,66 @@
 import api_fetch, { type APIFetchOptions } from '@wordpress/api-fetch';
-import { writable } from 'svelte/store';
+import create_permission_store, { type Permission } from './permission';
+import { derived, writable } from 'svelte/store';
 import type { Changes } from './changes';
-import type { WP_REST_API_Post as Post, WP_REST_API_Type as Type } from 'wp-types';
+import type { WP_REST_API_Post, WP_REST_API_Type as Type } from 'wp-types';
 
-const actions = {
-	create: 'POST',
-	read: 'GET',
-	update: 'PUT',
-	delete: 'DELETE',
-};
+export interface Post extends WP_REST_API_Post {
+	__can__?: Permission;
+}
 
 export default function create_store( post_id: number, type: Type ) {
-	const { set, update, ...store } = writable< Partial< Post > >( {} );
 	const api_path = `${ type.rest_namespace }/${ type.rest_base }`;
+	const post_store = writable< Post >( null );
 
-	let allow_list: string[] = [];
-	let path: string;
+	let current_id = post_id;
+	let path = current_id > 0 ? `${ api_path }/${ current_id }` : api_path;
+	let $store: Post;
 
-	// Handle transition from new -> edit.
-	store.subscribe( ( { id } ) => {
-		path = api_path;
+	const permission_store = create_permission_store( path );
 
-		if ( post_id > 0 || id > 0 ) {
-			path = `${ path }/${ post_id || id }`;
+	post_store.subscribe( $post => {
+		// No data (post hasn't been fetched yet).
+		if ( ! $post ) {
+			return;
 		}
 
-		path = `${ path }?context=edit`;
+		const { id } = $post;
+
+		if ( ! id || current_id === id ) {
+			return;
+		}
+
+		// Handle transition from new -> edit.
+		current_id = id;
+		path = `${ api_path }/${ id }`;
+		permission_store.set_path( path );
+		permission_store.fetch();
 	} );
 
+	const store = derived< [ typeof post_store, typeof permission_store ], Post >(
+		[ post_store, permission_store ],
+		( [ $post_store, $permission ], set ) => {
+			$store = {
+				...$post_store,
+				__can__: $permission,
+			};
+
+			set( $store );
+		},
+	);
+
 	const fetch = async ( options?: APIFetchOptions ) => {
-		const response = await api_fetch< Promise< Response > >( {
-			path,
-			parse: false,
+		const data = await api_fetch< Post >( {
+			path: `${ path }?context=edit`,
+			parse: true,
 			...( options || {} ),
 		} );
-		const data = await response.json();
 
-		allow_list = response.headers
-			.get( 'allow' )
-			.split( ',' )
-			.map( method => method.trim() );
+		// Don't fetch permission when we're saving for the first time,
+		// as it will be done by the subscriber above after changing path.
+		if ( ! ( current_id === 0 && options?.method === 'POST' ) ) {
+			await permission_store.fetch();
+		}
 
 		return data;
 	};
@@ -54,7 +75,7 @@ export default function create_store( post_id: number, type: Type ) {
 			}
 
 			const data = await fetch();
-			set( data );
+			post_store.update( $value => ( { ...$value, ...data } ) );
 		},
 
 		async save( changes: Changes ) {
@@ -63,16 +84,16 @@ export default function create_store( post_id: number, type: Type ) {
 				method: 'POST',
 			} );
 
-			update( () => data );
+			post_store.update( $value => ( { ...$value, ...data } ) );
 		},
 
 		async trash() {
-			const data = await fetch( { method: 'DELETE' } );
-			update( () => data );
-		},
+			if ( ! $store.__can__.delete ) {
+				throw new Error( 'You do not have permission to trash this post.' );
+			}
 
-		user_can( action: keyof typeof actions ) {
-			return allow_list.includes( actions[ action ] );
+			const data = await fetch( { method: 'DELETE' } );
+			post_store.update( $value => ( { ...$value, ...data } ) );
 		},
 	};
 }
