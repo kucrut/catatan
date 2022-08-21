@@ -9,17 +9,11 @@
 			"email": "dzikri.aziz@gmail.com"
 		}
 	],
-	"repositories": [
-		{
-			"type": "path",
-			"url": "../vite-for-wp/php"
-		}
-	],
 	"require": {
-		"php": ">=7.4.0"
+		"php": ">=7.4.0",
+		"kucrut/vite-for-wp": "^0.1.1"
 	},
 	"require-dev": {
-		"kucrut/vite-for-wp": "@dev",
 		"wp-coding-standards/wpcs": "^2.3",
 		"dealerdirect/phpcodesniffer-composer-installer": "^0.7.2"
 	},

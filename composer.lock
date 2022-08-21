@@ -4,8 +4,49 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a7f9256658cbe0bb3252c98075c1a06b",
-    "packages": [],
+    "content-hash": "a47e0e6b1d4ef9c250302151318d02ca",
+    "packages": [
+        {
+            "name": "kucrut/vite-for-wp",
+            "version": "v0.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kucrut/vite-for-wp.git",
+                "reference": "e7f20162ee3215667296c1e8c626491984ff1a51"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kucrut/vite-for-wp/zipball/e7f20162ee3215667296c1e8c626491984ff1a51",
+                "reference": "e7f20162ee3215667296c1e8c626491984ff1a51",
+                "shasum": ""
+            },
+            "require-dev": {
+                "dealerdirect/phpcodesniffer-composer-installer": "^0.7.2",
+                "wp-coding-standards/wpcs": "^2.3"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "vite-for-wp.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-only"
+            ],
+            "authors": [
+                {
+                    "name": "Dzikri Aziz"
+                }
+            ],
+            "description": "Vite integration for WordPress plugins and themes development.",
+            "support": {
+                "issues": "https://github.com/kucrut/vite-for-wp/issues",
+                "source": "https://github.com/kucrut/vite-for-wp/tree/v0.1.1"
+            },
+            "time": "2022-08-21T17:32:56+00:00"
+        }
+    ],
     "packages-dev": [
         {
             "name": "dealerdirect/phpcodesniffer-composer-installer",
@@ -81,42 +122,6 @@
                 "source": "https://github.com/dealerdirect/phpcodesniffer-composer-installer"
             },
             "time": "2022-02-04T12:51:07+00:00"
-        },
-        {
-            "name": "kucrut/vite-for-wp",
-            "version": "dev-main",
-            "dist": {
-                "type": "path",
-                "url": "../vite-for-wp/php",
-                "reference": "07f71523aa1561c76ec4f1feacaa26767dbdc3a9"
-            },
-            "require-dev": {
-                "dealerdirect/phpcodesniffer-composer-installer": "^0.7.2",
-                "wp-coding-standards/wpcs": "^2.3"
-            },
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "src/namespace.php"
-                ]
-            },
-            "scripts": {
-                "lint": [
-                    "phpcs"
-                ]
-            },
-            "license": [
-                "GPL-v2"
-            ],
-            "authors": [
-                {
-                    "name": "Dzikri Aziz"
-                }
-            ],
-            "description": "Vite integration helpers for WordPress.",
-            "transport-options": {
-                "relative": true
-            }
         },
         {
             "name": "squizlabs/php_codesniffer",
@@ -228,14 +233,12 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "kucrut/vite-for-wp": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
         "php": ">=7.4.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.3.0"
 }
