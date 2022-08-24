@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "kucrut/vite-for-wp",
-            "version": "v0.1.1",
+            "version": "v0.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kucrut/vite-for-wp.git",
-                "reference": "e7f20162ee3215667296c1e8c626491984ff1a51"
+                "reference": "a64c161e9d026edc655604834abd98efa3cc9219"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kucrut/vite-for-wp/zipball/e7f20162ee3215667296c1e8c626491984ff1a51",
-                "reference": "e7f20162ee3215667296c1e8c626491984ff1a51",
+                "url": "https://api.github.com/repos/kucrut/vite-for-wp/zipball/a64c161e9d026edc655604834abd98efa3cc9219",
+                "reference": "a64c161e9d026edc655604834abd98efa3cc9219",
                 "shasum": ""
             },
             "require-dev": {
@@ -42,9 +42,9 @@
             "description": "Vite integration for WordPress plugins and themes development.",
             "support": {
                 "issues": "https://github.com/kucrut/vite-for-wp/issues",
-                "source": "https://github.com/kucrut/vite-for-wp/tree/v0.1.1"
+                "source": "https://github.com/kucrut/vite-for-wp/tree/v0.1.2"
             },
-            "time": "2022-08-21T17:32:56+00:00"
+            "time": "2022-08-22T04:07:09+00:00"
         }
     ],
     "packages-dev": [
@@ -240,5 +240,5 @@
         "php": ">=7.4.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.2.0"
 }
