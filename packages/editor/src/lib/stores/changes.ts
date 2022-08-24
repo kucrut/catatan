@@ -1,4 +1,4 @@
-import { localStorage, persist } from '@macfja/svelte-persistent-store';
+import { createLocalStorage, persist } from '@macfja/svelte-persistent-store';
 import { writable } from 'svelte/store';
 import type { BetterOmit } from '$types';
 import type { WP_REST_API_Post } from 'wp-types';
@@ -10,7 +10,7 @@ export interface Changes extends BetterOmit< Partial< WP_REST_API_Post >, 'conte
 }
 
 export default function create_store( post_id: number ) {
-	const store = persist( writable< Changes >( {} ), localStorage(), `catatan-changes-${ post_id }` );
+	const store = persist( writable< Changes >( {} ), createLocalStorage(), `catatan-changes-${ post_id }` );
 
 	window.addEventListener( 'unload', () => {
 		store.delete();

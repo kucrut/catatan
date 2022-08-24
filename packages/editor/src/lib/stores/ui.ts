@@ -1,4 +1,4 @@
-import { persist, localStorage } from '@macfja/svelte-persistent-store';
+import { createLocalStorage, persist } from '@macfja/svelte-persistent-store';
 import { writable } from 'svelte/store';
 
 export interface UiState {
@@ -10,7 +10,7 @@ function create_ui_store() {
 		writable< UiState >( {
 			is_sidebar_open: false,
 		} ),
-		localStorage(),
+		createLocalStorage(),
 		'catatan-ui',
 	);
 
