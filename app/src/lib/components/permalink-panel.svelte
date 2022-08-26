@@ -1,16 +1,13 @@
 <script lang="ts">
 	import { __ } from '@wordpress/i18n';
-	import { getContext } from 'svelte';
 	import BaseControl from './base-control.svelte';
 	import ExternalLink from './external-link.svelte';
 	import Panel from './panel.svelte';
 	import PanelRow from './panel-row.svelte';
-	import type { EditorStore } from '$lib/stores/editor';
-	import type { PostTypeStore } from '$lib/stores/post-type';
+	import editor from '$lib/stores/editor';
+	import post_type from '$lib/stores/post-type';
 
 	const id = 'catatan-post-slug-input';
-	const editor = getContext< EditorStore >( 'editor' );
-	const post_type = getContext< PostTypeStore >( 'post_type' );
 
 	function handle_input( event: InputEvent & { currentTarget: HTMLInputElement } ) {
 		editor.update( { slug: event.currentTarget.value } );

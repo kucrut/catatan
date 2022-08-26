@@ -1,14 +1,12 @@
 <script lang="ts">
 	import { __ } from '@wordpress/i18n';
-	import { getContext } from 'svelte';
 	import BaseControl from './base-control.svelte';
 	import ExternalLink from './external-link.svelte';
 	import Panel from './panel.svelte';
 	import PanelRow from './panel-row.svelte';
-	import type { EditorStore } from '$lib/stores/editor';
+	import editor from '$lib/stores/editor';
 
 	const id = 'catatan-post-excerpt-input';
-	const editor = getContext< EditorStore >( 'editor' );
 
 	function handle_input( event: InputEvent & { currentTarget: HTMLTextAreaElement } ) {
 		editor.update( { excerpt: event.currentTarget.value } );

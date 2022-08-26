@@ -1,13 +1,14 @@
-import { __, sprintf } from '@wordpress/i18n';
-import { writable } from 'svelte/store';
-import create_changes_store, { type Changes } from './changes';
 import type { Config } from '$types';
-import type { PostStore } from './post';
-import type { Notice, NoticesStore } from './notices';
-import type { PostTypeStore } from './post-type';
 import type { WP_REST_API_Post, WP_REST_API_Type } from 'wp-types';
+import create_changes_store, { type Changes, type ChangesStore } from './changes';
+import notices_store, { type Notice } from './notices';
+import post_store from './post';
+import post_type_store from './post-type';
+import with_params, { type WithParams } from './with-params';
+import { __, sprintf } from '@wordpress/i18n';
+import { writable, type Readable } from 'svelte/store';
 
-export interface EditorStoreValue {
+export interface Editor {
 	data: Changes;
 	is_dirty: boolean;
 	is_saved: boolean;
@@ -15,10 +16,15 @@ export interface EditorStoreValue {
 	was_saving: boolean;
 }
 
-export interface EditorStoreParams extends Pick< Config, 'edit_link_template' | 'post_id' | 'post_list_url' > {
-	notices_store: NoticesStore;
-	post_store: PostStore;
-	post_type_store: PostTypeStore;
+export type Params = Pick< Config, 'edit_link_template' | 'post_id' | 'post_list_url' >;
+
+export interface EditorStore< T > extends Readable< T >, Omit< WithParams< Params >, 'subscribe' > {
+	clear(): void;
+	fetch(): Promise< void >;
+	save(): Promise< void >;
+	trash(): Promise< void >;
+	// eslint-disable-next-line no-unused-vars
+	update( new_changes: Changes ): void;
 }
 
 function confirm_leave( event: BeforeUnloadEvent ) {
@@ -28,7 +34,7 @@ function confirm_leave( event: BeforeUnloadEvent ) {
 	return 'confirm leave';
 }
 
-function toggle_beforeunload_listener( $editor: EditorStoreValue ) {
+function toggle_beforeunload_listener( $editor: Editor ) {
 	if ( $editor.is_dirty ) {
 		window.addEventListener( 'beforeunload', confirm_leave, { capture: true } );
 	} else {
@@ -42,16 +48,11 @@ function toggle_beforeunload_listener( $editor: EditorStoreValue ) {
  * @todo is_dirty: Compare changes and $saved_post, ensure content, excerpt and title are not empty.
  * @todo can_save: Ensure content, excerpt and title are not empty. Also check is_dirty.
  * @todo Handle (un)scheduling
- *
- * @param {EditorStoreParams} params Parameters.
- * @return {EditorStore} Editor store.
  */
-export default function create_editor_store( params: EditorStoreParams ) {
-	const { edit_link_template, notices_store, post_id, post_list_url, post_store, post_type_store } = params;
+function create_store(): EditorStore< Editor > {
+	const params = with_params< Params >();
 
-	const changes = create_changes_store( post_id );
-
-	const { update, ...editor } = writable< EditorStoreValue >( {
+	const { update, ...editor } = writable< Editor >( {
 		data: {},
 		is_dirty: false,
 		is_saved: false,
@@ -59,9 +60,32 @@ export default function create_editor_store( params: EditorStoreParams ) {
 		was_saving: false,
 	} );
 
+	let changes: ChangesStore;
 	let $post_type: WP_REST_API_Type;
 	let $saved_post: Partial< WP_REST_API_Post >;
-	let $store: EditorStoreValue;
+	let $store: Editor;
+
+	params.subscribe( $params => {
+		if ( changes || ! $params ) {
+			return;
+		}
+
+		const { post_id } = $params;
+
+		if ( typeof post_id === 'undefined' ) {
+			return;
+		}
+
+		changes = create_changes_store( post_id );
+
+		// Update editor's data when changes store value is updated.
+		changes.subscribe( $changes => {
+			update( ( { data, ...$document } ) => ( {
+				...$document,
+				data: { ...data, ...$changes },
+			} ) );
+		} );
+	} );
 
 	// Update editor's data when post store value is updated.
 	post_store.subscribe( $post => {
@@ -88,28 +112,25 @@ export default function create_editor_store( params: EditorStoreParams ) {
 		} ) );
 	} );
 
-	// Update editor's data when changes store value is updated.
-	changes.subscribe( $changes => {
-		update( ( { data, ...$document } ) => ( {
-			...$document,
-			data: { ...data, ...$changes },
-		} ) );
-	} );
-
 	editor.subscribe( toggle_beforeunload_listener );
 	editor.subscribe( $editor => ( $store = $editor ) );
 	post_type_store.subscribe( $type => ( $post_type = $type ) );
 
 	return {
+		...params,
 		...editor,
+
 		fetch: post_store.fetch,
 
 		clear() {
-			changes.delete();
+			if ( changes ) {
+				changes.delete();
+			}
 		},
 
 		async save() {
 			try {
+				const { edit_link_template } = this.get_params();
 				const { id: prev_id, status: prev_status } = $saved_post;
 				update( $editor => ( { ...$editor, is_saving: true, was_saving: false } ) );
 
@@ -160,6 +181,8 @@ export default function create_editor_store( params: EditorStoreParams ) {
 		},
 
 		async trash() {
+			const { post_list_url } = this.get_params();
+
 			try {
 				await post_store.trash();
 
@@ -183,7 +206,9 @@ export default function create_editor_store( params: EditorStoreParams ) {
 		 * @param {Changes} new_changes Changes made to the post.
 		 */
 		update( new_changes: Changes ) {
-			changes.update( $changes => ( { ...$changes, ...new_changes } ) );
+			if ( changes ) {
+				changes.update( $changes => ( { ...$changes, ...new_changes } ) );
+			}
 
 			update( $editor => ( {
 				...$editor,
@@ -195,4 +220,4 @@ export default function create_editor_store( params: EditorStoreParams ) {
 	};
 }
 
-export type EditorStore = ReturnType< typeof create_editor_store >;
+export default create_store();

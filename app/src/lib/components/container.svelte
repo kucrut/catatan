@@ -1,27 +1,13 @@
 <script lang="ts">
 	import { __ } from '@wordpress/i18n';
-	import { setContext } from 'svelte';
 	import ContentArea from './content-area.svelte';
 	import Header from './header.svelte';
 	import Notices from './notices.svelte';
 	import Sidebar from './sidebar.svelte';
-	import type { EditorStore } from '$lib/stores/editor';
-	import type { NoticesStore } from '$lib/stores/notices';
-	import type { PostStore } from '$lib/stores/post';
-	import type { PostTypeStore } from '$lib/stores/post-type';
+	import post_type from '$lib/stores/post-type';
 	import ui from '$lib/stores/ui';
 
-	export let editor_store: EditorStore;
-	export let notices_store: NoticesStore;
-	export let post_store: PostStore;
-	export let post_type_store: PostTypeStore;
-
-	setContext( 'editor', editor_store );
-	setContext( 'notices', notices_store );
-	setContext( 'post', post_store );
-	setContext( 'post_type', post_type_store );
-
-	const { labels, supports } = $post_type_store;
+	const { labels, supports } = $post_type;
 </script>
 
 <div class="block-editor">

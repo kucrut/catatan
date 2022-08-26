@@ -1,24 +1,24 @@
-import { derived, writable, type Readable } from 'svelte/store';
-import api_fetch from '@wordpress/api-fetch';
 import type { WP_REST_API_Taxonomies } from 'wp-types';
-import with_params from './with-params';
+import api_fetch from '@wordpress/api-fetch';
+import with_params, { type WithParams } from './with-params';
+import { derived, writable, type Readable } from 'svelte/store';
 
 interface Params {
 	post_type: string;
 }
 
-export interface Store< T > extends Readable< T > {
+export interface TaxonomiesStore extends Readable< WP_REST_API_Taxonomies >, Omit< WithParams< Params >, 'subscribe' > {
 	fetch(): Promise< void >;
 }
 
-function create_store() {
+function create_store(): TaxonomiesStore {
 	const tax_store = writable< WP_REST_API_Taxonomies >();
 	const store = derived( tax_store, $tax_store => $tax_store );
 	const params = with_params< Params >();
 
 	return {
-		...store,
 		...params,
+		...store,
 
 		async fetch() {
 			const { post_type } = this.get_params();

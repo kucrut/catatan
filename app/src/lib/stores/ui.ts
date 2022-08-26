@@ -1,13 +1,18 @@
-import { createLocalStorage, persist } from '@macfja/svelte-persistent-store';
+import { createLocalStorage, persist, type PersistentStore } from '@macfja/svelte-persistent-store';
 import { writable } from 'svelte/store';
 
-export interface UiState {
+export interface Ui {
 	is_sidebar_open: boolean;
 }
 
-function create_ui_store() {
+export interface UiStore extends PersistentStore< Ui > {
+	close_sidebar(): void;
+	toggle_sidebar(): void;
+}
+
+function create_ui_store(): UiStore {
 	const { update, ...store } = persist(
-		writable< UiState >( {
+		writable< Ui >( {
 			is_sidebar_open: false,
 		} ),
 		createLocalStorage(),
@@ -16,7 +21,9 @@ function create_ui_store() {
 
 	return {
 		...store,
+
 		update,
+
 		close_sidebar() {
 			update( value => ( {
 				...value,

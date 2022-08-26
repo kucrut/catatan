@@ -1,10 +1,7 @@
 <script lang="ts">
 	import { __ } from '@wordpress/i18n';
-	import { getContext } from 'svelte';
 	import Button from './button.svelte';
-	import type { EditorStore } from '$lib/stores/editor';
-
-	const editor = getContext< EditorStore >( 'editor' );
+	import editor from '$lib/stores/editor';
 
 	$: is_disabled = ! ( $editor.data.content || $editor.data.title );
 	// TODO: Schedule.

@@ -1,6 +1,6 @@
-import { writable } from 'svelte/store';
-import api_fetch from '@wordpress/api-fetch';
 import type { MapToBoolean } from '$types';
+import api_fetch from '@wordpress/api-fetch';
+import { writable, type Readable } from 'svelte/store';
 
 const actions = {
 	create: 'POST',
@@ -10,9 +10,14 @@ const actions = {
 };
 
 export type Permission = MapToBoolean< typeof actions >;
-export type PermissionStore = ReturnType< typeof create_store >;
 
-export default function create_store( api_path: string ) {
+export interface PermissionStore extends Readable< Permission > {
+	fetch(): Promise< void >;
+	// eslint-disable-next-line no-unused-vars
+	set_path( new_path: string ): void;
+}
+
+export default function create_store( api_path: string ): PermissionStore {
 	const { update, ...store } = writable< Permission >( {
 		create: false,
 		delete: false,

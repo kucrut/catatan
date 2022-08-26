@@ -1,14 +1,11 @@
 <script lang="ts">
 	import { __ } from '@wordpress/i18n';
-	import { getContext } from 'svelte';
 	import Button from './button.svelte';
 	import ExcerptPanel from './excerpt-panel.svelte';
 	import PermalinkPanel from './permalink-panel.svelte';
 	import StatusPanel from './status-panel.svelte';
-	import type { PostTypeStore } from '$lib/stores/post-type';
+	import post_type from '$lib/stores/post-type';
 	import ui from '$lib/stores/ui';
-
-	const post_type = getContext< PostTypeStore >( 'post_type' );
 </script>
 
 <div

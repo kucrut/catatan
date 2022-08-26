@@ -1,4 +1,4 @@
-import { writable } from 'svelte/store';
+import { writable, type Readable } from 'svelte/store';
 
 export interface Notice {
 	content: string;
@@ -11,12 +11,21 @@ export interface Notice {
 	type: 'error' | 'info' | 'snack';
 }
 
-function remove_item( $items: Notice[], item_id: Notice[ 'id' ] ) {
+export type Notices = Notice[];
+
+export interface NoticesStore extends Readable< Notices > {
+	// eslint-disable-next-line no-unused-vars
+	add( item: Notice ): void;
+	// eslint-disable-next-line no-unused-vars
+	remove( item_id: Notice[ 'id' ] ): void;
+}
+
+function remove_item( $items: Notices, item_id: Notice[ 'id' ] ) {
 	return $items.filter( ( { id } ) => item_id !== id );
 }
 
-export default function create_store() {
-	const { update, ...store } = writable< Notice[] >( [] );
+function create_store(): NoticesStore {
+	const { update, ...store } = writable< Notices >( [] );
 
 	return {
 		...store,
@@ -31,4 +40,4 @@ export default function create_store() {
 	};
 }
 
-export type NoticesStore = ReturnType< typeof create_store >;
+export default create_store();

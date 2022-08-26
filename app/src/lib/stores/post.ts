@@ -1,20 +1,55 @@
+import type { Changes } from './changes';
+import type { WP_REST_API_Post, WP_REST_API_Type } from 'wp-types';
 import api_fetch, { type APIFetchOptions } from '@wordpress/api-fetch';
 import create_permission_store, { type Permission } from './permission';
-import { derived, writable } from 'svelte/store';
-import type { Changes } from './changes';
-import type { WP_REST_API_Post, WP_REST_API_Type as Type } from 'wp-types';
+import with_params, { type WithParams } from './with-params';
+import { derived, writable, type Readable } from 'svelte/store';
+
+interface Params {
+	post_id?: number;
+	type?: WP_REST_API_Type;
+}
+
+export interface Store< T > extends Readable< T >, Omit< WithParams< Params >, 'subscribe' > {
+	fetch(): Promise< void >;
+	// eslint-disable-next-line no-unused-vars
+	save( changes: Changes ): Promise< void >;
+	trash(): Promise< void >;
+}
 
 export interface Post extends WP_REST_API_Post {
 	__can__?: Permission;
 }
 
-export default function create_store( post_id: number, type: Type ) {
-	const api_path = `${ type.rest_namespace }/${ type.rest_base }`;
+function create_store(): Store< Post > {
 	const post_store = writable< Post >();
+	const params = with_params< Params >();
 
-	let current_id = post_id;
-	let path = current_id > 0 ? `${ api_path }/${ current_id }` : api_path;
+	let path: string;
 	let $store: Post;
+
+	params.subscribe( $params => {
+		if ( ! $params ) {
+			return;
+		}
+
+		const { post_id, type } = $params;
+
+		if ( ! type || typeof post_id === 'undefined' ) {
+			return;
+		}
+
+		const api_path = `${ type.rest_namespace }/${ type.rest_base }`;
+		const new_path = post_id > 0 ? `${ api_path }/${ post_id }` : api_path;
+
+		if ( new_path === path ) {
+			return;
+		}
+
+		path = new_path;
+		permission_store.set_path( path );
+		permission_store.fetch();
+	} );
 
 	const permission_store = create_permission_store( path );
 
@@ -25,16 +60,14 @@ export default function create_store( post_id: number, type: Type ) {
 		}
 
 		const { id } = $post;
+		const { post_id } = params.get_params();
 
-		if ( ! id || current_id === id ) {
+		if ( ! id || post_id === id ) {
 			return;
 		}
 
 		// Handle transition from new -> edit.
-		current_id = id;
-		path = `${ api_path }/${ id }`;
-		permission_store.set_path( path );
-		permission_store.fetch();
+		params.set_params( { post_id: id } );
 	} );
 
 	const store = derived< [ typeof post_store, typeof permission_store ], Post >(
@@ -50,30 +83,26 @@ export default function create_store( post_id: number, type: Type ) {
 	);
 
 	const fetch = async ( options?: APIFetchOptions ) => {
+		const { post_id, type } = params.get_params();
+
+		if ( typeof post_id === 'undefined' || ! type ) {
+			throw new Error( '[Post store] Error: Params is not set.' );
+		}
+
 		const data = await api_fetch< Post >( {
 			path: `${ path }?context=edit`,
 			parse: true,
 			...( options || {} ),
 		} );
 
-		// Don't fetch permission when we're saving for the first time,
-		// as it will be done by the subscriber above after changing path.
-		if ( ! ( current_id === 0 && options?.method === 'POST' ) ) {
-			await permission_store.fetch();
-		}
-
 		return data;
 	};
 
 	return {
+		...params,
 		...store,
 
 		async fetch() {
-			if ( post_id < 1 ) {
-				// throw error?
-				return;
-			}
-
 			const data = await fetch();
 			post_store.update( $value => ( { ...$value, ...data } ) );
 		},
@@ -85,6 +114,8 @@ export default function create_store( post_id: number, type: Type ) {
 			} );
 
 			post_store.update( $value => ( { ...$value, ...data } ) );
+			// TODO
+			// await permission_store.fetch();
 		},
 
 		async trash() {
@@ -98,4 +129,4 @@ export default function create_store( post_id: number, type: Type ) {
 	};
 }
 
-export type PostStore = ReturnType< typeof create_store >;
+export default create_store();

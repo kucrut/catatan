@@ -1,10 +1,7 @@
 <script lang="ts">
-	import { getContext } from 'svelte';
 	import Notice from './notice.svelte';
 	import Snackbar from './snackbar.svelte';
-	import type { NoticesStore } from '$lib/stores/notices';
-
-	const notices = getContext< NoticesStore >( 'notices' );
+	import notices from '$lib/stores/notices';
 
 	$: dismissibles = $notices.filter( ( { dismissible, type } ) => dismissible && type !== 'snack' );
 	$: snacks = $notices.filter( ( { type } ) => type === 'snack' );

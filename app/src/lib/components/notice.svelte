@@ -1,12 +1,9 @@
 <script lang="ts">
 	import { __ } from '@wordpress/i18n';
-	import { getContext } from 'svelte';
 	import Button from './button.svelte';
-	import type { Notice, NoticesStore } from '$lib/stores/notices';
+	import notices, { type Notice } from '$lib/stores/notices';
 
 	export let item: Notice;
-
-	const notices = getContext< NoticesStore >( 'notices' );
 
 	const { content, dismissible, id, type } = item;
 </script>
