@@ -15,6 +15,37 @@ const PAGE_SLUG = 'writing';
  */
 function bootstrap(): void {
 	add_action( 'admin_init', __NAMESPACE__ . '\\register_sections_and_fields' );
+	add_filter( 'plugin_action_links', __NAMESPACE__ . '\\add_settings_link', 10, 2 );
+}
+
+/**
+ * Add settings link to plugin row on plugins list table
+ *
+ * @since 0.0.1
+ *
+ * @param array  $actions Action links
+ * @param string $plugin_file Plugin file.
+ *
+ * @return array
+ */
+function add_settings_link( array $actions, string $plugin_file ): array {
+	if ( $plugin_file === basename( dirname( __DIR__ ) ) . '/plugin.php' ) {
+		$actions['settings'] = sprintf(
+			'<a href="%s">%s</a>',
+			esc_url(
+				admin_url(
+					sprintf(
+						'options-%s.php#%s',
+						PAGE_SLUG,
+						OPTION_NAME_PREFIX
+					)
+				)
+			),
+			__( 'Settings' )
+		);
+	}
+
+	return $actions;
 }
 
 /**
