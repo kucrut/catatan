@@ -5,6 +5,7 @@
 	import create_editor_store, { type EditorStore } from '$lib/stores/editor';
 	import create_post_store, { type PostStore } from '$lib/stores/post';
 	import create_post_type_store, { type PostTypeStore } from '$lib/stores/post-type';
+	import taxonomies from '$lib/stores/taxonomies';
 	import type { Config } from '$types';
 
 	export let config: Omit< Config, 'editor_id' | 'nonce' | 'rest_url' >;
@@ -26,6 +27,9 @@
 
 			post_store = create_post_store( post_id, $post_type_store );
 			await post_store.fetch();
+
+			taxonomies.set_params( { post_type } );
+			await taxonomies.fetch();
 
 			editor_store = create_editor_store( {
 				notices_store,
