@@ -91,6 +91,17 @@ function get_fields(): array {
 }
 
 /**
+ * Render settings section
+ *
+ * @since 0.0.1
+ *
+ * @param array $section Section.
+ */
+function render_section( array $section ): void {
+	printf( '<i id="%s"></i>', esc_attr( $section['id'] ) );
+}
+
+/**
  * Register settings sections and fields
  *
  * @since 0.0.1
@@ -99,7 +110,7 @@ function get_fields(): array {
  */
 function register_sections_and_fields(): void {
 	foreach ( get_sections() as $section ) {
-		add_settings_section( $section['id'], $section['title'], '', PAGE_SLUG );
+		add_settings_section( $section['id'], $section['title'], __NAMESPACE__ . '\\render_section', PAGE_SLUG );
 	}
 
 	foreach ( get_fields() as $field ) {
