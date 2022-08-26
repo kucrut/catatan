@@ -257,8 +257,8 @@ function enqueue_assets( WP_Post_Type $post_type ): void {
 	wp_enqueue_global_styles_css_custom_properties();
 
 	Vite\enqueue_asset(
-		dirname( __DIR__ ) . '/packages/editor/dist',
-		'src/main.ts',
+		dirname( __DIR__ ) . '/app/dist',
+		'app/src/main.ts',
 		[
 			'css-dependencies' => [ 'wp-components', 'wp-edit-post' ],
 			'handle' => Catatan\EDITOR_ID,
