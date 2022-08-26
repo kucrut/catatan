@@ -10,7 +10,7 @@ use WP_Post_Type;
 /**
  * Editor bootstrapper
  *
- * @since 0.0.1
+ * @since 0.1.0
  *
  * @return void
  */
@@ -21,7 +21,7 @@ function bootstrap(): void {
 /**
  * Replace post type's "Add new" submenu
  *
- * @since 0.0.1
+ * @since 0.1.0
  *
  * @param string       $post_type Post type name.
  * @param WP_Post_Type $post_type_object Post type object.
@@ -40,7 +40,7 @@ function register_menu( string $post_type, WP_Post_Type $post_type_object ): voi
 /**
  * Register page
  *
- * @since 0.0.1
+ * @since 0.1.0
  *
  * @param WP_Post_Type $post_type Post type object.
  * @param bool         $for_edit  Whether to register page for edit or create action.
@@ -81,7 +81,7 @@ function register_page( WP_Post_Type $post_type, bool $for_edit = true ): void {
 /**
  * Get post ID being edited
  *
- * @since 0.0.1
+ * @since 0.1.0
  *
  * @return int
  */
@@ -129,7 +129,7 @@ function get_config( WP_Post_Type $post_type ): array {
 	/**
 	 * Filter editor config
 	 *
-	 * @since 0.0.1
+	 * @since 0.1.0
 	 *
 	 * @param array        $config    Editor config.
 	 * @param WP_Post_Type $post_type Post type object.
@@ -143,7 +143,7 @@ function get_config( WP_Post_Type $post_type ): array {
 /**
  * Load editor page
  *
- * @since 0.0.1
+ * @since 0.1.0
  *
  * @param WP_Post_Type $post_type Current post type object.
  * @param bool         $is_edit   Are we loading the edit page?
@@ -154,7 +154,7 @@ function load( WP_Post_Type $post_type, bool $is_edit = true ): void {
 	/**
 	 * Fire before the load actions are run
 	 *
-	 * @since 0.0.1
+	 * @since 0.1.0
 	 *
 	 * @param WP_Post_Type $post_type Current post type object.
 	 * @param bool         $is_edit  Are we loading the edit page?
@@ -172,7 +172,7 @@ function load( WP_Post_Type $post_type, bool $is_edit = true ): void {
 	/**
 	 * Fire after the load actions are run
 	 *
-	 * @since 0.0.1
+	 * @since 0.1.0
 	 *
 	 * @param WP_Post_Type $post_type Current post type object.
 	 * @param bool         $is_edit  Are we loading the edit page?
@@ -184,7 +184,7 @@ function load( WP_Post_Type $post_type, bool $is_edit = true ): void {
 /**
  * Check permission
  *
- * @since 0.0.1
+ * @since 0.1.0
  *
  * The checks are mostly taken from wp-admin/post.php.
  *
@@ -247,7 +247,7 @@ function check_permission( WP_Post_Type $post_type, bool $is_edit = true ): void
 /**
  * Enqueue assets
  *
- * @since 0.0.1
+ * @since 0.1.0
  *
  * @param WP_Post_Type $post_type Current post type object.
  *
@@ -276,7 +276,7 @@ function enqueue_assets( WP_Post_Type $post_type ): void {
 /**
  * Render editor page
  *
- * @since 0.0.1
+ * @since 0.1.0
  *
  * @return void
  */

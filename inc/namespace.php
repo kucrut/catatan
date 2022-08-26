@@ -10,7 +10,7 @@ const EDITOR_ID = 'catatan-editor';
 /**
  * Get editor page slug
  *
- * @since 0.0.1
+ * @since 0.1.0
  *
  * @param string $post_type Post type name.
  * @param bool   $for_edit  Whether to get URL for edit or create action.
@@ -29,7 +29,7 @@ function get_editor_page_slug( string $post_type, bool $for_edit = true ): strin
 /**
  * Get editor URL
  *
- * @since 0.0.1
+ * @since 0.1.0
  *
  * @param string $post_type Post type name.
  * @param int    $id        Post ID (optional).
@@ -55,7 +55,7 @@ function get_editor_url( string $post_type, int $id = 0 ): string {
 /**
  * Check if post type is supported
  *
- * @since 0.0.1
+ * @since 0.1.0
  *
  * @param string $post_type Post type name to check.
  *

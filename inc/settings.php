@@ -9,7 +9,7 @@ const PAGE_SLUG = 'writing';
 /**
  * Settings bootstrapper
  *
- * @since 0.0.1
+ * @since 0.1.0
  *
  * @return void
  */
@@ -21,7 +21,7 @@ function bootstrap(): void {
 /**
  * Add settings link to plugin row on plugins list table
  *
- * @since 0.0.1
+ * @since 0.1.0
  *
  * @param array  $actions Action links
  * @param string $plugin_file Plugin file.
@@ -51,7 +51,7 @@ function add_settings_link( array $actions, string $plugin_file ): array {
 /**
  * Generate option name
  *
- * @since 0.0.1
+ * @since 0.1.0
  *
  * @param string $id Field ID.
  *
@@ -64,7 +64,7 @@ function generate_option_name( string $id ): string {
 /**
  * Get option value
  *
- * @since 0.0.1
+ * @since 0.1.0
  *
  * @param string $id Field ID.
  *
@@ -77,7 +77,7 @@ function get_value( string $id ) {
 /**
  * Get settings sections
  *
- * @since 0.0.1
+ * @since 0.1.0
  *
  * @return array
  */
@@ -93,7 +93,7 @@ function get_sections(): array {
 /**
  * Get settings fields
  *
- * @since 0.0.1
+ * @since 0.1.0
  *
  * @return array Array of fields data.
  */
@@ -124,7 +124,7 @@ function get_fields(): array {
 /**
  * Render settings section
  *
- * @since 0.0.1
+ * @since 0.1.0
  *
  * @param array $section Section.
  */
@@ -135,7 +135,7 @@ function render_section( array $section ): void {
 /**
  * Register settings sections and fields
  *
- * @since 0.0.1
+ * @since 0.1.0
  *
  * @return void
  */
@@ -165,7 +165,7 @@ function register_sections_and_fields(): void {
 /**
  * Render field: Post types
  *
- * @since 0.0.1
+ * @since 0.1.0
  *
  * @param array $args Arguments passed by add_settings_field().
  *
@@ -209,7 +209,7 @@ function render_field_post_types( array $args ): void {
 /**
  * Sanitize value: post_types
  *
- * @since 0.0.1
+ * @since 0.1.0
  *
  * @param mixed $value Value to save.
  *

@@ -8,7 +8,7 @@ use Catatan;
 /**
  * Overrides bootstrapper
  *
- * @since 0.0.1
+ * @since 0.1.0
  *
  * @return void
  */
@@ -20,7 +20,7 @@ function bootstrap(): void {
 /**
  * Redirect editor
  *
- * @since 0.0.1
+ * @since 0.1.0
  *
  * @return void
  */
@@ -38,7 +38,7 @@ function redirect_editor(): void {
 /**
  * Override edit post link
  *
- * @since 0.0.1
+ * @since 0.1.0
  *
  * @param string $link    Original edit post link.
  * @param int    $post_id Post ID.
