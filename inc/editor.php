@@ -261,6 +261,7 @@ function enqueue_assets( WP_Post_Type $post_type ): void {
 		'app/src/main.ts',
 		[
 			'css-dependencies' => [ 'wp-components', 'wp-edit-post' ],
+			'dependencies' => [ 'wp-api-fetch', 'wp-i18n' ],
 			'handle' => Catatan\EDITOR_ID,
 			'in-footer' => true,
 		]
