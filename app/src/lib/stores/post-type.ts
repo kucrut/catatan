@@ -3,7 +3,7 @@ import api_fetch from '@wordpress/api-fetch';
 import type { WP_REST_API_Type } from 'wp-types';
 
 export default function create_store( post_type: string ) {
-	const type_store = writable< WP_REST_API_Type >( null );
+	const type_store = writable< WP_REST_API_Type >();
 
 	const store = derived( type_store, $type_store => $type_store );
 

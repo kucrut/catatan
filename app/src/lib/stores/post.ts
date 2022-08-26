@@ -10,7 +10,7 @@ export interface Post extends WP_REST_API_Post {
 
 export default function create_store( post_id: number, type: Type ) {
 	const api_path = `${ type.rest_namespace }/${ type.rest_base }`;
-	const post_store = writable< Post >( null );
+	const post_store = writable< Post >();
 
 	let current_id = post_id;
 	let path = current_id > 0 ? `${ api_path }/${ current_id }` : api_path;
