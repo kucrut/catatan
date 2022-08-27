@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { __ } from '@wordpress/i18n';
-
 	export let id: string;
 	export let label: string;
 	export let help = '';
