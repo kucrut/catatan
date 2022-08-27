@@ -13,6 +13,4 @@ package.json export-ignore
 pnpm-lock.yaml export-ignore
 postcss.config.cjs export-ignore
 svelte.config.js export-ignore
-tsconfig.json export-ignore
-tsconfig.node.json export-ignore
 vite.config.ts export-ignore
