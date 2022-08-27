@@ -13,8 +13,6 @@ export type Permission = MapToBoolean< typeof actions >;
 
 export interface PermissionStore extends Readable< Permission > {
 	fetch(): Promise< void >;
-	// eslint-disable-next-line no-unused-vars
-	set_path( new_path: string ): void;
 }
 
 export default function create_store( api_path: string ): PermissionStore {
@@ -25,8 +23,6 @@ export default function create_store( api_path: string ): PermissionStore {
 		update: false,
 	} );
 
-	let path = api_path;
-
 	return {
 		...store,
 
@@ -35,7 +31,7 @@ export default function create_store( api_path: string ): PermissionStore {
 				const response = await api_fetch< Response >( {
 					method: 'OPTIONS',
 					parse: false,
-					path: `${ path }?context=edit`,
+					path: `/${ api_path }?context=edit`,
 				} );
 
 				const allow_list = response.headers
@@ -52,10 +48,6 @@ export default function create_store( api_path: string ): PermissionStore {
 					return Object.fromEntries( new_entries );
 				} );
 			} catch {}
-		},
-
-		set_path( new_path: string ): void {
-			path = new_path;
 		},
 	};
 }
