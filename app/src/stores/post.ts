@@ -19,7 +19,6 @@ export interface PostStore extends Readable< Post > {
 export default function create_store( post_type_store: PostTypeStore, post_id: number ): PostStore {
 	const post_store = writable< Post >();
 
-	let current_id = post_id;
 	let api_path: string;
 	let path: string;
 	let $store: Post;
@@ -27,11 +26,7 @@ export default function create_store( post_type_store: PostTypeStore, post_id: n
 	const permission_store = create_permission_store( path );
 
 	const update_path = (): void => {
-		path = api_path;
-
-		if ( current_id > 0 ) {
-			path = `${ path }/${ current_id }`;
-		}
+		path = `${ api_path }/${ post_id }`;
 
 		permission_store.set_path( path );
 		permission_store.fetch();
@@ -39,22 +34,6 @@ export default function create_store( post_type_store: PostTypeStore, post_id: n
 
 	post_type_store.subscribe( ( { rest_base, rest_namespace } ) => {
 		api_path = `${ rest_namespace }/${ rest_base }`;
-		update_path();
-	} );
-
-	post_store.subscribe( $post => {
-		// No data (post hasn't been fetched yet).
-		if ( ! $post ) {
-			return;
-		}
-
-		const { id } = $post;
-
-		if ( ! id || current_id === id ) {
-			return;
-		}
-
-		current_id = id;
 		update_path();
 	} );
 
@@ -94,12 +73,8 @@ export default function create_store( post_type_store: PostTypeStore, post_id: n
 				method: 'POST',
 			} );
 
-			const prev_id = current_id;
 			post_store.update( $value => ( { ...$value, ...data } ) );
-
-			if ( prev_id !== 0 ) {
-				await permission_store.fetch();
-			}
+			await permission_store.fetch();
 		},
 
 		async trash(): Promise< void > {
