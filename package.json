@@ -23,7 +23,7 @@
 		"lint:js": "eslint .",
 		"lint": "pnpm lint:css && pnpm lint:js",
 		"preview": "vite preview",
-		"types:check": "svelte-check --tsconfig ./app/src/tsconfig.json"
+		"types:check": "svelte-check --tsconfig ./tsconfig.json"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.18.13",
