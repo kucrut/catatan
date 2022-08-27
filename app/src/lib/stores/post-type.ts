@@ -8,12 +8,9 @@ interface Params {
 	post_type: string;
 }
 
-export interface PostTypeStore
-	extends Readable< WP_REST_API_Type >,
-		WithGet< WP_REST_API_Type >,
-		Omit< WithParams< Params >, 'subscribe' > {
-	fetch(): Promise< void >;
-}
+export type PostTypeStore = Readable< WP_REST_API_Type > &
+	WithGet< WP_REST_API_Type > &
+	Omit< WithParams< Params >, 'subscribe' > & { fetch(): Promise< void > };
 
 function create_store(): PostTypeStore {
 	const type_store = writable< WP_REST_API_Type >();

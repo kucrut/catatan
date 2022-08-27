@@ -1,10 +1,10 @@
-import type { Readable } from 'svelte/store';
+import type { Readable, Writable } from 'svelte/store';
 
-export interface WithGet< T > extends Readable< T > {
+export type WithGet< T > = ( Readable< T > | Writable< T > ) & {
 	get(): T;
-}
+};
 
-export default function with_get< T >( store: Readable< T > ): WithGet< T > {
+export default function with_get< T >( store: Readable< T > | Writable< T > ): WithGet< T > {
 	let $store: T;
 
 	store.subscribe( $value => ( $store = $value ) );
