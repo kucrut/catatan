@@ -9,7 +9,7 @@
 </script>
 
 <!-- TODO: Remove this check when we have other rows ready. -->
-{#if $post.__can__.delete}
+{#if $post.status !== 'auto-draft' && $post.__can__.delete}
 	<Panel title={__( 'Status & visibility' )}>
 		<!-- <PanelRow>
 			<span>{__( 'Visibility' )}</span>
