@@ -1,7 +1,7 @@
 <script lang="ts">
-	import Container from '$lib/components/container.svelte';
+	import Container from '$components/container.svelte';
 	import { onMount } from 'svelte';
-	import { init_stores, type StoresConfig } from '$lib/stores';
+	import { init_stores, type StoresConfig } from '$stores';
 
 	export let config: StoresConfig;
 

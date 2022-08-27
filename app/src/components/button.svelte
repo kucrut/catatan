@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { class_names } from '$lib/utils/css';
+	import { class_names } from '$utils/css';
 	import Icon from './icons/icon.svelte';
 
 	let cls = '';

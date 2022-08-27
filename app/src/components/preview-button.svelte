@@ -2,7 +2,7 @@
 	import Button from './button.svelte';
 	import Icon from './icons/icon.svelte';
 	import { __ } from '@wordpress/i18n';
-	import { get_store } from '$lib/stores';
+	import { get_store } from '$stores';
 
 	const editor = get_store( 'editor' );
 

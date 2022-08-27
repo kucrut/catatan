@@ -18,12 +18,16 @@
 		"checkJs": true,
 		"isolatedModules": true,
 		"paths": {
-			"$lib": [ "app/src/lib" ],
-			"$lib/*": [ "app/src/lib/*" ],
-			"$types": [ "app/src/types" ],
-			"$types/*": [ "app/src/types/*" ]
+			"$components": [ "./components" ],
+			"$components/*": [ "./components/*" ],
+			"$stores": [ "./stores" ],
+			"$stores/*": [ "./stores/*" ],
+			"$types": [ "./types" ],
+			"$types/*": [ "./types/*" ],
+			"$utils": [ "./utils" ],
+			"$utils/*": [ "./utils/*" ]
 		}
 	},
-	"include": [ "app/src/**/*.d.ts", "app/src/**/*.ts", "app/src/**/*.js", "app/src/**/*.svelte" ],
+	"include": [ "./**/*.d.ts", "./**/*.ts", "./**/*.js", "./**/*.svelte" ],
 	"references": [ { "path": "./tsconfig.node.json" } ]
 }

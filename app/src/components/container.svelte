@@ -4,7 +4,7 @@
 	import Header from './header.svelte';
 	import Notices from './notices.svelte';
 	import Sidebar from './sidebar.svelte';
-	import { get_store } from '$lib/stores';
+	import { get_store } from '$stores';
 
 	const post_type = get_store( 'post_type' );
 	const ui = get_store( 'ui' );

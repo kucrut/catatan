@@ -4,7 +4,7 @@
 	import PermalinkPanel from './permalink-panel.svelte';
 	import StatusPanel from './status-panel.svelte';
 	import { __ } from '@wordpress/i18n';
-	import { get_store } from '$lib/stores';
+	import { get_store } from '$stores';
 
 	const post_type = get_store( 'post_type' );
 	const ui = get_store( 'ui' );

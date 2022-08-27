@@ -1,9 +1,9 @@
 <script lang="ts">
-	import type { Notice } from '$lib/stores/notices';
+	import type { Notice } from '$stores/notices';
 	import Button from './button.svelte';
 	import { __ } from '@wordpress/i18n';
 	import { onMount } from 'svelte';
-	import { get_store } from '$lib/stores';
+	import { get_store } from '$stores';
 
 	export let item: Notice;
 

@@ -3,7 +3,7 @@
 	import Panel from './panel.svelte';
 	import PanelRow from './panel-row.svelte';
 	import { __ } from '@wordpress/i18n';
-	import { get_store } from '$lib/stores';
+	import { get_store } from '$stores';
 
 	const post = get_store( 'post' );
 </script>

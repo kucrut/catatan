@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Notice from './notice.svelte';
 	import Snackbar from './snackbar.svelte';
-	import { get_store } from '$lib/stores';
+	import { get_store } from '$stores';
 
 	const notices = get_store( 'notices' );
 
