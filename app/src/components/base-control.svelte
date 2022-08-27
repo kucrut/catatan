@@ -5,6 +5,7 @@
 
 <div class="components-base-control">
 	<div class="components-base-control__field">
+		<slot name="before-label" />
 		{#if id && label}
 			<label class="components-base-control__label" for={id}>{label}</label>
 		{/if}
