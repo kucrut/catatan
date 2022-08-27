@@ -159,10 +159,10 @@ export default function create_store( options: Options ): EditorStore {
 						break;
 
 					default:
-						if ( was_auto_draft ) {
+						if ( was_auto_draft || status === 'draft' ) {
 							// TODO: Check these texts in the block editor source.
 							notice_content = __( 'Draft saved.' );
-							notice_link_text = __( 'Preview' );
+							notice_link_text = __( 'View Preview' );
 						} else {
 							notice_content = sprintf( __( '%s reverted to draft.' ), singular_name );
 						}
