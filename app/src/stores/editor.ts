@@ -169,6 +169,8 @@ export default function create_store( options: Options ): EditorStore {
 						break;
 				}
 
+				// TODO: Remove existing notice first in case it exists.
+
 				notices.add( {
 					content: notice_content,
 					id: 'saved',
