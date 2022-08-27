@@ -146,7 +146,7 @@ export default function create_store( options: Options ): EditorStore {
 				let notice_content: Notice[ 'content' ];
 				let notice_link_text: Notice[ 'link' ][ 'text' ];
 
-				if ( prev_status === 'draft' && status === 'publish' ) {
+				if ( status === 'publish' && ( was_auto_draft || prev_status === 'draft' ) ) {
 					notice_content = item_published;
 					notice_link_text = view_item;
 				} else if ( prev_status && prev_status !== 'draft' && status === 'draft' ) {
