@@ -1,6 +1,5 @@
 import type { Changes } from './changes';
 import type { WP_REST_API_Post } from 'wp-types';
-import type { PostTypeStore } from './post-type';
 import api_fetch, { type APIFetchOptions } from '@wordpress/api-fetch';
 import create_permission_store, { type Permission, type PermissionStore } from './permission';
 import { derived, writable, type Readable, type Writable } from 'svelte/store';
@@ -16,26 +15,13 @@ export interface PostStore extends Readable< Post > {
 	trash(): Promise< void >;
 }
 
-export default function create_store( post_type_store: PostTypeStore, post_id: number ): PostStore {
+export default function create_store( api_path: string, post_id: number ): PostStore {
+	const path = `${ api_path }/${ post_id }`;
 	const post_store = writable< Post >();
 
-	let api_path: string;
-	let path: string;
 	let $store: Post;
 
 	const permission_store = create_permission_store( path );
-
-	const update_path = (): void => {
-		path = `${ api_path }/${ post_id }`;
-
-		permission_store.set_path( path );
-		permission_store.fetch();
-	};
-
-	post_type_store.subscribe( ( { rest_base, rest_namespace } ) => {
-		api_path = `${ rest_namespace }/${ rest_base }`;
-		update_path();
-	} );
 
 	const store = derived< [ Writable< Post >, PermissionStore ], Post >(
 		[ post_store, permission_store ],

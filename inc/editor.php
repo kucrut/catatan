@@ -110,7 +110,7 @@ function get_post_id(): int {
  */
 function get_config( WP_Post_Type $post_type ): array {
 	$post_id = get_post_id();
-	$post_list_url = admin_url('edit.php');
+	$post_list_url = admin_url( 'edit.php' );
 
 	if ( $post_type->name !== 'post' ) {
 		$post_list_url = add_query_arg( [ 'post_type' => $post_type->name ], $post_list_url );
@@ -127,7 +127,9 @@ function get_config( WP_Post_Type $post_type ): array {
 		'nonce' => wp_create_nonce( 'wp_rest' ),
 		'post_id' => $post_id,
 		'post_list_url' => $post_list_url,
+		'post_rest_path' => sprintf( '%s/%s', $post_type->rest_namespace, $post_type->rest_base ),
 		'post_type' => $post_type->name,
+		'post_type_rest_path' => sprintf( '%s/types/%s', $post_type->rest_namespace, $post_type->name ),
 		'rest_url' => rest_url(),
 	];
 
@@ -186,7 +188,6 @@ function load( WP_Post_Type $post_type, bool $is_edit = true ): void {
 	 */
 	do_action( 'catatan__after_load_editor', $post_type, $is_edit );
 }
-
 
 /**
  * Check permission
@@ -276,6 +277,7 @@ function enqueue_assets( WP_Post_Type $post_type ): void {
 
 	wp_add_inline_script(
 		Catatan\EDITOR_ID,
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.json_encode_json_encode
 		sprintf( 'var catatanEditor = %s;', json_encode( get_config( $post_type ) ) ),
 		'before'
 	);

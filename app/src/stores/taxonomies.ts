@@ -43,6 +43,7 @@ export default function create_store( post: PostStore ): TaxonomiesStore {
 			set( taxonomies );
 		},
 	);
+
 	let post_type: string;
 
 	post.subscribe( ( { type } ) => ( post_type = type ) );

@@ -6,7 +6,7 @@ export interface PostTypeStore extends Readable< WP_REST_API_Type > {
 	fetch(): Promise< void >;
 }
 
-export default function create_store( post_type: string ): PostTypeStore {
+export default function create_store( api_path: string ): PostTypeStore {
 	const type_store = writable< WP_REST_API_Type >();
 	const store = derived( type_store, $type_store => $type_store );
 
@@ -16,7 +16,7 @@ export default function create_store( post_type: string ): PostTypeStore {
 		async fetch(): Promise< void > {
 			const data = await api_fetch< WP_REST_API_Type >( {
 				parse: true,
-				path: `/wp/v2/types/${ post_type }?context=edit`,
+				path: `/${ api_path }?context=edit`,
 			} );
 			type_store.update( () => data );
 		},

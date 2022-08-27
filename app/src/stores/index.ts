@@ -20,12 +20,12 @@ export interface Stores {
 let stores: Stores;
 
 export async function init_stores( config: StoresConfig ): Promise< void > {
-	const { post_id, post_type, ...editor_config } = config;
+	const { post_id, post_rest_path, post_type_rest_path, ...editor_config } = config;
 
-	const post_type_store = create_post_type_store( post_type );
-	await post_type_store.fetch();
+	const post_type = create_post_type_store( post_type_rest_path );
+	await post_type.fetch();
 
-	const post = create_post_store( post_type_store, post_id );
+	const post = create_post_store( post_rest_path, post_id );
 	await post.fetch();
 
 	const taxonomies = create_taxonomies_store( post );
@@ -36,15 +36,15 @@ export async function init_stores( config: StoresConfig ): Promise< void > {
 	stores = {
 		notices,
 		post,
+		post_type,
 		taxonomies,
 		editor: create_editor_store( {
+			...editor_config,
+			notices,
 			post,
 			post_id,
-			notices,
-			post_type: post_type_store,
-			...editor_config,
+			post_type,
 		} ),
-		post_type: post_type_store,
 		ui: create_ui_store(),
 	};
 }
