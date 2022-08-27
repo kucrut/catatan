@@ -146,18 +146,27 @@ export default function create_store( options: Options ): EditorStore {
 				let notice_content: Notice[ 'content' ];
 				let notice_link_text: Notice[ 'link' ][ 'text' ];
 
-				if ( status === 'publish' && ( was_auto_draft || prev_status === 'draft' ) ) {
-					notice_content = item_published;
-					notice_link_text = view_item;
-				} else if ( status === 'draft' && ! was_auto_draft ) {
-					notice_content = sprintf( __( '%s reverted to draft.' ), singular_name );
-				} else if ( status === 'publish' ) {
-					notice_content = item_updated;
-					notice_link_text = view_item;
-				} else {
-					// TODO: Check these texts in the block editor source.
-					notice_content = __( 'Draft saved.' );
-					notice_link_text = __( 'Preview' );
+				// TODO: Add more status checks.
+				switch ( status ) {
+					case 'publish':
+						if ( was_auto_draft || prev_status === 'draft' ) {
+							notice_content = item_published;
+							notice_link_text = view_item;
+						} else {
+							notice_content = item_updated;
+							notice_link_text = view_item;
+						}
+						break;
+
+					default:
+						if ( was_auto_draft ) {
+							// TODO: Check these texts in the block editor source.
+							notice_content = __( 'Draft saved.' );
+							notice_link_text = __( 'Preview' );
+						} else {
+							notice_content = sprintf( __( '%s reverted to draft.' ), singular_name );
+						}
+						break;
 				}
 
 				notices.add( {
