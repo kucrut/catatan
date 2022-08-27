@@ -1,6 +1,6 @@
-import { writable, type Readable } from 'svelte/store';
+import { writable, type Readable, type Writable } from 'svelte/store';
 
-export type WithParams< P > = Readable< P > & {
+export type WithParams< P > = ( Readable< P > | Writable< P > ) & {
 	get_params: () => P;
 	// eslint-disable-next-line no-unused-vars
 	set_params: ( params: P ) => void;
