@@ -15,6 +15,7 @@ export interface Options extends Pick< Config, 'edit_link_template' | 'post_id' 
 
 export interface Editor {
 	data: Changes;
+	can_save: boolean;
 	is_dirty: boolean;
 	is_saved: boolean;
 	is_saving: boolean;
@@ -49,7 +50,6 @@ function toggle_beforeunload_listener( $editor: Editor ): void {
  * Create editor store
  *
  * @todo is_dirty: Compare changes and $saved_post, ensure content, excerpt and title are not empty.
- * @todo can_save: Ensure content, excerpt and title are not empty. Also check is_dirty.
  * @todo Handle (un)scheduling
  *
  * @param {Options} options Options.
@@ -63,6 +63,7 @@ export default function create_store( options: Options ): EditorStore {
 
 	const { update, ...editor } = writable< Editor >( {
 		data: {},
+		can_save: false,
 		is_dirty: false,
 		is_saved: false,
 		is_saving: false,
@@ -98,8 +99,11 @@ export default function create_store( options: Options ): EditorStore {
 
 	// Update editor's data when changes store value is updated.
 	changes.subscribe( $changes => {
+		const { content, excerpt, title } = $changes;
+
 		update( ( { data, ...$document } ) => ( {
 			...$document,
+			can_save: Boolean( content || excerpt || title ),
 			data: { ...data, ...$changes },
 		} ) );
 	} );
@@ -118,6 +122,10 @@ export default function create_store( options: Options ): EditorStore {
 		},
 
 		async save(): Promise< void > {
+			if ( ! $store.can_save ) {
+				return;
+			}
+
 			try {
 				const { data } = $store;
 				const { status: next_status } = data;
