@@ -4,8 +4,10 @@
 	import Header from './header.svelte';
 	import Notices from './notices.svelte';
 	import Sidebar from './sidebar.svelte';
-	import post_type from '$lib/stores/post-type';
-	import ui from '$lib/stores/ui';
+	import { get_store } from '$lib/stores';
+
+	const post_type = get_store( 'post_type' );
+	const ui = get_store( 'ui' );
 
 	const { labels, supports } = $post_type;
 </script>

@@ -1,7 +1,9 @@
 <script lang="ts">
-	import { __ } from '@wordpress/i18n';
 	import Button from './button.svelte';
-	import ui from '$lib/stores/ui';
+	import { __ } from '@wordpress/i18n';
+	import { get_store } from '$lib/stores';
+
+	const ui = get_store( 'ui' );
 </script>
 
 <Button

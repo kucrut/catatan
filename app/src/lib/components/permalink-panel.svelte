@@ -1,12 +1,13 @@
 <script lang="ts">
-	import { __ } from '@wordpress/i18n';
 	import BaseControl from './base-control.svelte';
 	import ExternalLink from './external-link.svelte';
 	import Panel from './panel.svelte';
 	import PanelRow from './panel-row.svelte';
-	import editor from '$lib/stores/editor';
-	import post_type from '$lib/stores/post-type';
+	import { __ } from '@wordpress/i18n';
+	import { get_store } from '$lib/stores';
 
+	const editor = get_store( 'editor' );
+	const post_type = get_store( 'post_type' );
 	const id = 'catatan-post-slug-input';
 
 	function handle_input( event: InputEvent & { currentTarget: HTMLInputElement } ) {

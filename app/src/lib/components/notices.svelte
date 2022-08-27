@@ -1,7 +1,9 @@
 <script lang="ts">
 	import Notice from './notice.svelte';
 	import Snackbar from './snackbar.svelte';
-	import notices from '$lib/stores/notices';
+	import { get_store } from '$lib/stores';
+
+	const notices = get_store( 'notices' );
 
 	$: dismissibles = $notices.filter( ( { dismissible, type } ) => dismissible && type !== 'snack' );
 	$: snacks = $notices.filter( ( { type } ) => type === 'snack' );

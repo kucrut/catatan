@@ -1,10 +1,9 @@
 <script lang="ts">
-	import type { Config } from '$types';
 	import Container from '$lib/components/container.svelte';
 	import { onMount } from 'svelte';
-	import { init_stores } from '$lib/stores';
+	import { init_stores, type StoresConfig } from '$lib/stores';
 
-	export let config: Config;
+	export let config: StoresConfig;
 
 	let is_ready = false;
 	let loading_error: Error;

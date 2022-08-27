@@ -24,7 +24,7 @@ function remove_item( $items: Notices, item_id: Notice[ 'id' ] ) {
 	return $items.filter( ( { id } ) => item_id !== id );
 }
 
-function create_store(): NoticesStore {
+export default function create_store(): NoticesStore {
 	const { update, ...store } = writable< Notices >( [] );
 
 	return {
@@ -39,5 +39,3 @@ function create_store(): NoticesStore {
 		},
 	};
 }
-
-export default create_store();

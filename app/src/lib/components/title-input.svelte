@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { __ } from '@wordpress/i18n';
-	import editor from '$lib/stores/editor';
+	import { get_store } from '$lib/stores';
+
+	const editor = get_store( 'editor' );
 
 	function handle_input( event: InputEvent & { currentTarget: HTMLInputElement } ) {
 		editor.update( { title: event.currentTarget.value } );

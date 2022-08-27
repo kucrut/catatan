@@ -1,6 +1,8 @@
 <script lang="ts">
 	import textarea_autosize from '@github/textarea-autosize';
-	import editor from '$lib/stores/editor';
+	import { get_store } from '$lib/stores';
+
+	const editor = get_store( 'editor' );
 
 	function autosize( node: HTMLTextAreaElement ) {
 		textarea_autosize( node );

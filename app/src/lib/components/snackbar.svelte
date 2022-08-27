@@ -1,11 +1,13 @@
 <script lang="ts">
+	import type { Notice } from '$lib/stores/notices';
+	import Button from './button.svelte';
 	import { __ } from '@wordpress/i18n';
 	import { onMount } from 'svelte';
-	import Button from './button.svelte';
-	import notices, { type Notice } from '$lib/stores/notices';
+	import { get_store } from '$lib/stores';
 
 	export let item: Notice;
 
+	const notices = get_store( 'notices' );
 	const { content, id, link } = item;
 	let timeout_id: number;
 

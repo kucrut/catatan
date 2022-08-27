@@ -1,10 +1,12 @@
 <script lang="ts">
-	import { __ } from '@wordpress/i18n';
+	import type { Notice } from '$lib/stores/notices';
 	import Button from './button.svelte';
-	import notices, { type Notice } from '$lib/stores/notices';
+	import { __ } from '@wordpress/i18n';
+	import { get_store } from '$lib/stores';
 
 	export let item: Notice;
 
+	const notices = get_store( 'notices' );
 	const { content, dismissible, id, type } = item;
 </script>
 

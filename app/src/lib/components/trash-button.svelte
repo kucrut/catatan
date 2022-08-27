@@ -1,7 +1,9 @@
 <script lang="ts">
-	import { __ } from '@wordpress/i18n';
 	import Button from './button.svelte';
-	import editor from '$lib/stores/editor';
+	import { __ } from '@wordpress/i18n';
+	import { get_store } from '$lib/stores';
+
+	const editor = get_store( 'editor' );
 </script>
 
 <Button

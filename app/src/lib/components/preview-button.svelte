@@ -1,8 +1,10 @@
 <script lang="ts">
-	import { __ } from '@wordpress/i18n';
 	import Button from './button.svelte';
 	import Icon from './icons/icon.svelte';
-	import editor from '$lib/stores/editor';
+	import { __ } from '@wordpress/i18n';
+	import { get_store } from '$lib/stores';
+
+	const editor = get_store( 'editor' );
 
 	function get_url() {
 		const url = new URL( $editor.data.link );

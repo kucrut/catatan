@@ -1,11 +1,13 @@
 <script lang="ts">
-	import { __ } from '@wordpress/i18n';
 	import Button from './button.svelte';
 	import ExcerptPanel from './excerpt-panel.svelte';
 	import PermalinkPanel from './permalink-panel.svelte';
 	import StatusPanel from './status-panel.svelte';
-	import post_type from '$lib/stores/post-type';
-	import ui from '$lib/stores/ui';
+	import { __ } from '@wordpress/i18n';
+	import { get_store } from '$lib/stores';
+
+	const post_type = get_store( 'post_type' );
+	const ui = get_store( 'ui' );
 </script>
 
 <div

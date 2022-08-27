@@ -1,23 +1,56 @@
 import type { Config } from '$types';
-import editor from './editor';
-import post from './post';
-import post_type_store from './post-type';
-import taxonomies from './taxonomies';
+import create_editor_store, { type EditorStore } from './editor';
+import create_notices_store, { type NoticesStore } from './notices';
+import create_post_store, { type PostStore } from './post';
+import create_post_type_store, { type PostTypeStore } from './post-type';
+import create_ui_store, { type UiStore } from './ui';
 
-export async function init_stores( config: Config ) {
+export type StoresConfig = Omit< Config, 'editor_id' | 'nonce' | 'rest_url' >;
+
+export interface Stores {
+	editor: EditorStore;
+	notices: NoticesStore;
+	post: PostStore;
+	post_type: PostTypeStore;
+	ui: UiStore;
+}
+
+let stores: Stores;
+
+export async function init_stores( config: StoresConfig ): Promise< void > {
 	const { post_id, post_type, ...editor_config } = config;
 
-	post_type_store.set_params( { post_type } );
+	const post_type_store = create_post_type_store( post_type );
 	await post_type_store.fetch();
 
-	post.set_params( { post_id, type: post_type_store } );
+	const post = create_post_store( post_type_store, post_id );
 	await post.fetch();
 
-	taxonomies.set_params( { post_type } );
-	await taxonomies.fetch();
+	const notices = create_notices_store();
 
-	editor.set_params( {
-		post_id,
-		...editor_config,
-	} );
+	stores = {
+		notices,
+		post,
+		editor: create_editor_store( {
+			post,
+			post_id,
+			notices,
+			post_type: post_type_store,
+			...editor_config,
+		} ),
+		post_type: post_type_store,
+		ui: create_ui_store(),
+	};
+}
+
+export function get_store< K extends keyof Stores >( name: K ): Stores[ K ] {
+	if ( ! stores ) {
+		throw new Error( 'Stores have not been initialised.' );
+	}
+
+	if ( ! ( name in stores ) ) {
+		throw new Error( 'Invalid store name' );
+	}
+
+	return stores[ name ];
 }
