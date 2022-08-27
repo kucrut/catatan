@@ -25,14 +25,11 @@ export async function init_stores( config: StoresConfig ): Promise< void > {
 	const post_type_store = create_post_type_store( post_type );
 	await post_type_store.fetch();
 
-	const taxonomies = create_taxonomies_store( post_type );
-	await taxonomies.fetch();
-
 	const post = create_post_store( post_type_store, post_id );
+	await post.fetch();
 
-	if ( post_id > 0 ) {
-		await post.fetch();
-	}
+	const taxonomies = create_taxonomies_store( post );
+	await taxonomies.fetch();
 
 	const notices = create_notices_store();
 
