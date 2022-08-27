@@ -1,9 +1,10 @@
 <script lang="ts">
 	import Button from './button.svelte';
 	import ExcerptPanel from './excerpt-panel.svelte';
+	import FlatTermsPanel from './flat-terms-panel.svelte';
+	import HierarchicalTermsPanel from './hierarchical-terms-panel.svelte';
 	import PermalinkPanel from './permalink-panel.svelte';
 	import StatusPanel from './status-panel.svelte';
-	import TermsPanel from './terms-panel.svelte';
 	import { __ } from '@wordpress/i18n';
 	import { get_store } from '$stores';
 
@@ -42,7 +43,11 @@
 		{#if $taxonomies.length}
 			{#each $taxonomies as tax}
 				{#if tax.__can__.assign}
-					<TermsPanel taxonomy={tax} />
+					{#if tax.hierarchical}
+						<HierarchicalTermsPanel taxonomy={tax} />
+					{:else}
+						<FlatTermsPanel taxonomy={tax} />
+					{/if}
 				{/if}
 			{/each}
 		{/if}
