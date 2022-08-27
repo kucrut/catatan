@@ -6,7 +6,7 @@ export interface TaxonomiesStore extends Readable< WP_REST_API_Taxonomies > {
 	fetch(): Promise< void >;
 }
 
-export default function create_store(): TaxonomiesStore {
+export default function create_store( post_type: string ): TaxonomiesStore {
 	const tax_store = writable< WP_REST_API_Taxonomies >();
 	const store = derived( tax_store, $tax_store => $tax_store );
 
@@ -16,7 +16,7 @@ export default function create_store(): TaxonomiesStore {
 		async fetch(): Promise< void > {
 			const data = await api_fetch< WP_REST_API_Taxonomies >( {
 				parse: true,
-				path: `/wp/v2/taxonomies?context=edit`,
+				path: `/wp/v2/taxonomies?context=edit&type=${ post_type }`,
 			} );
 
 			tax_store.update( () => data );
