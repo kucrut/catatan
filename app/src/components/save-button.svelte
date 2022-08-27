@@ -2,13 +2,14 @@
 	import Button from './button.svelte';
 	import { __ } from '@wordpress/i18n';
 	import { get_store } from '$stores';
+	import { is_draft } from '$utils/post';
 
 	const editor = get_store( 'editor' );
 
 	$: cls = '';
 	$: icon = '';
 	$: is_disabled = true;
-	$: is_not_draft = $editor.data.status && $editor.data.status !== 'draft';
+	$: is_not_draft = ! is_draft( $editor.data.status );
 	$: text = __( 'Save draft' );
 
 	function handle_click(): void {
