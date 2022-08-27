@@ -10,7 +10,7 @@ export interface UiStore extends PersistentStore< Ui > {
 	toggle_sidebar(): void;
 }
 
-export default function create_ui_store(): UiStore {
+export default function create_store(): UiStore {
 	const { update, ...store } = persist(
 		writable< Ui >( {
 			is_sidebar_open: false,

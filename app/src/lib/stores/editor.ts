@@ -1,5 +1,5 @@
 import type { Config } from '$types';
-import type { WP_REST_API_Post } from 'wp-types';
+import type { WP_REST_API_Post, WP_REST_API_Type } from 'wp-types';
 import type { Notice, NoticesStore } from './notices';
 import type { PostStore } from './post';
 import type { PostTypeStore } from './post-type';
@@ -7,18 +7,18 @@ import create_changes_store, { type Changes } from './changes';
 import { __, sprintf } from '@wordpress/i18n';
 import { writable, type Readable } from 'svelte/store';
 
+export interface Options extends Pick< Config, 'edit_link_template' | 'post_id' | 'post_list_url' > {
+	notices: NoticesStore;
+	post: PostStore;
+	post_type: PostTypeStore;
+}
+
 export interface Editor {
 	data: Changes;
 	is_dirty: boolean;
 	is_saved: boolean;
 	is_saving: boolean;
 	was_saving: boolean;
-}
-
-export interface Options extends Pick< Config, 'edit_link_template' | 'post_id' | 'post_list_url' > {
-	notices: NoticesStore;
-	post: PostStore;
-	post_type: PostTypeStore;
 }
 
 export interface EditorStore extends Readable< Editor > {
@@ -57,6 +57,10 @@ function toggle_beforeunload_listener( $editor: Editor ): void {
 export default function create_store( options: Options ): EditorStore {
 	const { edit_link_template, notices, post, post_id, post_list_url, post_type } = options;
 
+	let $post_type: WP_REST_API_Type;
+	let $saved_post: Partial< WP_REST_API_Post >;
+	let $store: Editor;
+
 	const { update, ...editor } = writable< Editor >( {
 		data: {},
 		is_dirty: false,
@@ -66,9 +70,6 @@ export default function create_store( options: Options ): EditorStore {
 	} );
 
 	const changes = create_changes_store( post_id );
-
-	let $saved_post: Partial< WP_REST_API_Post >;
-	let $store: Editor;
 
 	// Update editor's data when post store value is updated.
 	post.subscribe( $post => {
@@ -104,7 +105,8 @@ export default function create_store( options: Options ): EditorStore {
 	} );
 
 	editor.subscribe( toggle_beforeunload_listener );
-	editor.subscribe( $editor => ( $store = $editor ) );
+	editor.subscribe( $value => ( $store = $value ) );
+	post_type.subscribe( $value => ( $post_type = $value ) );
 
 	return {
 		...editor,
@@ -117,13 +119,14 @@ export default function create_store( options: Options ): EditorStore {
 
 		async save(): Promise< void > {
 			try {
+				const { data } = $store;
 				const { id: prev_id, status: prev_status } = $saved_post;
 				update( $editor => ( { ...$editor, is_saving: true, was_saving: false } ) );
 
-				await post.save( $store.data );
+				await post.save( data );
 
-				const { data } = $store;
-				const { id, link, status } = data;
+				const { data: new_data } = $store;
+				const { id, link, status } = new_data;
 
 				update( $editor => ( { ...$editor, is_saved: true, was_saving: true } ) );
 
@@ -132,7 +135,7 @@ export default function create_store( options: Options ): EditorStore {
 					window.history.pushState( {}, '', edit_link_template.replace( '<id>', id.toString() ) );
 				}
 
-				const { labels, viewable } = post_type.get();
+				const { labels, viewable } = $post_type;
 				const { item_published, item_updated, singular_name, view_item } = labels;
 
 				let notice_content: Notice[ 'content' ];
