@@ -7,7 +7,6 @@
 	const editor = get_store( 'editor' );
 
 	$: is_draft_post = is_draft( $editor.data.status );
-	$: is_disabled = ! ( $editor.data.content || $editor.data.title );
 	// TODO: Schedule.
 	$: text = is_draft_post ? __( 'Publish' ) : __( 'Update' );
 
@@ -22,8 +21,8 @@
 
 <Button
 	is_primary
-	aria-disabled={is_disabled}
-	disabled={is_disabled}
+	aria-disabled={! $editor.can_save}
+	disabled={! $editor.can_save}
 	is_busy={$editor.is_saving}
 	on:click={handle_click}>{text}</Button
 >

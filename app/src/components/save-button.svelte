@@ -50,6 +50,10 @@
 			text = __( 'Switch to draft' );
 		}
 
+		if ( ! $editor.can_save ) {
+			is_disabled = true;
+		}
+
 		cls += ' editor-post-saved-state';
 	}
 </script>
