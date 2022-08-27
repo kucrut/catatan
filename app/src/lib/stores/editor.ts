@@ -1,5 +1,5 @@
 import type { Config } from '$types';
-import type { WP_REST_API_Post, WP_REST_API_Type } from 'wp-types';
+import type { WP_REST_API_Post } from 'wp-types';
 import create_changes_store, { type Changes, type ChangesStore } from './changes';
 import notices_store, { type Notice } from './notices';
 import post_store from './post';
@@ -61,7 +61,6 @@ function create_store(): EditorStore< Editor > {
 	} );
 
 	let changes: ChangesStore;
-	let $post_type: WP_REST_API_Type;
 	let $saved_post: Partial< WP_REST_API_Post >;
 	let $store: Editor;
 
@@ -114,7 +113,6 @@ function create_store(): EditorStore< Editor > {
 
 	editor.subscribe( toggle_beforeunload_listener );
 	editor.subscribe( $editor => ( $store = $editor ) );
-	post_type_store.subscribe( $type => ( $post_type = $type ) );
 
 	return {
 		...params,
@@ -146,17 +144,20 @@ function create_store(): EditorStore< Editor > {
 					window.history.pushState( {}, '', edit_link_template.replace( '<id>', id.toString() ) );
 				}
 
+				const { labels, viewable } = post_type_store.get();
+				const { item_published, item_updated, singular_name, view_item } = labels;
+
 				let notice_content: Notice[ 'content' ];
 				let notice_link_text: Notice[ 'link' ][ 'text' ];
 
 				if ( prev_status === 'draft' && status === 'publish' ) {
-					notice_content = $post_type.labels.item_published;
-					notice_link_text = $post_type.labels.view_item;
+					notice_content = item_published;
+					notice_link_text = view_item;
 				} else if ( prev_status && prev_status !== 'draft' && status === 'draft' ) {
-					notice_content = sprintf( __( '%s reverted to draft.' ), $post_type.labels.singular_name );
+					notice_content = sprintf( __( '%s reverted to draft.' ), singular_name );
 				} else if ( status === 'publish' ) {
-					notice_content = $post_type.labels.item_updated;
-					notice_link_text = $post_type.labels.view_item;
+					notice_content = item_updated;
+					notice_link_text = view_item;
 				} else {
 					notice_content = __( 'Draft saved' );
 					notice_link_text = __( 'View Preview' );
@@ -166,7 +167,7 @@ function create_store(): EditorStore< Editor > {
 					content: notice_content,
 					id: 'saved',
 					type: 'snack',
-					link: $post_type.viewable && notice_link_text ? { text: notice_link_text, url: link } : undefined,
+					link: viewable && notice_link_text ? { text: notice_link_text, url: link } : undefined,
 				} );
 			} catch ( error ) {
 				notices_store.add( {
