@@ -9,7 +9,7 @@
 	const editor = get_store( 'editor' );
 	const id = 'catatan-post-excerpt-input';
 
-	function handle_input( event: InputEvent & { currentTarget: HTMLTextAreaElement } ) {
+	function handle_input( event: InputEvent & { currentTarget: HTMLTextAreaElement } ): void {
 		editor.update( { excerpt: event.currentTarget.value } );
 	}
 </script>

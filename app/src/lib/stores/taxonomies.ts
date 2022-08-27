@@ -13,7 +13,7 @@ export default function create_store(): TaxonomiesStore {
 	return {
 		...store,
 
-		async fetch() {
+		async fetch(): Promise< void > {
 			const data = await api_fetch< WP_REST_API_Taxonomies >( {
 				parse: true,
 				path: `/wp/v2/taxonomies?context=edit`,

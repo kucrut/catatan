@@ -5,7 +5,7 @@
 	let is_expanded = false;
 	$: icon = is_expanded ? 'arrow-up' : 'arrow-down';
 
-	function handle_click_button() {
+	function handle_click_button(): void {
 		is_expanded = ! is_expanded;
 	}
 </script>

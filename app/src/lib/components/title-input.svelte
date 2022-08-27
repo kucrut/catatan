@@ -4,7 +4,7 @@
 
 	const editor = get_store( 'editor' );
 
-	function handle_input( event: InputEvent & { currentTarget: HTMLInputElement } ) {
+	function handle_input( event: InputEvent & { currentTarget: HTMLInputElement } ): void {
 		editor.update( { title: event.currentTarget.value } );
 	}
 </script>

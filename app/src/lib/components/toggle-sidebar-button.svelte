@@ -4,6 +4,10 @@
 	import { get_store } from '$lib/stores';
 
 	const ui = get_store( 'ui' );
+
+	function toggle(): void {
+		ui.toggle_sidebar();
+	}
 </script>
 
 <Button
@@ -12,5 +16,5 @@
 	aria-pressed={$ui.is_sidebar_open}
 	class={$ui.is_sidebar_open ? 'is-pressed' : ''}
 	icon="gear"
-	on:click={() => ui.toggle_sidebar()}
+	on:click={toggle}
 />

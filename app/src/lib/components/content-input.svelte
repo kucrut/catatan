@@ -4,11 +4,11 @@
 
 	const editor = get_store( 'editor' );
 
-	function autosize( node: HTMLTextAreaElement ) {
+	function autosize( node: HTMLTextAreaElement ): void {
 		textarea_autosize( node );
 	}
 
-	function handle_input( event: Event & { currentTarget: HTMLTextAreaElement } ) {
+	function handle_input( event: Event & { currentTarget: HTMLTextAreaElement } ): void {
 		editor.update( { content: event.currentTarget.value } );
 	}
 </script>

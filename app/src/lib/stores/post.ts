@@ -27,7 +27,7 @@ export default function create_store( post_type_store: PostTypeStore, post_id: n
 
 	const permission_store = create_permission_store( path );
 
-	const update_path = () => {
+	const update_path = (): void => {
 		path = api_path;
 
 		if ( current_id > 0 ) {
@@ -71,7 +71,7 @@ export default function create_store( post_type_store: PostTypeStore, post_id: n
 		),
 	);
 
-	const fetch = async ( options?: APIFetchOptions ) => {
+	const fetch = async ( options?: APIFetchOptions ): Promise< Post > => {
 		const data = await api_fetch< Post >( {
 			path: `${ path }?context=edit`,
 			parse: true,
@@ -84,12 +84,12 @@ export default function create_store( post_type_store: PostTypeStore, post_id: n
 	return {
 		...store,
 
-		async fetch() {
+		async fetch(): Promise< void > {
 			const data = await fetch();
 			post_store.update( $value => ( { ...$value, ...data } ) );
 		},
 
-		async save( changes: Changes ) {
+		async save( changes: Changes ): Promise< void > {
 			const data = await fetch( {
 				data: changes,
 				method: 'POST',
@@ -103,7 +103,7 @@ export default function create_store( post_type_store: PostTypeStore, post_id: n
 			}
 		},
 
-		async trash() {
+		async trash(): Promise< void > {
 			const { __can__ } = this.get();
 
 			if ( ! __can__.delete ) {

@@ -30,7 +30,7 @@ export default function create_store( api_path: string ): PermissionStore {
 	return {
 		...store,
 
-		async fetch() {
+		async fetch(): Promise< void > {
 			try {
 				const response = await api_fetch< Response >( {
 					method: 'OPTIONS',
@@ -54,7 +54,7 @@ export default function create_store( api_path: string ): PermissionStore {
 			} catch {}
 		},
 
-		set_path( new_path: string ) {
+		set_path( new_path: string ): void {
 			path = new_path;
 		},
 	};

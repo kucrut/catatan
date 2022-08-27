@@ -11,13 +11,13 @@
 	const { content, id, link } = item;
 	let timeout_id: number;
 
-	function cancel_scheduled_removal() {
+	function cancel_scheduled_removal(): void {
 		if ( timeout_id ) {
 			clearTimeout( timeout_id );
 		}
 	}
 
-	function schedule_removal() {
+	function schedule_removal(): void {
 		cancel_scheduled_removal();
 		timeout_id = setTimeout( () => {
 			notices.remove( id );
@@ -32,8 +32,8 @@
 	class="components-snackbar"
 	role="button"
 	tabindex="0"
-	on:mouseenter={() => cancel_scheduled_removal()}
-	on:mouseleave={() => schedule_removal()}
+	on:mouseenter={cancel_scheduled_removal}
+	on:mouseleave={schedule_removal}
 >
 	<div class="components-snackbar__content">
 		{content}

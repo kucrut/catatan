@@ -10,7 +10,7 @@
 	const post_type = get_store( 'post_type' );
 	const id = 'catatan-post-slug-input';
 
-	function handle_input( event: InputEvent & { currentTarget: HTMLInputElement } ) {
+	function handle_input( event: InputEvent & { currentTarget: HTMLInputElement } ): void {
 		editor.update( { slug: event.currentTarget.value } );
 	}
 </script>

@@ -8,6 +8,10 @@
 
 	const post_type = get_store( 'post_type' );
 	const ui = get_store( 'ui' );
+
+	function close(): void {
+		ui.close_sidebar();
+	}
 </script>
 
 <div
@@ -27,13 +31,7 @@
 					<Button class="edit-post-sidebar__panel-tab is-active">{$post_type.labels.singular_name}</Button>
 				</li>
 			</ul>
-			<Button
-				aria-label={__( 'Close settings' )}
-				icon="close"
-				on:click={() => {
-					ui.close_sidebar();
-				}}
-			/>
+			<Button aria-label={__( 'Close settings' )} icon="close" on:click={close} />
 		</div>
 		<StatusPanel />
 		{#if $post_type.viewable}

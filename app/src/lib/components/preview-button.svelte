@@ -6,7 +6,7 @@
 
 	const editor = get_store( 'editor' );
 
-	function get_url() {
+	function get_url(): string {
 		const url = new URL( $editor.data.link );
 		url.searchParams.append( 'preview', 'true' );
 

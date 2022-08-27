@@ -12,7 +12,7 @@ export default function with_get< T >( store: Readable< T > | Writable< T > ): W
 	return {
 		...store,
 
-		get() {
+		get(): T {
 			return $store;
 		},
 	};

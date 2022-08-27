@@ -30,14 +30,14 @@ export interface EditorStore extends Readable< Editor > {
 	update( new_changes: Changes ): void;
 }
 
-function confirm_leave( event: BeforeUnloadEvent ) {
+function confirm_leave( event: BeforeUnloadEvent ): string {
 	event.preventDefault();
 	event.returnValue = 'confirm leave';
 
 	return 'confirm leave';
 }
 
-function toggle_beforeunload_listener( $editor: Editor ) {
+function toggle_beforeunload_listener( $editor: Editor ): void {
 	if ( $editor.is_dirty ) {
 		window.addEventListener( 'beforeunload', confirm_leave, { capture: true } );
 	} else {
@@ -111,11 +111,11 @@ export default function create_store( options: Options ): EditorStore {
 
 		fetch: post.fetch,
 
-		clear() {
+		clear(): void {
 			changes.delete();
 		},
 
-		async save() {
+		async save(): Promise< void > {
 			try {
 				const { id: prev_id, status: prev_status } = $saved_post;
 				update( $editor => ( { ...$editor, is_saving: true, was_saving: false } ) );
@@ -169,7 +169,7 @@ export default function create_store( options: Options ): EditorStore {
 			}
 		},
 
-		async trash() {
+		async trash(): Promise< void > {
 			try {
 				await post.trash();
 
@@ -192,7 +192,7 @@ export default function create_store( options: Options ): EditorStore {
 		 *
 		 * @param {Changes} new_changes Changes made to the post.
 		 */
-		update( new_changes: Changes ) {
+		update( new_changes: Changes ): void {
 			changes.update( $changes => ( { ...$changes, ...new_changes } ) );
 
 			update( $editor => ( {

@@ -12,7 +12,7 @@ export default function create_store( post_type: string ): PostTypeStore {
 	return {
 		...store,
 
-		async fetch() {
+		async fetch(): Promise< void > {
 			const data = await api_fetch< WP_REST_API_Type >( {
 				parse: true,
 				path: `/wp/v2/types/${ post_type }?context=edit`,

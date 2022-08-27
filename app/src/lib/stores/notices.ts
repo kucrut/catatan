@@ -20,7 +20,7 @@ export interface NoticesStore extends Readable< Notices > {
 	remove( item_id: Notice[ 'id' ] ): void;
 }
 
-function remove_item( $items: Notices, item_id: Notice[ 'id' ] ) {
+function remove_item( $items: Notices, item_id: Notice[ 'id' ] ): Notices {
 	return $items.filter( ( { id } ) => item_id !== id );
 }
 
@@ -30,11 +30,11 @@ export default function create_store(): NoticesStore {
 	return {
 		...store,
 
-		add( item: Notice ) {
+		add( item: Notice ): void {
 			update( $items => [ ...remove_item( $items, item.id ), item ] );
 		},
 
-		remove( item_id: Notice[ 'id' ] ) {
+		remove( item_id: Notice[ 'id' ] ): void {
 			update( $items => remove_item( $items, item_id ) );
 		},
 	};

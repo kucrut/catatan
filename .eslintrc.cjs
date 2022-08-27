@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+
 module.exports = {
 	root: true,
 	extends: [
@@ -49,5 +51,6 @@ module.exports = {
 				asyncArrow: 'always',
 			},
 		],
+		'@typescript-eslint/explicit-function-return-type': 'error',
 	},
 };

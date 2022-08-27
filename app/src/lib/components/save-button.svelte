@@ -11,7 +11,7 @@
 	$: is_not_draft = $editor.data.status && $editor.data.status !== 'draft';
 	$: text = __( 'Save draft' );
 
-	function handle_click() {
+	function handle_click(): void {
 		if ( is_not_draft ) {
 			editor.update( { status: 'draft' } );
 		}

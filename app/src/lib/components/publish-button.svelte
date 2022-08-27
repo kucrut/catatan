@@ -9,7 +9,7 @@
 	// TODO: Schedule.
 	$: text = $editor.data.status && $editor.data.status !== 'draft' ? __( 'Update' ) : __( 'Publish' );
 
-	function handle_click() {
+	function handle_click(): void {
 		if ( $editor.data.status === 'draft' ) {
 			editor.update( { status: 'publish' } );
 		}

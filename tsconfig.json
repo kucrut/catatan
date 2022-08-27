@@ -4,6 +4,7 @@
 		"target": "ESNext",
 		"useDefineForClassFields": true,
 		"module": "ESNext",
+		"noImplicitReturns": true,
 		"noImplicitThis": true,
 		"resolveJsonModule": true,
 		"baseUrl": ".",

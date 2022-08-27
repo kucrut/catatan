@@ -24,14 +24,14 @@ export default function create_ui_store(): UiStore {
 
 		update,
 
-		close_sidebar() {
+		close_sidebar(): void {
 			update( value => ( {
 				...value,
 				is_sidebar_open: false,
 			} ) );
 		},
 
-		toggle_sidebar() {
+		toggle_sidebar(): void {
 			update( value => ( {
 				...value,
 				is_sidebar_open: ! value.is_sidebar_open,
