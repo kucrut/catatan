@@ -6,12 +6,13 @@
 
 	const editor = get_store( 'editor' );
 
+	$: is_draft_post = is_draft( $editor.data.status );
 	$: is_disabled = ! ( $editor.data.content || $editor.data.title );
 	// TODO: Schedule.
-	$: text = is_draft( $editor.data.status ) ? __( 'Publish' ) : __( 'Update' );
+	$: text = is_draft_post ? __( 'Publish' ) : __( 'Update' );
 
 	function handle_click(): void {
-		if ( $editor.data.status === 'draft' ) {
+		if ( is_draft_post ) {
 			editor.update( { status: 'publish' } );
 		}
 
