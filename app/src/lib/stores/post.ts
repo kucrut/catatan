@@ -1,5 +1,6 @@
 import type { Changes } from './changes';
-import type { WP_REST_API_Post, WP_REST_API_Type } from 'wp-types';
+import type { WP_REST_API_Post } from 'wp-types';
+import type { PostTypeStore } from './post-type';
 import api_fetch, { type APIFetchOptions } from '@wordpress/api-fetch';
 import create_permission_store, { type Permission } from './permission';
 import with_params, { type WithParams } from './with-params';
@@ -7,7 +8,7 @@ import { derived, writable, type Readable } from 'svelte/store';
 
 interface Params {
 	post_id?: number;
-	type?: WP_REST_API_Type;
+	type?: PostTypeStore;
 }
 
 export interface Store< T > extends Readable< T >, Omit< WithParams< Params >, 'subscribe' > {
@@ -25,7 +26,9 @@ function create_store(): Store< Post > {
 	const post_store = writable< Post >();
 	const params = with_params< Params >();
 
+	let api_path: string;
 	let path: string;
+	let type_store: PostTypeStore;
 	let $store: Post;
 
 	params.subscribe( $params => {
@@ -35,11 +38,19 @@ function create_store(): Store< Post > {
 
 		const { post_id, type } = $params;
 
-		if ( ! type || typeof post_id === 'undefined' ) {
+		if ( type && ! type_store ) {
+			type_store = type;
+			type_store.subscribe( $type => {
+				if ( $type ) {
+					api_path = `${ $type.rest_namespace }/${ $type.rest_base }`;
+				}
+			} );
+		}
+
+		if ( typeof post_id === 'undefined' ) {
 			return;
 		}
 
-		const api_path = `${ type.rest_namespace }/${ type.rest_base }`;
 		const new_path = post_id > 0 ? `${ api_path }/${ post_id }` : api_path;
 
 		if ( new_path === path ) {

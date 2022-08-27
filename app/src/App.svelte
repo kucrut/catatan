@@ -19,7 +19,7 @@
 			post_type_store.set_params( { post_type } );
 			await post_type_store.fetch();
 
-			post_store.set_params( { post_id, type: $post_type_store } );
+			post_store.set_params( { post_id, type: post_type_store } );
 			await post_store.fetch();
 
 			taxonomies_store.set_params( { post_type } );
