@@ -13,7 +13,10 @@
 		return url.toString();
 	}
 
-	$: props = $editor.data.link ? { href: get_url(), target: '_blank' } : { 'aria-disabled': true, 'disabled': true };
+	$: props =
+		$editor.data.link && $editor.data.status !== 'auto-draft'
+			? { href: get_url(), target: '_blank' }
+			: { 'aria-disabled': true, 'disabled': true };
 </script>
 
 <Button is_tertiary {...props}>{__( 'Preview' )} <Icon icon="external" /></Button>
