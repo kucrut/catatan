@@ -3,10 +3,12 @@
 	import ExcerptPanel from './excerpt-panel.svelte';
 	import PermalinkPanel from './permalink-panel.svelte';
 	import StatusPanel from './status-panel.svelte';
+	import TermsPanel from './terms-panel.svelte';
 	import { __ } from '@wordpress/i18n';
 	import { get_store } from '$stores';
 
 	const post_type = get_store( 'post_type' );
+	const taxonomies = get_store( 'taxonomies' );
 	const ui = get_store( 'ui' );
 
 	function close(): void {
@@ -36,6 +38,13 @@
 		<StatusPanel />
 		{#if $post_type.viewable}
 			<PermalinkPanel />
+		{/if}
+		{#if $taxonomies.length}
+			{#each $taxonomies as tax}
+				{#if tax.__can__.assign}
+					<TermsPanel taxonomy={tax} />
+				{/if}
+			{/each}
 		{/if}
 		{#if $post_type.supports.excerpt}
 			<ExcerptPanel />
