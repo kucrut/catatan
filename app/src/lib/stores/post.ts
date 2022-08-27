@@ -2,34 +2,34 @@ import type { Changes } from './changes';
 import type { WP_REST_API_Post } from 'wp-types';
 import type { PostTypeStore } from './post-type';
 import api_fetch, { type APIFetchOptions } from '@wordpress/api-fetch';
-import create_permission_store, { type Permission } from './permission';
+import create_permission_store, { type Permission, type PermissionStore } from './permission';
+import with_get, { type WithGet } from './with-get';
 import with_params, { type WithParams } from './with-params';
-import { derived, writable, type Readable } from 'svelte/store';
+import { derived, writable, type Readable, type Writable } from 'svelte/store';
 
 interface Params {
 	post_id?: number;
 	type?: PostTypeStore;
 }
 
-export interface Store< T > extends Readable< T >, Omit< WithParams< Params >, 'subscribe' > {
+export interface Post extends WP_REST_API_Post {
+	__can__?: Permission;
+}
+
+export interface PostStore extends Readable< Post >, Omit< WithParams< Params >, 'subscribe' >, WithGet< Post > {
 	fetch(): Promise< void >;
 	// eslint-disable-next-line no-unused-vars
 	save( changes: Changes ): Promise< void >;
 	trash(): Promise< void >;
 }
 
-export interface Post extends WP_REST_API_Post {
-	__can__?: Permission;
-}
-
-function create_store(): Store< Post > {
+function create_store(): PostStore {
 	const post_store = writable< Post >();
 	const params = with_params< Params >();
 
 	let api_path: string;
 	let path: string;
 	let type_store: PostTypeStore;
-	let $store: Post;
 
 	params.subscribe( $params => {
 		if ( ! $params ) {
@@ -81,16 +81,16 @@ function create_store(): Store< Post > {
 		params.set_params( { post_id: id } );
 	} );
 
-	const store = derived< [ typeof post_store, typeof permission_store ], Post >(
-		[ post_store, permission_store ],
-		( [ $post_store, $permission ], set ) => {
-			$store = {
-				...$post_store,
-				__can__: $permission,
-			};
-
-			set( $store );
-		},
+	const store = with_get< Post >(
+		derived< [ Writable< Post >, PermissionStore ], Post >(
+			[ post_store, permission_store ],
+			( [ $post_store, $permission ], set ) => {
+				set( {
+					...$post_store,
+					__can__: $permission,
+				} );
+			},
+		),
 	);
 
 	const fetch = async ( options?: APIFetchOptions ) => {
@@ -130,7 +130,9 @@ function create_store(): Store< Post > {
 		},
 
 		async trash() {
-			if ( ! $store.__can__.delete ) {
+			const { __can__ } = this.get();
+
+			if ( ! __can__.delete ) {
 				throw new Error( 'You do not have permission to trash this post.' );
 			}
 
