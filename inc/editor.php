@@ -116,6 +116,11 @@ function get_config( WP_Post_Type $post_type ): array {
 		$post_list_url = add_query_arg( [ 'post_type' => $post_type->name ], $post_list_url );
 	}
 
+	if ( $post_id === 0 ) {
+		$post = get_default_post_to_edit( $post_type->name, true );
+		$post_id = $post->ID;
+	}
+
 	$config = [
 		'edit_link_template' => preg_replace( '/(\d+)$/', '<id>', Catatan\get_editor_url( $post_type->name, 1 ) ),
 		'editor_id' => CATATAN\EDITOR_ID,
