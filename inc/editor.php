@@ -145,6 +145,8 @@ function get_config( WP_Post_Type $post_type ): array {
  *
  * @since 0.1.0
  *
+ * @todo Provide page title templates for new & edit screens.
+ *
  * @param WP_Post_Type $post_type Current post type object.
  * @param bool         $is_edit   Are we loading the edit page?
  *
