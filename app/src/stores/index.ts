@@ -3,6 +3,7 @@ import create_editor_store, { type EditorStore } from './editor';
 import create_notices_store, { type NoticesStore } from './notices';
 import create_post_store, { type PostStore } from './post';
 import create_post_type_store, { type PostTypeStore } from './post-type';
+import create_taxonomies_store, { type TaxonomiesStore } from './taxonomies';
 import create_ui_store, { type UiStore } from './ui';
 
 export type StoresConfig = Omit< Config, 'editor_id' | 'nonce' | 'rest_url' >;
@@ -12,6 +13,7 @@ export interface Stores {
 	notices: NoticesStore;
 	post: PostStore;
 	post_type: PostTypeStore;
+	taxonomies: TaxonomiesStore;
 	ui: UiStore;
 }
 
@@ -22,6 +24,9 @@ export async function init_stores( config: StoresConfig ): Promise< void > {
 
 	const post_type_store = create_post_type_store( post_type );
 	await post_type_store.fetch();
+
+	const taxonomies = create_taxonomies_store( post_type );
+	await taxonomies.fetch();
 
 	const post = create_post_store( post_type_store, post_id );
 
@@ -34,6 +39,7 @@ export async function init_stores( config: StoresConfig ): Promise< void > {
 	stores = {
 		notices,
 		post,
+		taxonomies,
 		editor: create_editor_store( {
 			post,
 			post_id,
