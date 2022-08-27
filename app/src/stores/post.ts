@@ -22,6 +22,7 @@ export default function create_store( api_path: string, post_id: number ): PostS
 	let $store: Post;
 
 	const permission_store = create_permission_store( path );
+	permission_store.fetch();
 
 	const store = derived< [ Writable< Post >, PermissionStore ], Post >(
 		[ post_store, permission_store ],
