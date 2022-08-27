@@ -120,18 +120,23 @@ export default function create_store( options: Options ): EditorStore {
 		async save(): Promise< void > {
 			try {
 				const { data } = $store;
-				const { id: prev_id, status: prev_status } = $saved_post;
+				const { status: next_status } = data;
+				const { status: prev_status } = $saved_post;
+				const was_auto_draft = prev_status === 'auto-draft';
+
 				update( $editor => ( { ...$editor, is_saving: true, was_saving: false } ) );
 
-				await post.save( data );
+				await post.save( {
+					...data,
+					status: was_auto_draft && next_status === 'auto-draft' ? 'draft' : next_status,
+				} );
 
 				const { data: new_data } = $store;
 				const { id, link, status } = new_data;
 
 				update( $editor => ( { ...$editor, is_saved: true, was_saving: true } ) );
 
-				// We've just created a new post.
-				if ( ! prev_id && id ) {
+				if ( was_auto_draft ) {
 					window.history.pushState( {}, '', edit_link_template.replace( '<id>', id.toString() ) );
 				}
 
