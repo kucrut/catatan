@@ -149,14 +149,15 @@ export default function create_store( options: Options ): EditorStore {
 				if ( status === 'publish' && ( was_auto_draft || prev_status === 'draft' ) ) {
 					notice_content = item_published;
 					notice_link_text = view_item;
-				} else if ( prev_status && prev_status !== 'draft' && status === 'draft' ) {
+				} else if ( status === 'draft' && ! was_auto_draft ) {
 					notice_content = sprintf( __( '%s reverted to draft.' ), singular_name );
 				} else if ( status === 'publish' ) {
 					notice_content = item_updated;
 					notice_link_text = view_item;
 				} else {
-					notice_content = __( 'Draft saved' );
-					notice_link_text = __( 'View Preview' );
+					// TODO: Check these texts in the block editor source.
+					notice_content = __( 'Draft saved.' );
+					notice_link_text = __( 'Preview' );
 				}
 
 				notices.add( {
