@@ -90,7 +90,7 @@ export default function create_store( options: Options ): EditorStore {
 				status,
 				content: content?.raw || '',
 				excerpt: excerpt?.raw || '',
-				title: title?.raw || '',
+				title: status === 'auto-draft' ? '' : title?.raw || '',
 			},
 			is_dirty: false,
 		} ) );
