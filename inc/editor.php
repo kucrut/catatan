@@ -165,7 +165,7 @@ function load( WP_Post_Type $post_type, bool $is_edit = true ): void {
 	enqueue_assets( $post_type );
 
 	if ( $is_edit ) {
-		// Bacuse we've removed the page from admin menus, WP does not have the page title anymore, so we need to fix it here.
+		// Because we've removed the page from admin menus, WP does not have the page title anymore, so we need to fix it here.
 		add_filter( 'admin_title', fn ( string $admin_title ): string => "{$post_type->labels->edit_item} {$admin_title}" );
 	}
 
