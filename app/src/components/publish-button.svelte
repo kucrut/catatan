@@ -2,12 +2,13 @@
 	import Button from './button.svelte';
 	import { __ } from '@wordpress/i18n';
 	import { get_store } from '$stores';
+	import { is_draft } from '$utils/post';
 
 	const editor = get_store( 'editor' );
 
 	$: is_disabled = ! ( $editor.data.content || $editor.data.title );
 	// TODO: Schedule.
-	$: text = $editor.data.status && $editor.data.status !== 'draft' ? __( 'Update' ) : __( 'Publish' );
+	$: text = is_draft( $editor.data.status ) ? __( 'Publish' ) : __( 'Update' );
 
 	function handle_click(): void {
 		if ( $editor.data.status === 'draft' ) {
