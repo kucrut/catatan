@@ -112,9 +112,7 @@ export default function create_store( options: Options ): EditorStore {
 		fetch: post.fetch,
 
 		clear() {
-			if ( changes ) {
-				changes.delete();
-			}
+			changes.delete();
 		},
 
 		async save() {
@@ -195,9 +193,7 @@ export default function create_store( options: Options ): EditorStore {
 		 * @param {Changes} new_changes Changes made to the post.
 		 */
 		update( new_changes: Changes ) {
-			if ( changes ) {
-				changes.update( $changes => ( { ...$changes, ...new_changes } ) );
-			}
+			changes.update( $changes => ( { ...$changes, ...new_changes } ) );
 
 			update( $editor => ( {
 				...$editor,
