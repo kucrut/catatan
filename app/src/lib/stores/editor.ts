@@ -67,14 +67,6 @@ export default function create_store( options: Options ): EditorStore {
 
 	const changes = create_changes_store( post_id );
 
-	// Update editor's data when changes store value is updated.
-	changes.subscribe( $changes => {
-		update( ( { data, ...$document } ) => ( {
-			...$document,
-			data: { ...data, ...$changes },
-		} ) );
-	} );
-
 	let $saved_post: Partial< WP_REST_API_Post >;
 	let $store: Editor;
 
@@ -100,6 +92,14 @@ export default function create_store( options: Options ): EditorStore {
 				title: title?.raw || '',
 			},
 			is_dirty: false,
+		} ) );
+	} );
+
+	// Update editor's data when changes store value is updated.
+	changes.subscribe( $changes => {
+		update( ( { data, ...$document } ) => ( {
+			...$document,
+			data: { ...data, ...$changes },
 		} ) );
 	} );
 

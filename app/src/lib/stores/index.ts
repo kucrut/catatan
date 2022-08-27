@@ -24,7 +24,10 @@ export async function init_stores( config: StoresConfig ): Promise< void > {
 	await post_type_store.fetch();
 
 	const post = create_post_store( post_type_store, post_id );
-	await post.fetch();
+
+	if ( post_id > 0 ) {
+		await post.fetch();
+	}
 
 	const notices = create_notices_store();
 

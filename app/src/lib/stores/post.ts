@@ -25,46 +25,23 @@ export default function create_store( post_type_store: PostTypeStore, post_id: n
 	let api_path: string;
 	let path: string;
 
+	const permission_store = create_permission_store( path );
+
+	const update_path = () => {
+		path = api_path;
+
+		if ( current_id > 0 ) {
+			path = `${ path }/${ current_id }`;
+		}
+
+		permission_store.set_path( path );
+		permission_store.fetch();
+	};
+
 	post_type_store.subscribe( ( { rest_base, rest_namespace } ) => {
 		api_path = `${ rest_namespace }/${ rest_base }`;
-
-		if ( ! path ) {
-			path = api_path;
-		}
+		update_path();
 	} );
-
-	// params.subscribe( $params => {
-	// 	if ( ! $params ) {
-	// 		return;
-	// 	}
-
-	// 	const { post_id, type } = $params;
-
-	// 	if ( type && ! type_store ) {
-	// 		type_store = type;
-	// 		type_store.subscribe( $type => {
-	// 			if ( $type ) {
-	// 				api_path = `${ $type.rest_namespace }/${ $type.rest_base }`;
-	// 			}
-	// 		} );
-	// 	}
-
-	// 	if ( typeof post_id === 'undefined' ) {
-	// 		return;
-	// 	}
-
-	// 	const new_path = post_id > 0 ? `${ api_path }/${ post_id }` : api_path;
-
-	// 	if ( new_path === path ) {
-	// 		return;
-	// 	}
-
-	// 	path = new_path;
-	// 	permission_store.set_path( path );
-	// 	permission_store.fetch();
-	// } );
-
-	const permission_store = create_permission_store( path );
 
 	post_store.subscribe( $post => {
 		// No data (post hasn't been fetched yet).
@@ -79,9 +56,7 @@ export default function create_store( post_type_store: PostTypeStore, post_id: n
 		}
 
 		current_id = id;
-		path = `${ api_path }/${ id }`;
-		permission_store.set_path( path );
-		permission_store.fetch();
+		update_path();
 	} );
 
 	const store = with_get< Post >(
@@ -120,9 +95,12 @@ export default function create_store( post_type_store: PostTypeStore, post_id: n
 				method: 'POST',
 			} );
 
+			const prev_id = current_id;
 			post_store.update( $value => ( { ...$value, ...data } ) );
-			// TODO
-			// await permission_store.fetch();
+
+			if ( prev_id !== 0 ) {
+				await permission_store.fetch();
+			}
 		},
 
 		async trash() {
