@@ -34,7 +34,7 @@
 				>{__( 'Read about permalinks' )}</ExternalLink
 			>
 		</p>
-		{#if $editor.data.link}
+		{#if $editor.data.link && $editor.data.status !== 'auto-draft'}
 			<h3 class="edit-post-post-link__preview-label">{$post_type.labels.view_item}</h3>
 			<div class="edit-post-post-link__preview-link-container">
 				<ExternalLink href={$editor.data.link}>{$editor.data.link}</ExternalLink>
