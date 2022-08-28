@@ -43,7 +43,7 @@
 	$: ( { labels, name, rest_base, slug, __can__ } = taxonomy );
 	$: ( { add_new_item, parent_item, singular_name, new_item_name } = labels );
 	$: {
-		if ( $terms.sorted ) {
+		if ( $terms.sorted?.length ) {
 			term_options = [
 				{
 					label: `— ${ parent_item } —`,
