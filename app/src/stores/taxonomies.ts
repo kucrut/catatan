@@ -71,7 +71,7 @@ export default function create_store( post: PostStore ): TaxonomiesStore {
 			return;
 		}
 
-		$taxonomies.forEach( ( { slug, __can__, _links } ) => {
+		$taxonomies.forEach( ( { hierarchical, slug, __can__, _links } ) => {
 			if ( ! __can__.assign ) {
 				return;
 			}
@@ -82,7 +82,7 @@ export default function create_store( post: PostStore ): TaxonomiesStore {
 				return;
 			}
 
-			const terms_store = create_terms_store( _links[ 'wp:items' ][ 0 ].href );
+			const terms_store = create_terms_store( _links[ 'wp:items' ][ 0 ].href, hierarchical );
 			terms_store.fetch();
 
 			tax_terms.push( {
