@@ -17,6 +17,11 @@ export interface Config {
 	rest_url: string;
 }
 
+export interface SelectControlOption {
+	label: string;
+	value: string | number;
+}
+
 declare global {
 	interface Window {
 		catatanEditor: Config;
