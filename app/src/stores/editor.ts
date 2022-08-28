@@ -101,8 +101,8 @@ export default function create_store( options: Options ): EditorStore {
 	changes.subscribe( $changes => {
 		const { content, excerpt, title } = $changes;
 
-		update( ( { data, ...$document } ) => ( {
-			...$document,
+		update( ( { data, ...$editor } ) => ( {
+			...$editor,
 			can_save: Boolean( content || excerpt || title ),
 			data: { ...data, ...$changes },
 		} ) );
