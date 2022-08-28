@@ -22,43 +22,39 @@ export interface TermsStore extends Readable< StoreValue > {
 	fetch(): Promise< void >;
 }
 
-// Credit: https://stackoverflow.com/a/31384614
-function flat_to_hierarchy( flat: TermWithChildren[] ): TermWithChildren[] {
-	const keyed_by_id = Object.fromEntries( flat.map( term => [ term.id, term ] ) );
-	const result: TermWithChildren[] = [];
+function flat_to_nested( flat: TermWithChildren[] ): TermWithChildren[] {
+	const map = {};
+	const result = [];
 
-	Object.values( keyed_by_id ).forEach( item => {
-		const parent = Number( item.parent );
+	for ( let i = 0; i < flat.length; i += 1 ) {
+		map[ flat[ i ].id ] = i;
+		flat[ i ].children = [];
+	}
 
-		if ( parent === 0 ) {
-			result.push( item );
-		} else if ( parent in keyed_by_id ) {
-			const p = keyed_by_id[ parent ];
+	for ( let i = 0; i < flat.length; i += 1 ) {
+		const term = flat[ i ];
 
-			if ( ! ( 'children' in p ) ) {
-				p.children = [];
-			}
-
-			p.children.push( item );
+		if ( term.parent > 0 ) {
+			flat[ map[ term.parent ] ].children.push( term );
+		} else {
+			result.push( term );
 		}
-	} );
+	}
 
 	return result;
 }
 
 export default function create_store( api_url: string, is_hierarchical = false ): TermsStore {
-	const terms_store = writable< WP_REST_API_Term[] >();
-	const store = derived< typeof terms_store, StoreValue >( terms_store, ( $terms, set ) => {
-		const flat = $terms || [];
-
-		if ( ! ( is_hierarchical && $terms ) ) {
-			set( { flat } );
+	const terms = writable< WP_REST_API_Term[] >();
+	const store = derived< typeof terms, StoreValue >( terms, ( $terms, set ) => {
+		if ( ! $terms ) {
+			set( { flat: [] } );
 			return;
 		}
 
 		set( {
-			flat,
-			sorted: flat_to_hierarchy( flat ),
+			flat: $terms,
+			sorted: is_hierarchical ? flat_to_nested( $terms ) : undefined,
 		} );
 	} );
 
@@ -75,7 +71,7 @@ export default function create_store( api_url: string, is_hierarchical = false )
 					parse: true,
 				} );
 
-				terms_store.update( $terms => [ new_term, ...$terms ] );
+				terms.update( $terms => [ ...$terms, new_term ] );
 
 				return new_term;
 			} catch ( error ) {
@@ -88,7 +84,7 @@ export default function create_store( api_url: string, is_hierarchical = false )
 				parse: true,
 				url: `${ api_url }?context=edit&per_page=100`,
 			} );
-			terms_store.update( () => data );
+			terms.update( () => data );
 			// TODO: Fetch more.
 		},
 	};
