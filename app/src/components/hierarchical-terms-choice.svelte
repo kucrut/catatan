@@ -16,11 +16,11 @@
 	$: choices = $terms ? $terms.filter( ( { parent: parent_id } ) => parent === parent_id ) : [];
 
 	function handle_check( id: number ): void {
-		const next_selected = selected.includes( id )
-			? selected.filter( term_id => id !== term_id )
-			: selected.concat( id );
-
-		editor.update( { [ tax_name ]: next_selected } );
+		if ( selected.includes( id ) ) {
+			editor.remove_term( tax_name, id );
+		} else {
+			editor.add_term( tax_name, id );
+		}
 	}
 </script>
 
