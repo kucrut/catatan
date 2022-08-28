@@ -7,6 +7,6 @@
 
 <BaseControl {id} {label} type="checkbox">
 	<span class="components-checkbox-control__input-container" slot="before-label">
-		<input {id} class="components-checkbox-control__input" type="checkbox" value="1" />
+		<input {id} class="components-checkbox-control__input" type="checkbox" {...$$restProps} on:change />
 	</span>
 </BaseControl>
