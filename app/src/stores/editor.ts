@@ -81,6 +81,8 @@ export default function create_store( options: Options ): EditorStore {
 		}
 
 		const { content, excerpt, id, link, slug, status, title } = $post;
+		// auto-draft posts have default title that we don't want to use.
+		const proper_title = status === 'auto-draft' ? '' : title?.raw || '';
 
 		update( $editor => ( {
 			...$editor,
@@ -91,7 +93,7 @@ export default function create_store( options: Options ): EditorStore {
 				status,
 				content: content?.raw || '',
 				excerpt: excerpt?.raw || '',
-				title: status === 'auto-draft' ? '' : title?.raw || '',
+				title: proper_title,
 			},
 			is_dirty: false,
 		} ) );
@@ -99,13 +101,20 @@ export default function create_store( options: Options ): EditorStore {
 
 	// Update editor's data when changes store value is updated.
 	changes.subscribe( $changes => {
-		const { content, excerpt, title } = $changes;
+		update( ( { data, ...$editor } ) => {
+			const { content: new_content, excerpt: new_excerpt, title: new_title } = $changes;
+			const { content, excerpt, status, title } = data;
 
-		update( ( { data, ...$editor } ) => ( {
-			...$editor,
-			can_save: Boolean( content || excerpt || title ),
-			data: { ...data, ...$changes },
-		} ) );
+			return {
+				...$editor,
+				can_save:
+					// Saving an auto-draft post needs content or excerpt or title to be set.
+					status === 'auto-draft'
+						? Boolean( content || new_content || excerpt || new_excerpt || title || new_title )
+						: Boolean( Object.values( $changes ).filter( Boolean ).length ),
+				data: { ...data, ...$changes },
+			};
+		} );
 	} );
 
 	editor.subscribe( toggle_beforeunload_listener );
