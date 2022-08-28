@@ -37,7 +37,7 @@
 			/>
 			{#if children.length}
 				<div class="{class_prefix}-subchoices">
-					<svelte:self {taxonomy} {terms} parent={id} />
+					<svelte:self {class_prefix} {taxonomy} {terms} parent={id} />
 				</div>
 			{/if}
 		</div>
