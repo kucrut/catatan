@@ -10,8 +10,9 @@
 
 	const editor = get_store( 'editor' );
 	const post = get_store( 'post' );
+	let is_creating_term = false;
 
-	$: ( { rest_base: tax_name } = taxonomy );
+	$: ( { rest_base: tax_name, labels, name, __can__ } = taxonomy );
 	$: post_terms = $post[ tax_name ] as number[];
 
 	function handle_check( id: number ): void {
@@ -22,9 +23,14 @@
 
 		editor.update( { [ tax_name ]: next_terms } );
 	}
+
+	function handle_click_toggle(): void {
+		is_creating_term = ! is_creating_term;
+		// TODO: Show/hide the form.
+	}
 </script>
 
-<Panel title={taxonomy.name}>
+<Panel title={name}>
 	<div class="editor-post-taxonomies__hierarchical-terms-list">
 		{#if $terms}
 			{#each $terms as { id, name } (id)}
@@ -40,4 +46,12 @@
 			{/each}
 		{/if}
 	</div>
+	{#if __can__.create}
+		<button
+			aria-expanded={is_creating_term}
+			class="components-button editor-post-taxonomies__hierarchical-terms-add is-link"
+			type="button"
+			on:click={handle_click_toggle}>{labels.add_new_item}</button
+		>
+	{/if}
 </Panel>
