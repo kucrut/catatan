@@ -5,6 +5,7 @@
 	import { get_store } from '$stores';
 
 	export let class_prefix: string;
+	export let parent = 0;
 	export let taxonomy: Taxonomy;
 	export let terms: TermsStore;
 
@@ -12,6 +13,7 @@
 
 	$: ( { rest_base: tax_name } = taxonomy );
 	$: selected = $editor.data[ tax_name ] as number[];
+	$: choices = $terms ? $terms.filter( ( { parent: parent_id } ) => parent === parent_id ) : [];
 
 	function handle_check( id: number ): void {
 		const next_selected = selected.includes( id )
@@ -22,8 +24,8 @@
 	}
 </script>
 
-{#if $terms}
-	{#each $terms as { id, name } (id)}
+{#if choices.length}
+	{#each choices as { id, name } (id)}
 		<div class="{class_prefix}-choice">
 			<CheckboxControl
 				checked={selected.includes( id )}

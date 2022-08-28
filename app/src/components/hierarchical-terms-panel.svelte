@@ -20,7 +20,7 @@
 
 <Panel title={name}>
 	<div class="{class_prefix}-list">
-		<HierarchicalTermsChoice {class_prefix} {taxonomy} {terms} />
+		<HierarchicalTermsChoice {class_prefix} {taxonomy} {terms} parent={0} />
 	</div>
 	{#if __can__.create}
 		<button
