@@ -15,7 +15,9 @@
 	$: selected = $editor.data[ tax_name ] as number[];
 	$: choices = $terms ? $terms.filter( ( { parent: parent_id } ) => parent === parent_id ) : [];
 
-	function handle_check( id: number ): void {
+	function handle_check( event: Event & { target: HTMLInputElement } ): void {
+		const id = Number( event.target.value );
+
 		if ( selected.includes( id ) ) {
 			editor.remove_term( tax_name, id );
 		} else {
@@ -32,7 +34,7 @@
 			id="{tax_name}-{id}"
 			label={name}
 			value={id}
-			on:change={() => handle_check( id )}
+			on:change={handle_check}
 		/>
 		{#if children.length}
 			<div class="{class_prefix}-subchoices">
