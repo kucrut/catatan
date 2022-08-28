@@ -17,6 +17,7 @@ specifiers:
   eslint: ^8.22.0
   eslint-plugin-prettier: ^4.2.1
   eslint-plugin-svelte3: ^4.0.0
+  just-sort-by: ^3.1.1
   postcss: ^8.4.16
   postcss-custom-properties: ^12.1.8
   postcss-flexbugs-fixes: ^5.0.2
@@ -57,6 +58,7 @@ devDependencies:
   eslint: 8.22.0
   eslint-plugin-prettier: 4.2.1_4h2inqvnd2k743r2qezvswwo4y
   eslint-plugin-svelte3: 4.0.0_laaqauvsmoyypsiqkozwyi2fn4
+  just-sort-by: 3.1.1
   postcss: 8.4.16
   postcss-custom-properties: 12.1.8_postcss@8.4.16
   postcss-flexbugs-fixes: 5.0.2_postcss@8.4.16
@@ -3665,6 +3667,10 @@ packages:
     dependencies:
       array-includes: 3.1.5
       object.assign: 4.1.4
+    dev: true
+
+  /just-sort-by/3.1.1:
+    resolution: {integrity: sha512-MZg7K4K9GDvQxXHjN3pmeIsGEKkGQHqVHKyzLye7IbE59byCLyeBtaSIZhmjYQBaGSqNGS/lWUN8y06uxIKclw==}
     dev: true
 
   /kind-of/6.0.3:
