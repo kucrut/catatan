@@ -80,16 +80,15 @@ export default function create_store( options: Options ): EditorStore {
 			return;
 		}
 
-		const { content, excerpt, id, link, slug, status, title } = $post;
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		const { content, excerpt, status, title, guid, _links, ...rest } = $post;
 		// auto-draft posts have default title that we don't want to use.
 		const proper_title = status === 'auto-draft' ? '' : title?.raw || '';
 
 		update( $editor => ( {
 			...$editor,
 			data: {
-				id,
-				link,
-				slug,
+				...rest,
 				status,
 				content: content?.raw || '',
 				excerpt: excerpt?.raw || '',
