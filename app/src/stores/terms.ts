@@ -19,6 +19,7 @@ export default function create_store( url: string ): TermsStore {
 				url: `${ url }?context=edit&per_page=100`,
 			} );
 			terms_store.update( () => data );
+			// TODO: Fetch more.
 		},
 	};
 }
