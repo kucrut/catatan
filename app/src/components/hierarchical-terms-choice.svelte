@@ -24,22 +24,20 @@
 	}
 </script>
 
-{#if choices.length}
-	{#each choices as { id, name } (id)}
-		{@const  children = $terms.filter( ( { parent: parent_id } ) => id === parent_id ) }
-		<div class="{class_prefix}-choice">
-			<CheckboxControl
-				checked={selected.includes( id )}
-				id="{tax_name}-{id}"
-				label={name}
-				value={id}
-				on:change={() => handle_check( id )}
-			/>
-			{#if children.length}
-				<div class="{class_prefix}-subchoices">
-					<svelte:self {class_prefix} {taxonomy} {terms} parent={id} />
-				</div>
-			{/if}
-		</div>
-	{/each}
-{/if}
+{#each choices as { id, name } (id)}
+	{@const  children = $terms.filter( ( { parent: parent_id } ) => id === parent_id ) }
+	<div class="{class_prefix}-choice">
+		<CheckboxControl
+			checked={selected.includes( id )}
+			id="{tax_name}-{id}"
+			label={name}
+			value={id}
+			on:change={() => handle_check( id )}
+		/>
+		{#if children.length}
+			<div class="{class_prefix}-subchoices">
+				<svelte:self {class_prefix} {taxonomy} {terms} parent={id} />
+			</div>
+		{/if}
+	</div>
+{/each}
