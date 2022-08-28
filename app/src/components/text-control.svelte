@@ -8,5 +8,5 @@
 </script>
 
 <BaseControl {id} {label} class={cls}>
-	<input {id} class="components-text-control__input" type="text" {...$$restProps} on:change />
+	<input {id} class="components-text-control__input" type="text" {...$$restProps} on:change on:input />
 </BaseControl>
