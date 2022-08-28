@@ -2,6 +2,7 @@
 	import type { Taxonomy } from '$stores/taxonomies';
 	import type { TermWithChildren } from '$stores/terms';
 	import CheckboxControl from './checkbox-control.svelte';
+	import sort_by from 'just-sort-by';
 	import { get_store } from '$stores';
 
 	export let class_prefix: string;
@@ -12,6 +13,7 @@
 
 	$: ( { rest_base: tax_name } = taxonomy );
 	$: selected = $editor.data[ tax_name ] as number[];
+	$: sorted_terms = sort_by( terms, ( { name } ) => name.toLocaleLowerCase() );
 
 	function handle_check( event: Event & { target: HTMLInputElement } ): void {
 		const id = Number( event.target.value );
@@ -24,7 +26,7 @@
 	}
 </script>
 
-{#each terms as { children, id, name } (id)}
+{#each sorted_terms as { children, id, name } (id)}
 	<div class="{class_prefix}-choice">
 		<CheckboxControl
 			checked={selected.includes( id )}
