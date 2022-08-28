@@ -26,9 +26,9 @@
 
 <Panel title={taxonomy.name}>
 	<div class="editor-post-taxonomies__hierarchical-terms-list">
-		<div class="editor-post-taxonomies__hierarchical-terms-choice">
-			{#if $terms}
-				{#each $terms as { id, name } (id)}
+		{#if $terms}
+			{#each $terms as { id, name } (id)}
+				<div class="editor-post-taxonomies__hierarchical-terms-choice">
 					<CheckboxControl
 						checked={post_terms.includes( id )}
 						id="{tax_name}-{id}"
@@ -36,8 +36,8 @@
 						value={id}
 						on:change={() => handle_check( id )}
 					/>
-				{/each}
-			{/if}
-		</div>
+				</div>
+			{/each}
+		{/if}
 	</div>
 </Panel>
