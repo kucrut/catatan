@@ -10,6 +10,7 @@
 
 	const editor = get_store( 'editor' );
 	const post = get_store( 'post' );
+	const class_prefix = 'editor-post-taxonomies__hierarchical-terms';
 	let is_creating_term = false;
 
 	$: ( { rest_base: tax_name, labels, name, __can__ } = taxonomy );
@@ -31,10 +32,10 @@
 </script>
 
 <Panel title={name}>
-	<div class="editor-post-taxonomies__hierarchical-terms-list">
+	<div class="{class_prefix}-list">
 		{#if $terms}
 			{#each $terms as { id, name } (id)}
-				<div class="editor-post-taxonomies__hierarchical-terms-choice">
+				<div class="{class_prefix}-choice">
 					<CheckboxControl
 						checked={post_terms.includes( id )}
 						id="{tax_name}-{id}"
@@ -49,7 +50,7 @@
 	{#if __can__.create}
 		<button
 			aria-expanded={is_creating_term}
-			class="components-button editor-post-taxonomies__hierarchical-terms-add is-link"
+			class="{class_prefix}-add components-button is-link"
 			type="button"
 			on:click={handle_click_toggle}>{labels.add_new_item}</button
 		>
