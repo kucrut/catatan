@@ -26,6 +26,7 @@
 
 {#if choices.length}
 	{#each choices as { id, name } (id)}
+		{@const  children = $terms.filter( ( { parent: parent_id } ) => id === parent_id ) }
 		<div class="{class_prefix}-choice">
 			<CheckboxControl
 				checked={selected.includes( id )}
@@ -34,6 +35,11 @@
 				value={id}
 				on:change={() => handle_check( id )}
 			/>
+			{#if children.length}
+				<div class="{class_prefix}-subchoices">
+					<svelte:self {taxonomy} {terms} parent={id} />
+				</div>
+			{/if}
 		</div>
 	{/each}
 {/if}
