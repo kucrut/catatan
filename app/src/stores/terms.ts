@@ -18,7 +18,7 @@ interface StoreValue {
 
 interface FecthParams {
 	page?: number;
-	includes?: number[];
+	include?: number[];
 }
 
 export interface TermsStore extends Readable< StoreValue > {
@@ -86,14 +86,17 @@ export default function create_store( api_url: string, is_hierarchical = false )
 		},
 
 		async fetch( params = {}, more = false ): Promise< void > {
-			const { page = 1 } = params;
+			const { include, page = 1 } = params;
 
-			const response = await api_fetch< Response >( {
-				parse: false,
-				url: `${ api_url }?context=edit&per_page=100&page=${ page }`,
-			} );
+			let url = `${ api_url }?context=edit&page=${ page }&per_page=100`;
 
+			if ( include && include.length ) {
+				url = `${ url }&include=${ include.join( ',' ) }`;
+			}
+
+			const response = await api_fetch< Response >( { url, parse: false } );
 			const data = await response.json();
+
 			terms.update( $terms => ( page === 1 ? data : [ ...$terms, ...data ] ) );
 
 			const total_pages = Number( response.headers.get( 'x-wp-totalpages' ) );
