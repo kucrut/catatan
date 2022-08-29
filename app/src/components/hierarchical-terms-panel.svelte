@@ -7,6 +7,7 @@
 	import SelectControl from './select-control.svelte';
 	import TextControl from './text-control.svelte';
 	import { get_store } from '$stores';
+	import { onMount } from 'svelte';
 	import { sprintf, __ } from '@wordpress/i18n';
 
 	export let taxonomy: Taxonomy;
@@ -93,6 +94,10 @@
 			} );
 		}
 	}
+
+	onMount( () => {
+		terms.fetch( { page: 1 }, true );
+	} );
 </script>
 
 <Panel title={name}>
