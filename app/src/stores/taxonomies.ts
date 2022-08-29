@@ -83,7 +83,6 @@ export default function create_store( post: PostStore ): TaxonomiesStore {
 			}
 
 			const terms_store = create_terms_store( _links[ 'wp:items' ][ 0 ].href, hierarchical );
-			terms_store.fetch();
 
 			tax_terms.push( {
 				taxonomy: slug,
