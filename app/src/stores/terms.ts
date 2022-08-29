@@ -16,10 +16,16 @@ interface StoreValue {
 	sorted?: TermWithChildren[];
 }
 
+interface FecthParams {
+	page?: number;
+	includes?: number[];
+}
+
 export interface TermsStore extends Readable< StoreValue > {
 	// eslint-disable-next-line no-unused-vars
 	create( data: NewTerm ): Promise< WP_REST_API_Term >;
-	fetch(): Promise< void >;
+	// eslint-disable-next-line no-unused-vars
+	fetch( params?: FecthParams, more?: boolean ): Promise< void >;
 }
 
 function flat_to_nested( flat: TermWithChildren[] ): TermWithChildren[] {
@@ -79,13 +85,28 @@ export default function create_store( api_url: string, is_hierarchical = false )
 			}
 		},
 
-		async fetch(): Promise< void > {
-			const data = await api_fetch< WP_REST_API_Term[] >( {
-				parse: true,
-				url: `${ api_url }?context=edit&per_page=100`,
+		async fetch( params = {}, more = false ): Promise< void > {
+			const { page = 1 } = params;
+
+			const response = await api_fetch< Response >( {
+				parse: false,
+				url: `${ api_url }?context=edit&per_page=100&page=${ page }`,
 			} );
-			terms.update( () => data );
-			// TODO: Fetch more.
+
+			const data = await response.json();
+			terms.update( $terms => ( page === 1 ? data : [ ...$terms, ...data ] ) );
+
+			const total_pages = Number( response.headers.get( 'x-wp-totalpages' ) );
+
+			if ( more && total_pages > page ) {
+				this.fetch(
+					{
+						...params,
+						page: page + 1,
+					},
+					more,
+				);
+			}
 		},
 	};
 }
