@@ -34,7 +34,7 @@ function flat_to_nested( flat: TermWithChildren[] ): TermWithChildren[] {
 	for ( let i = 0; i < flat.length; i += 1 ) {
 		const term = flat[ i ];
 
-		if ( term.parent > 0 ) {
+		if ( term.parent > 0 && flat[ map[ term.parent ] ] ) {
 			flat[ map[ term.parent ] ].children.push( term );
 		} else {
 			result.push( term );
