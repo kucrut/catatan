@@ -46,7 +46,7 @@
 					{#if tax.hierarchical}
 						<HierarchicalTermsPanel taxonomy={tax} terms={taxonomies.get_terms_store( tax.slug )} />
 					{:else}
-						<FlatTermsPanel taxonomy={tax} />
+						<FlatTermsPanel taxonomy={tax} terms={taxonomies.get_terms_store( tax.slug )} />
 					{/if}
 				{/if}
 			{/each}
