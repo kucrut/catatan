@@ -2,6 +2,7 @@
 	export let id: string;
 	export let label: string;
 	export let help = '';
+	export let value: string;
 
 	const class_prefix = 'components-form-token';
 	let is_focused = false;
@@ -16,6 +17,7 @@
 	<div class="{class_prefix}-field__input-container" class:is-active={is_focused}>
 		<slot name="before-input" />
 		<input
+			{value}
 			aria-describedby={help ? `${ class_prefix }-suggestions-howto-${ id }` : null}
 			aria-expanded="false"
 			autocomplete="off"
@@ -24,7 +26,6 @@
 			role="combobox"
 			size="5"
 			type="text"
-			value=""
 			on:blur={toggle_is_focused}
 			on:focus={toggle_is_focused}
 			on:change
