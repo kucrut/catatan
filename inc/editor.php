@@ -127,7 +127,7 @@ function get_config( WP_Post $post, WP_Post_Type $post_type ): array {
 		'post_list_url' => $post_list_url,
 		'post_rest_path' => rest_get_route_for_post_type_items( $post->post_type ),
 		'post_type' => $post_type->name,
-		'post_type_rest_path' => sprintf( '/wp/v2/types/%s?context=edit', $post->post_type )
+		'post_type_rest_path' => sprintf( '/wp/v2/types/%s?context=edit', $post->post_type ),
 	];
 
 	/**
@@ -177,7 +177,7 @@ function load( WP_Post_Type $post_type, bool $is_edit = true ): void {
 		$post = get_post( $post_id );
 
 		if ( empty( $post ) ) {
-			wp_die( __( 'You attempted to edit an item that does not exist. Perhaps it was deleted?' ) );
+			wp_die( esc_html__( 'You attempted to edit an item that does not exist. Perhaps it was deleted?' ) );
 		}
 	} else {
 		$post = get_default_post_to_edit( $post_type->name, true );
@@ -283,10 +283,12 @@ function preload_data( WP_Post $post ): void {
 
 	block_editor_rest_api_preload(
 		$preload_paths,
-		new WP_Block_Editor_Context( [
-			'name' => 'catatan/edit-post',
-			'post' => $post,
-		] )
+		new WP_Block_Editor_Context(
+			[
+				'name' => 'catatan/edit-post',
+				'post' => $post,
+			]
+		)
 	);
 }
 
