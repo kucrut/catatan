@@ -20,6 +20,12 @@ export interface SelectControlOption {
 	value: string | number;
 }
 
+export interface TokenItem {
+	description: string;
+	id: number | string;
+	label: string;
+}
+
 declare global {
 	interface Window {
 		catatanEditor: Config;
