@@ -4,10 +4,8 @@
 	import { get_store } from '$stores';
 
 	const editor = get_store( 'editor' );
-
-	function trash(): void {
-		editor.trash();
-	}
 </script>
 
-<Button is_destructive is_secondary class="editor-post-trash" on:click={trash}>{__( 'Move to trash' )}</Button>
+<Button is_destructive is_secondary class="editor-post-trash" on:click={() => editor.trash()}
+	>{__( 'Move to trash' )}</Button
+>

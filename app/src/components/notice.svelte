@@ -8,10 +8,6 @@
 
 	const notices = get_store( 'notices' );
 	const { content, dismissible, id, type } = item;
-
-	function remove(): void {
-		notices.remove( id );
-	}
 </script>
 
 <div class="components-notice" class:is-dismissible={dismissible} class:is-error={type === 'error'}>
@@ -24,7 +20,7 @@
 			aria-label={__( 'Dismiss this notice', 'catatan' )}
 			class="components-notice__dismiss"
 			icon="close"
-			on:click={remove}
+			on:click={() => notices.remove( id )}
 		/>
 	{/if}
 </div>
