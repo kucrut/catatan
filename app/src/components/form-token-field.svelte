@@ -14,6 +14,7 @@
 <div class="{class_prefix}-field">
 	<label for="{class_prefix}-input-{id}" class="{class_prefix}-field__label">{label}</label>
 	<div class="{class_prefix}-field__input-container" class:is-active={is_focused}>
+		<slot name="before-input" />
 		<input
 			aria-describedby={help ? `${ class_prefix }-suggestions-howto-${ id }` : null}
 			aria-expanded="false"
@@ -27,6 +28,7 @@
 			on:blur={toggle_is_focused}
 			on:focus={toggle_is_focused}
 		/>
+		<slot name="after-input" />
 	</div>
 	{#if help}
 		<p id="{class_prefix}-suggestions-howto-{id}" class="{class_prefix}-field__help">{help}</p>
