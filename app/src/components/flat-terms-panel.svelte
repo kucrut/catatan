@@ -6,6 +6,7 @@
 	import FormTokenFieldToken from './form-token-field-token.svelte';
 	import FormTokenFieldSuggestions from './form-token-field-suggestions.svelte';
 	import Panel from './panel.svelte';
+	import debounce from 'just-debounce-it';
 	import { sprintf, __ } from '@wordpress/i18n';
 	import { onMount, tick } from 'svelte';
 	import { get_store } from '$stores';
@@ -29,6 +30,11 @@
 
 	const exclude_selected = ( { id } ) => ! selected.includes( id );
 
+	const do_search = debounce( async () => {
+		const result = await terms.search( search_term );
+		search_result = result.filter( exclude_selected );
+	}, 500 );
+
 	$: {
 		selected = ( $editor.data[ tax_name ] as typeof selected ) || [];
 		suggestions = search_result.length ? search_result.filter( exclude_selected ).map( ( { name } ) => name ) : [];
@@ -49,8 +55,7 @@
 			return;
 		}
 
-		const result = await terms.search( search_term );
-		search_result = result.filter( exclude_selected );
+		do_search();
 	}
 
 	async function handle_select( event: CustomEvent< number > ) {
