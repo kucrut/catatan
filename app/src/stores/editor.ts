@@ -7,7 +7,7 @@ import create_changes_store, { type Changes } from './changes';
 import { __, sprintf } from '@wordpress/i18n';
 import { writable, type Readable } from 'svelte/store';
 
-export interface Options extends Pick< Config, 'edit_link_template' | 'post_id' | 'post_list_url' > {
+export interface Options extends Pick< Config, 'edit_link' | 'post_id' | 'post_list_url' > {
 	notices: NoticesStore;
 	post: PostStore;
 	post_type: PostTypeStore;
@@ -59,7 +59,7 @@ function toggle_beforeunload_listener( $editor: Editor ): void {
  * @param {Options} options Options.
  */
 export default function create_store( options: Options ): EditorStore {
-	const { edit_link_template, notices, post, post_id, post_list_url, post_type } = options;
+	const { edit_link, notices, post, post_id, post_list_url, post_type } = options;
 
 	let $post_type: WP_REST_API_Type;
 	let $saved_post: Partial< WP_REST_API_Post >;
@@ -173,12 +173,12 @@ export default function create_store( options: Options ): EditorStore {
 				} );
 
 				const { data: new_data } = $store;
-				const { id, link, status } = new_data;
+				const { link, status } = new_data;
 
 				update( $editor => ( { ...$editor, is_saved: true, was_saving: true } ) );
 
 				if ( was_auto_draft ) {
-					window.history.pushState( {}, '', edit_link_template.replace( '<id>', id.toString() ) );
+					window.history.pushState( {}, '', edit_link );
 				}
 
 				const { labels, viewable } = $post_type;

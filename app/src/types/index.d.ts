@@ -6,7 +6,7 @@ export type MapToBoolean< O > = {
 };
 
 export interface Config {
-	edit_link_template: string;
+	edit_link: string;
 	editor_id: string;
 	post_id: number;
 	post_list_url: string;

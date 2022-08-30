@@ -121,7 +121,7 @@ function get_config( WP_Post $post, WP_Post_Type $post_type ): array {
 	}
 
 	$config = [
-		'edit_link_template' => preg_replace( '/(\d+)$/', '<id>', Catatan\get_editor_url( $post_type->name, 1 ) ),
+		'edit_link' => get_edit_post_link( $post->ID, 'db' ),
 		'editor_id' => CATATAN\EDITOR_ID,
 		'post_id' => $post->ID,
 		'post_list_url' => $post_list_url,
