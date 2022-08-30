@@ -7,7 +7,7 @@
 	import FormTokenFieldSuggestions from './form-token-field-suggestions.svelte';
 	import Panel from './panel.svelte';
 	import { sprintf, __ } from '@wordpress/i18n';
-	import { onMount } from 'svelte';
+	import { onMount, tick } from 'svelte';
 	import { get_store } from '$stores';
 	import { map_id_to_token_item } from '$utils/terms';
 
@@ -20,31 +20,56 @@
 	const { add_new_item, singular_name } = labels;
 	const remove_text = sprintf( __( 'Remove %s' ), singular_name );
 
-	let items: TokenItem[] = [];
+	let input_value = '';
 	let search_result: SlimTerm[] = [];
 	let search_term = '';
-	let selected: number[];
+	let selected: number[] = [];
 	let suggestions: string[] = [];
+	let token_items: TokenItem[] = [];
+
+	const exclude_selected = ( { id } ) => ! selected.includes( id );
 
 	$: {
 		selected = ( $editor.data[ tax_name ] as typeof selected ) || [];
-		items =
-			selected?.length && $terms.flat?.length
+		suggestions = search_result.length ? search_result.filter( exclude_selected ).map( ( { name } ) => name ) : [];
+		token_items =
+			selected.length && $terms.flat?.length
 				? selected.map( ( ...args ) => map_id_to_token_item( $terms.flat, ...args ) ).filter( i => i !== null )
 				: [];
-
-		suggestions = search_result.length ? search_result.map( ( { name } ) => name ) : [];
 	}
 
 	async function handle_input( event: Event & { target: HTMLInputElement } ): Promise< void > {
 		const { value } = event.target;
 
+		input_value = value;
 		search_term = value.length >= 3 ? value : '';
-		search_result = search_term ? await terms.search( search_term ) : [];
+
+		if ( ! search_term ) {
+			search_result = [];
+			return;
+		}
+
+		const result = await terms.search( search_term );
+		search_result = result.filter( exclude_selected );
+	}
+
+	async function handle_select( event: CustomEvent< number > ) {
+		const { detail: index } = event;
+		const { id } = search_result[ index ];
+
+		editor.add_term( tax_name, id );
+		// Wait until `selected` is updated before clearing the result.
+		await tick();
+		search_result = [];
+		// Wait until the terms store is refreshed before clearing everything else
+		// so that we can erase the input value and insert the new token (almost) at the same time.
+		await terms.fetch( { include: selected } );
+		search_term = '';
+		input_value = '';
 	}
 
 	onMount( () => {
-		if ( selected && selected.length ) {
+		if ( selected.length ) {
 			terms.fetch( { include: selected } );
 		}
 	} );
@@ -55,10 +80,11 @@
 		help={__( 'Separate with commas or the Enter key.' )}
 		id={tax_name}
 		label={add_new_item}
+		value={input_value}
 		on:input={handle_input}
 	>
 		<svelte:fragment slot="before-input">
-			{#each items as item (item.id)}
+			{#each token_items as item (item.id)}
 				<FormTokenFieldToken
 					{...item}
 					button_text={remove_text}
@@ -68,7 +94,7 @@
 		</svelte:fragment>
 		<svelte:fragment slot="after-input">
 			{#if search_term && suggestions.length}
-				<FormTokenFieldSuggestions id={tax_name} items={suggestions} search={search_term} />
+				<FormTokenFieldSuggestions id={tax_name} items={suggestions} search={search_term} on:select={handle_select} />
 			{/if}
 		</svelte:fragment>
 	</FormTokenField>
