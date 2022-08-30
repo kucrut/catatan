@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { SelectControlOption } from '$types';
 	import type { Taxonomy } from '$stores/taxonomies';
-	import type { NewTerm, TermsStore, TermWithChildren } from '$stores/terms';
+	import type { NewTerm, TermsStore } from '$stores/terms';
 	import HierarchicalTermsChoice from './hierarchical-terms-choice.svelte';
 	import Panel from './panel.svelte';
 	import SelectControl from './select-control.svelte';
@@ -9,6 +9,7 @@
 	import { get_store } from '$stores';
 	import { onMount } from 'svelte';
 	import { sprintf, __ } from '@wordpress/i18n';
+	import { term_to_option } from '$utils/terms';
 
 	export let taxonomy: Taxonomy;
 	export let terms: TermsStore;
@@ -20,27 +21,6 @@
 	let is_create_button_disabled = true;
 	let term_options: SelectControlOption[];
 
-	function make_option( level: number, prev: SelectControlOption[], current: TermWithChildren ): SelectControlOption[] {
-		const { id: value, name: label, children = [] } = current;
-		let next = [
-			...prev,
-			{
-				value,
-				label: level === 0 ? label : `${ ' '.repeat( 3 * level ) }${ label }`,
-			},
-		];
-
-		if ( children.length ) {
-			next = children.reduce(
-				( children_prev: SelectControlOption[], child: TermWithChildren ) =>
-					make_option( level + 1, children_prev, child ),
-				next,
-			);
-		}
-
-		return next;
-	}
-
 	$: ( { labels, name, rest_base, slug, __can__ } = taxonomy );
 	$: ( { add_new_item, parent_item, singular_name, new_item_name } = labels );
 	$: {
@@ -50,7 +30,7 @@
 					label: `— ${ parent_item } —`,
 					value: '',
 				},
-				...$terms.sorted.reduce( ( prev, current ) => make_option( 0, prev, current ), [] ),
+				...$terms.sorted.reduce( ( prev, current ) => term_to_option( 0, prev, current ), [] ),
 			];
 		}
 	}
