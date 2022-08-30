@@ -123,13 +123,11 @@ function get_config( WP_Post $post, WP_Post_Type $post_type ): array {
 	$config = [
 		'edit_link_template' => preg_replace( '/(\d+)$/', '<id>', Catatan\get_editor_url( $post_type->name, 1 ) ),
 		'editor_id' => CATATAN\EDITOR_ID,
-		'nonce' => wp_create_nonce( 'wp_rest' ),
 		'post_id' => $post->ID,
 		'post_list_url' => $post_list_url,
 		'post_rest_path' => sprintf( '%s/%s', $post_type->rest_namespace, $post_type->rest_base ),
 		'post_type' => $post_type->name,
 		'post_type_rest_path' => sprintf( '%s/types/%s', $post_type->rest_namespace, $post_type->name ),
-		'rest_url' => rest_url(),
 	];
 
 	/**

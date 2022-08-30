@@ -8,13 +8,11 @@ export type MapToBoolean< O > = {
 export interface Config {
 	edit_link_template: string;
 	editor_id: string;
-	nonce: string;
 	post_id: number;
 	post_list_url: string;
 	post_rest_path: string;
 	post_type: string;
 	post_type_rest_path: string;
-	rest_url: string;
 }
 
 export interface SelectControlOption {
