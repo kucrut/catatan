@@ -21,7 +21,7 @@ interface StoreValue {
 	sorted?: TermWithChildren[];
 }
 
-interface FecthParams {
+interface FetchParams {
 	page?: number;
 	include?: number[];
 }
@@ -29,7 +29,7 @@ interface FecthParams {
 /* eslint-disable no-unused-vars */
 export interface TermsStore extends Readable< StoreValue > {
 	create( data: NewTerm ): Promise< WP_REST_API_Term >;
-	fetch( params?: FecthParams, more?: boolean ): Promise< void >;
+	fetch( params?: FetchParams, more?: boolean ): Promise< void >;
 	search( term: string ): Promise< SlimTerm[] >;
 }
 /* eslint-enable */
