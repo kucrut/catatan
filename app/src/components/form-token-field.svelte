@@ -32,6 +32,8 @@
 			on:focus={toggle_is_focused}
 			on:change
 			on:input
+			on:keydown
+			on:keyup
 		/>
 		<slot name="after-input" {input_el} />
 	</div>
