@@ -36,3 +36,10 @@
 		<p id="{class_prefix}-suggestions-howto-{id}" class="{class_prefix}-field__help">{help}</p>
 	{/if}
 </div>
+
+<style>
+	input {
+		margin-block-start: 1px;
+		margin-block-end: 1px;
+	}
+</style>
