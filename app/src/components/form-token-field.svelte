@@ -13,7 +13,7 @@
 	}
 </script>
 
-<div class="{class_prefix}-field">
+<div class="{class_prefix}-field" on:click={() => input_el.focus()}>
 	<label for="{class_prefix}-input-{id}" class="{class_prefix}-field__label">{label}</label>
 	<div class="{class_prefix}-field__input-container" class:is-active={is_focused}>
 		<slot name="before-input" {input_el} />
