@@ -38,7 +38,7 @@ export default function create_store( api_path: string, post_id: number ): PostS
 
 	const fetch = async ( options?: APIFetchOptions ): Promise< Post > => {
 		const data = await api_fetch< Post >( {
-			path: `/${ path }?context=edit`,
+			path: `${ path }?context=edit`,
 			parse: true,
 			...( options || {} ),
 		} );

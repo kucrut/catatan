@@ -31,7 +31,7 @@ export default function create_store( api_path: string ): PermissionStore {
 				const response = await api_fetch< Response >( {
 					method: 'OPTIONS',
 					parse: false,
-					path: `/${ api_path }?context=edit`,
+					path: `${ api_path }?context=edit`,
 				} );
 
 				const allow_list = response.headers
