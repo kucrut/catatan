@@ -2,6 +2,7 @@ import type { PostStore } from './post';
 import type { WP_REST_API_Taxonomy } from 'wp-types';
 import api_fetch from '@wordpress/api-fetch';
 import create_terms_store, { type TermsStore } from './terms';
+import sort_by from 'just-sort-by';
 import { derived, writable, type Readable, type Writable } from 'svelte/store';
 
 export interface Permission {
@@ -106,7 +107,9 @@ export default function create_store( post: PostStore ): TaxonomiesStore {
 				path: `/wp/v2/taxonomies?context=edit&type=${ post_type }`,
 			} );
 
-			tax_store.update( () => Object.values( data ) );
+			const sorted = sort_by( Object.values( data ), ( { labels } ) => labels.name.toLowerCase() );
+
+			tax_store.update( () => sorted );
 		},
 	};
 }
