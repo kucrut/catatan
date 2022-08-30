@@ -127,7 +127,7 @@ function get_config( WP_Post $post, WP_Post_Type $post_type ): array {
 		'post_list_url' => $post_list_url,
 		'post_rest_path' => rest_get_route_for_post_type_items( $post->post_type ),
 		'post_type' => $post_type->name,
-		'post_type_rest_path' => sprintf( '/wp/v2/types/%s?context=edit', $post->post_type ),
+		'post_type_rest_path' => sprintf( '/wp/v2/types/%s', $post->post_type ),
 	];
 
 	/**
