@@ -1,14 +1,15 @@
 <script lang="ts">
 	import type { Taxonomy } from '$stores/taxonomies';
-	import type { SlimTerm, TermsStore } from '$stores/terms';
+	import type { TermsStore } from '$stores/terms';
 	import type { TokenItem } from '$types';
+	import type { WP_REST_API_Term } from 'wp-types';
 	import FormTokenField from './form-token-field.svelte';
 	import FormTokenFieldToken from './form-token-field-token.svelte';
 	import FormTokenFieldSuggestions from './form-token-field-suggestions.svelte';
 	import Panel from './panel.svelte';
 	import debounce from 'just-debounce-it';
 	import { sprintf, __ } from '@wordpress/i18n';
-	import { onMount, tick } from 'svelte';
+	import { onMount } from 'svelte';
 	import { get_store } from '$stores';
 	import { map_id_to_token_item } from '$utils/terms';
 
@@ -22,7 +23,7 @@
 	const remove_text = sprintf( __( 'Remove %s' ), singular_name );
 
 	let input_value = '';
-	let search_result: SlimTerm[] = [];
+	let search_result: WP_REST_API_Term[] = [];
 	let search_term = '';
 	let selected: number[] = [];
 	let suggestions: string[] = [];
@@ -60,17 +61,14 @@
 
 	async function handle_select( event: CustomEvent< number > ) {
 		const { detail: index } = event;
-		const { id } = search_result[ index ];
+		const term = search_result[ index ];
 
-		editor.add_term( tax_name, id );
-		// Wait until `selected` is updated before clearing the result.
-		await tick();
-		search_result = [];
-		// Wait until the terms store is refreshed before clearing everything else
-		// so that we can erase the input value and insert the new token (almost) at the same time.
-		await terms.fetch( { include: selected } );
+		terms.add( term );
+		editor.add_term( tax_name, term.id );
+
 		search_term = '';
 		input_value = '';
+		search_result = [];
 	}
 
 	onMount( () => {
