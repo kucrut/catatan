@@ -17,7 +17,15 @@ module.exports = {
 		BufferEncoding: false,
 		NodeJS: false,
 	},
-	overrides: [ { files: [ '*.html', '*.svelte' ], processor: 'svelte3/svelte3' } ],
+	overrides: [
+		{ files: [ '*.html', '*.svelte' ], processor: 'svelte3/svelte3' },
+		{
+			files: [ '*.ts' ],
+			rules: {
+				'@typescript-eslint/explicit-function-return-type': 'error',
+			},
+		},
+	],
 	parser: '@typescript-eslint/parser',
 	parserOptions: {
 		ecmaVersion: 2021,
@@ -51,6 +59,6 @@ module.exports = {
 				asyncArrow: 'always',
 			},
 		],
-		'@typescript-eslint/explicit-function-return-type': 'error',
+		'@typescript-eslint/explicit-function-return-type': 'off',
 	},
 };
