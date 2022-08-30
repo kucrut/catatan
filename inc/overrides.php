@@ -13,6 +13,7 @@ use Catatan;
  * @return void
  */
 function bootstrap(): void {
+	add_action( 'load-post.php', __NAMESPACE__ . '\\redirect_editor_edit_post' );
 	add_action( 'load-post-new.php', __NAMESPACE__ . '\\redirect_editor_new_post' );
 	add_filter( 'get_edit_post_link', __NAMESPACE__ . '\\edit_post_link', 10, 3 );
 }
@@ -32,6 +33,30 @@ function redirect_editor_new_post(): void {
 	}
 
 	wp_safe_redirect( Catatan\get_editor_url( $screen->post_type ), 302, 'Catatan' );
+	exit;
+}
+
+/**
+ * Redirect editor for editing existing posts
+ *
+ * @since 0.1.0
+ *
+ * @return void
+ */
+function redirect_editor_edit_post() {
+	$screen = get_current_screen();
+
+	if ( ! Catatan\is_post_type_supported( $screen->post_type ) ) {
+		return;
+	}
+
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	if ( empty( $_GET['post'] ) || empty( $_GET['action'] ) || $_GET['action'] !== 'edit' ) {
+		return;
+	}
+
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	wp_safe_redirect( get_edit_post_link( $_GET['post'], 'raw' ), 302, 'Catatan' );
 	exit;
 }
 
