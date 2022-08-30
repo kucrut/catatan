@@ -28,9 +28,10 @@ interface FetchParams {
 
 /* eslint-disable no-unused-vars */
 export interface TermsStore extends Readable< StoreValue > {
+	add( term: WP_REST_API_Term ): void;
 	create( data: NewTerm ): Promise< WP_REST_API_Term >;
 	fetch( params?: FetchParams, more?: boolean ): Promise< void >;
-	search( term: string ): Promise< SlimTerm[] >;
+	search( term: string ): Promise< WP_REST_API_Term[] >;
 }
 /* eslint-enable */
 
@@ -73,6 +74,10 @@ export default function create_store( api_url: string, is_hierarchical = false )
 	return {
 		...store,
 
+		add( term: WP_REST_API_Term ): void {
+			terms.update( $terms => [ ...$terms, term ] );
+		},
+
 		async create( data: NewTerm ): Promise< WP_REST_API_Term > {
 			try {
 				const new_term = await api_fetch< WP_REST_API_Term >( {
@@ -83,7 +88,7 @@ export default function create_store( api_url: string, is_hierarchical = false )
 					parse: true,
 				} );
 
-				terms.update( $terms => [ ...$terms, new_term ] );
+				this.add( new_term );
 
 				return new_term;
 			} catch ( error ) {
@@ -118,9 +123,9 @@ export default function create_store( api_url: string, is_hierarchical = false )
 			}
 		},
 
-		async search( search: string ): Promise< SlimTerm[] > {
-			const data = await api_fetch< SlimTerm[] >( {
-				url: `${ api_url }?context=view&per_page=20&orderby=count&order=desc&_fields=id,name&search=${ search }`,
+		async search( search: string ): Promise< WP_REST_API_Term[] > {
+			const data = await api_fetch< WP_REST_API_Term[] >( {
+				url: `${ api_url }?context=view&per_page=20&orderby=count&order=desc&search=${ search }`,
 				parse: true,
 			} );
 
