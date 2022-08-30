@@ -17,6 +17,7 @@ specifiers:
   eslint: ^8.23.0
   eslint-plugin-prettier: ^4.2.1
   eslint-plugin-svelte3: ^4.0.0
+  just-debounce-it: ^3.1.1
   just-sort-by: ^3.1.1
   postcss: ^8.4.16
   postcss-custom-properties: ^12.1.8
@@ -58,6 +59,7 @@ devDependencies:
   eslint: 8.23.0
   eslint-plugin-prettier: 4.2.1_24ex2pd3iml373sd56g2ntad4m
   eslint-plugin-svelte3: 4.0.0_sfdub7vxhxkt5wmgvhhmmgyu2e
+  just-debounce-it: 3.1.1
   just-sort-by: 3.1.1
   postcss: 8.4.16
   postcss-custom-properties: 12.1.8_postcss@8.4.16
@@ -3672,6 +3674,10 @@ packages:
     dependencies:
       array-includes: 3.1.5
       object.assign: 4.1.4
+    dev: true
+
+  /just-debounce-it/3.1.1:
+    resolution: {integrity: sha512-oPsuRyWp99LJaQ4KXC3A42tQNqkRTcPy0A8BCkRZ5cPCgsx81upB2KUrmHZvDUNhnCDKe7MshfTuWFQB9iXwDg==}
     dev: true
 
   /just-sort-by/3.1.1:
