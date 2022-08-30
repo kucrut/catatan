@@ -5,6 +5,7 @@ namespace Catatan\Editor;
 
 use Catatan;
 use Kucrut\Vite;
+use WP_Block_Editor_Context;
 use WP_Post;
 use WP_Post_Type;
 
@@ -212,6 +213,7 @@ function load( WP_Post_Type $post_type, bool $is_edit = true ): void {
 	do_action( 'catatan__before_load_editor', $post, $post_type, $is_edit );
 
 	enqueue_assets( $post, $post_type );
+	preload_data( $post );
 
 	if ( $is_edit ) {
 		// Because we've removed the page from admin menus, WP does not have the page title anymore, so we need to fix it here.
@@ -258,6 +260,35 @@ function enqueue_assets( WP_Post $post, WP_Post_Type $post_type ): void {
 		// phpcs:ignore WordPress.WP.AlternativeFunctions.json_encode_json_encode
 		sprintf( 'var catatanEditor = %s;', json_encode( get_config( $post, $post_type ) ) ),
 		'before'
+	);
+}
+
+/**
+ * Preload data
+ *
+ * @since 0.1.0
+ *
+ * @param WP_Post $post Current post object being edited.
+ *
+ * @return void
+ */
+function preload_data( WP_Post $post ): void {
+	$post_route = add_query_arg( 'context', 'edit', rest_get_route_for_post( $post ) );
+
+	// Preload common data.
+	$preload_paths = [
+		sprintf( '/wp/v2/types/%s?context=edit', $post->post_type ),
+		sprintf( '/wp/v2/taxonomies?context=edit&type=%s', $post->post_type ),
+		$post_route,
+		[ $post_route, 'OPTIONS' ],
+	];
+
+	block_editor_rest_api_preload(
+		$preload_paths,
+		new WP_Block_Editor_Context( [
+			'name' => 'catatan/edit-post',
+			'post' => $post,
+		] )
 	);
 }
 
