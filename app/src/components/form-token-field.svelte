@@ -27,6 +27,8 @@
 			value=""
 			on:blur={toggle_is_focused}
 			on:focus={toggle_is_focused}
+			on:change
+			on:input
 		/>
 		<slot name="after-input" />
 	</div>
