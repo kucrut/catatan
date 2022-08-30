@@ -11,6 +11,11 @@ export interface TermWithChildren extends WP_REST_API_Term {
 	children?: WP_REST_API_Term[];
 }
 
+export interface SlimTerm {
+	id: number;
+	name: string;
+}
+
 interface StoreValue {
 	flat: WP_REST_API_Term[];
 	sorted?: TermWithChildren[];
@@ -21,12 +26,13 @@ interface FecthParams {
 	include?: number[];
 }
 
+/* eslint-disable no-unused-vars */
 export interface TermsStore extends Readable< StoreValue > {
-	// eslint-disable-next-line no-unused-vars
 	create( data: NewTerm ): Promise< WP_REST_API_Term >;
-	// eslint-disable-next-line no-unused-vars
 	fetch( params?: FecthParams, more?: boolean ): Promise< void >;
+	search( term: string ): Promise< SlimTerm[] >;
 }
+/* eslint-enable */
 
 function flat_to_nested( flat: TermWithChildren[] ): TermWithChildren[] {
 	const map = {};
@@ -110,6 +116,17 @@ export default function create_store( api_url: string, is_hierarchical = false )
 					more,
 				);
 			}
+		},
+
+		async search( search: string ): Promise< SlimTerm[] > {
+			const data = await api_fetch< SlimTerm[] >( {
+				url: `${ api_url }?context=view&per_page=20&orderby=count&order=desc&_fields=id,name&search=${ search }`,
+				parse: true,
+			} );
+
+			// TODO: Fetch more?
+
+			return data;
 		},
 	};
 }
