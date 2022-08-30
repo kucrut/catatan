@@ -6,6 +6,7 @@
 
 	const class_prefix = 'components-form-token';
 	let is_focused = false;
+	let input_el: HTMLInputElement;
 
 	function toggle_is_focused() {
 		is_focused = ! is_focused;
@@ -15,7 +16,7 @@
 <div class="{class_prefix}-field">
 	<label for="{class_prefix}-input-{id}" class="{class_prefix}-field__label">{label}</label>
 	<div class="{class_prefix}-field__input-container" class:is-active={is_focused}>
-		<slot name="before-input" />
+		<slot name="before-input" {input_el} />
 		<input
 			{value}
 			aria-describedby={help ? `${ class_prefix }-suggestions-howto-${ id }` : null}
@@ -26,12 +27,13 @@
 			role="combobox"
 			size="5"
 			type="text"
+			bind:this={input_el}
 			on:blur={toggle_is_focused}
 			on:focus={toggle_is_focused}
 			on:change
 			on:input
 		/>
-		<slot name="after-input" />
+		<slot name="after-input" {input_el} />
 	</div>
 	{#if help}
 		<p id="{class_prefix}-suggestions-howto-{id}" class="{class_prefix}-field__help">{help}</p>
