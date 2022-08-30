@@ -13,19 +13,18 @@ use Catatan;
  * @return void
  */
 function bootstrap(): void {
-	add_action( 'load-post.php', __NAMESPACE__ . '\\redirect_editor' );
-	add_action( 'load-post-new.php', __NAMESPACE__ . '\\redirect_editor' );
+	add_action( 'load-post-new.php', __NAMESPACE__ . '\\redirect_editor_new_post' );
 	add_filter( 'get_edit_post_link', __NAMESPACE__ . '\\edit_post_link', 10, 3 );
 }
 
 /**
- * Redirect editor
+ * Redirect editor for new posts
  *
  * @since 0.1.0
  *
  * @return void
  */
-function redirect_editor(): void {
+function redirect_editor_new_post(): void {
 	$screen = get_current_screen();
 
 	if ( ! Catatan\is_post_type_supported( $screen->post_type ) ) {
