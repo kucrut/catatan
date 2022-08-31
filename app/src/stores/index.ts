@@ -1,15 +1,17 @@
 import type { Config } from '$types';
 import create_editor_store, { type EditorStore } from './editor';
+import create_media_store, { type MediaStore } from './media';
 import create_notices_store, { type NoticesStore } from './notices';
 import create_post_store, { type PostStore } from './post';
 import create_post_type_store, { type PostTypeStore } from './post-type';
 import create_taxonomies_store, { type TaxonomiesStore } from './taxonomies';
 import create_ui_store, { type UiStore } from './ui';
 
-export type StoresConfig = Omit< Config, 'editor_id' | 'nonce' | 'rest_url' >;
+export type StoresConfig = Omit< Config, 'editor_id' >;
 
 export interface Stores {
 	editor: EditorStore;
+	media: MediaStore;
 	notices: NoticesStore;
 	post: PostStore;
 	post_type: PostTypeStore;
@@ -20,7 +22,7 @@ export interface Stores {
 let stores: Stores;
 
 export async function init_stores( config: StoresConfig ): Promise< void > {
-	const { post_id, post_rest_path, post_type_rest_path, ...editor_config } = config;
+	const { media_rest_route, post_id, post_rest_path, post_type_rest_path, ...editor_config } = config;
 
 	const post_type = create_post_type_store( post_type_rest_path );
 	await post_type.fetch();
@@ -31,9 +33,11 @@ export async function init_stores( config: StoresConfig ): Promise< void > {
 	const taxonomies = create_taxonomies_store( post );
 	await taxonomies.fetch();
 
+	const media = create_media_store( media_rest_route );
 	const notices = create_notices_store();
 
 	stores = {
+		media,
 		notices,
 		post,
 		post_type,
