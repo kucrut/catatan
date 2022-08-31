@@ -77,12 +77,11 @@
 			{#if selected}
 				<div id="{class_prefix}-{selected.id}-describedby" class="hidden">{description}</div>
 				<div class="{class_prefix}__container">
-					<button
+					<Button
 						aria-describedby="{class_prefix}-{selected.id}-describedby"
 						aria-label={__( 'Edit or update the image' )}
-						class="components-button {class_prefix}__preview"
-						type="button"
-						on:click={open_frame}><img alt={selected.alt} src={selected.url} /></button
+						class="{class_prefix}__preview"
+						on:click={open_frame}><img alt={selected.alt} src={selected.url} /></Button
 					>
 					<!-- TODO <div class="components-drop-zone" data-is-drop-zone="true" /> -->
 				</div>

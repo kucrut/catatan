@@ -2,6 +2,7 @@
 	import type { SelectControlOption } from '$types';
 	import type { Taxonomy } from '$stores/taxonomies';
 	import type { NewTerm, TermsStore } from '$stores/terms';
+	import Button from './button.svelte';
 	import HierarchicalTermsChoice from './hierarchical-terms-choice.svelte';
 	import Panel from './panel.svelte';
 	import SelectControl from './select-control.svelte';
@@ -86,11 +87,8 @@
 		<HierarchicalTermsChoice {class_prefix} {taxonomy} terms={$terms.sorted || []} />
 	</div>
 	{#if __can__.create}
-		<button
-			aria-expanded={is_creating_term}
-			class="{class_prefix}-add components-button is-link"
-			type="button"
-			on:click={handle_click_toggle}>{add_new_item}</button
+		<Button is_link aria-expanded={is_creating_term} class="{class_prefix}-add" on:click={handle_click_toggle}
+			>{add_new_item}</Button
 		>
 		{#if is_creating_term}
 			<form on:submit|preventDefault={handle_create_new_term}>
@@ -111,9 +109,7 @@
 						value={term_options[ 0 ].value}
 					/>
 				{/if}
-				<button class="components-button {class_prefix}-submit is-secondary" disabled={is_create_button_disabled}
-					>{add_new_item}</button
-				>
+				<Button is_secondary class="{class_prefix}-submit" disabled={is_create_button_disabled}>{add_new_item}</Button>
 			</form>
 		{/if}
 	{/if}
