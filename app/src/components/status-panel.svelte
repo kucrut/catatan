@@ -10,7 +10,7 @@
 
 <!-- TODO: Remove this check when we have other rows ready. -->
 {#if $post.status !== 'auto-draft' && $post.__can__.delete}
-	<Panel title={__( 'Status & visibility' )}>
+	<Panel id="status" title={__( 'Status & visibility' )}>
 		<!-- <PanelRow>
 			<span>{__( 'Visibility' )}</span>
 		</PanelRow>

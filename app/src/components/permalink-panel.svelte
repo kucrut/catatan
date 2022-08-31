@@ -15,7 +15,7 @@
 	}
 </script>
 
-<Panel title={__( 'Permalink' )}>
+<Panel id="permalink" title={__( 'Permalink' )}>
 	<PanelRow class="editor-post-link">
 		<BaseControl {id} label={__( 'URL Slug' )}>
 			<input

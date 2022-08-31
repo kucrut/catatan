@@ -68,7 +68,7 @@
 	} );
 </script>
 
-<Panel {title}>
+<Panel id="featured-image" {title}>
 	<div class={class_prefix}>
 		{#if is_frame_open}
 			<MediaFrame selected={$editor.data.featured_media} on:close={close_frame} on:select={handle_select} />

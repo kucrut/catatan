@@ -14,7 +14,7 @@
 	}
 </script>
 
-<Panel title={__( 'Excerpt' )}>
+<Panel id="excerpt" title={__( 'Excerpt' )}>
 	<PanelRow class="editor-post-excerpt">
 		<BaseControl {id} label={__( 'Write an excerpt (optional)' )}>
 			<textarea

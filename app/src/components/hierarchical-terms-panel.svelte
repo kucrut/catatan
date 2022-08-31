@@ -82,7 +82,7 @@
 	} );
 </script>
 
-<Panel title={name}>
+<Panel id="taxonomy-{name}" title={name}>
 	<div class="{class_prefix}-list">
 		<HierarchicalTermsChoice {class_prefix} {taxonomy} terms={$terms.sorted || []} />
 	</div>

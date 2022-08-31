@@ -113,7 +113,7 @@
 	} );
 </script>
 
-<Panel title={taxonomy.name}>
+<Panel id="taxonomy-{tax_name}" title={taxonomy.name}>
 	<FormTokenField
 		help={__( 'Separate with commas or the Enter key.' )}
 		id={tax_name}
