@@ -12,12 +12,25 @@
 	$: is_not_draft = ! is_draft( $editor.data.status );
 	$: text = __( 'Save draft' );
 
-	function handle_click(): void {
+	function save(): void {
+		if ( is_disabled ) {
+			return;
+		}
+
 		if ( is_not_draft ) {
 			editor.update( { status: 'draft' } );
 		}
 
 		editor.save();
+	}
+
+	function handle_keydown( event: KeyboardEvent ): void {
+		const { code, ctrlKey, metaKey } = event;
+
+		if ( ! is_disabled && ( ctrlKey || metaKey ) && code === 'KeyS' ) {
+			event.preventDefault();
+			save();
+		}
 	}
 
 	$: {
@@ -58,6 +71,7 @@
 	}
 </script>
 
-<Button {icon} is_tertiary aria-disabled={is_disabled} class={cls} disabled={is_disabled} on:click={handle_click}
-	>{text}</Button
+<svelte:window on:keydown={handle_keydown} />
+
+<Button {icon} is_tertiary aria-disabled={is_disabled} class={cls} disabled={is_disabled} on:click={save}>{text}</Button
 >
