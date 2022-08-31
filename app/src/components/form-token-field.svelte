@@ -1,21 +1,25 @@
 <script lang="ts">
+	import { click_outside } from '$actions/click-outside';
+
 	export let id: string;
 	export let label: string;
 	export let help = '';
 	export let value: string;
 
 	const class_prefix = 'components-form-token';
-	let is_focused = false;
+	let has_focus = false;
 	let input_el: HTMLInputElement;
-
-	function toggle_is_focused() {
-		is_focused = ! is_focused;
-	}
 </script>
 
-<div class="{class_prefix}-field" on:click={() => input_el.focus()}>
+<div class="{class_prefix}-field">
 	<label for="{class_prefix}-input-{id}" class="{class_prefix}-field__label">{label}</label>
-	<div class="{class_prefix}-field__input-container" class:is-active={is_focused}>
+	<div
+		class="{class_prefix}-field__input-container"
+		tabindex="-1"
+		class:is-active={has_focus}
+		on:click={() => input_el.focus()}
+		use:click_outside={{ active: has_focus, callback: () => ( has_focus = false ) }}
+	>
 		<slot name="before-input" {input_el} />
 		<input
 			{value}
@@ -28,9 +32,9 @@
 			size="5"
 			type="text"
 			bind:this={input_el}
-			on:blur={toggle_is_focused}
-			on:focus={toggle_is_focused}
+			on:blur
 			on:change
+			on:focus={() => ( has_focus = true )}
 			on:input
 			on:keydown
 			on:keyup
