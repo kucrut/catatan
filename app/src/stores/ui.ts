@@ -3,6 +3,7 @@ import { writable } from 'svelte/store';
 
 export interface Ui {
 	is_sidebar_open: boolean;
+	open_panels: string[];
 }
 
 export interface UiStore extends PersistentStore< Ui > {
@@ -14,6 +15,7 @@ export default function create_store(): UiStore {
 	const { update, ...store } = persist(
 		writable< Ui >( {
 			is_sidebar_open: false,
+			open_panels: [],
 		} ),
 		createLocalStorage(),
 		'catatan-ui',
