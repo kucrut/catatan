@@ -5,6 +5,7 @@
 	import Panel from './panel.svelte';
 	import { sprintf, __ } from '@wordpress/i18n';
 	import { get_store } from '$stores';
+	import { onMount } from 'svelte';
 
 	interface Media {
 		alt: string;
@@ -14,6 +15,7 @@
 	}
 
 	const editor = get_store( 'editor' );
+	const media = get_store( 'media' );
 	const post_type = get_store( 'post_type' );
 
 	const DEFAULT_DESCRIPTION = __( 'The current image has no alternative text. The file name is: %s' );
@@ -47,28 +49,51 @@
 	$: set_label = $post_type.labels.set_featured_image || DEFAULT_SET_LABEL;
 	$: title = $post_type.labels.featured_image || DEFAULT_TITLE;
 	$: description = selected ? selected.alt || sprintf( DEFAULT_DESCRIPTION, selected.filename ) : '';
+
+	onMount( async () => {
+		if ( $editor.data.featured_media ) {
+			try {
+				const { alt_text: alt, id, media_details } = await media.fetch( $editor.data.featured_media );
+				const { original_image: filename, sizes } = media_details;
+				selected = { alt, filename, id, url: sizes.thumbnail?.source_url || sizes.full.source_url };
+			} catch {
+				// TODO
+			}
+		}
+	} );
 </script>
 
 <Panel {title}>
 	<div class={class_prefix}>
 		{#if is_frame_open}
-			<MediaFrame on:close={close_frame} on:select={handle_select} />
+			<MediaFrame selected={$editor.data.featured_media} on:close={close_frame} on:select={handle_select} />
 		{/if}
-		{#if $editor.data.featured_media && selected}
-			<div id="{class_prefix}-{selected.id}-describedby" class="hidden">{description}</div>
-			<div class="{class_prefix}__container">
-				<button
-					aria-describedby="{class_prefix}-{selected.id}-describedby"
-					aria-label={__( 'Edit or update the image' )}
-					class="components-button {class_prefix}__preview"
-					type="button"><img alt={selected.alt} src={selected.url} /></button
-				>
-				<!-- TODO <div class="components-drop-zone" data-is-drop-zone="true" /> -->
-			</div>
-			<Button is_secondary on:click={open_frame}>{__( 'Replace Image' )}</Button>
-			<Button is_destructive is_link on:click={() => set( 0 )}>{remove_label}</Button>
+		{#if $editor.data.featured_media}
+			{#if selected}
+				<div id="{class_prefix}-{selected.id}-describedby" class="hidden">{description}</div>
+				<div class="{class_prefix}__container">
+					<button
+						aria-describedby="{class_prefix}-{selected.id}-describedby"
+						aria-label={__( 'Edit or update the image' )}
+						class="components-button {class_prefix}__preview"
+						type="button"
+						on:click={open_frame}><img alt={selected.alt} src={selected.url} /></button
+					>
+					<!-- TODO <div class="components-drop-zone" data-is-drop-zone="true" /> -->
+				</div>
+				<Button is_secondary on:click={open_frame}>{__( 'Replace Image' )}</Button>
+				<Button is_destructive is_link on:click={() => set( 0 )}>{remove_label}</Button>
+			{:else}
+				<p>{__( 'Loading image…', 'catatan' )}</p>
+			{/if}
 		{:else}
 			<Button class="{class_prefix}__toggle" on:click={open_frame}>{set_label}</Button>
 		{/if}
 	</div>
 </Panel>
+
+<style>
+	p {
+		text-align: center;
+	}
+</style>
