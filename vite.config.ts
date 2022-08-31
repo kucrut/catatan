@@ -8,6 +8,7 @@ const config = create_config( 'app/src/main.ts', 'app/dist', {
 	plugins: [ external_globals( wp_globals() ), svelte() ],
 	resolve: {
 		alias: {
+			$actions: resolve( 'app/src/actions' ),
 			$components: resolve( 'app/src/components' ),
 			$stores: resolve( 'app/src/stores' ),
 			$types: resolve( 'app/src/types' ),

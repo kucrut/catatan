@@ -18,6 +18,8 @@
 		"checkJs": true,
 		"isolatedModules": true,
 		"paths": {
+			"$actions": [ "./app/src/actions" ],
+			"$actions/*": [ "./app/src/actions/*" ],
 			"$components": [ "./app/src/components" ],
 			"$components/*": [ "./app/src/components/*" ],
 			"$stores": [ "./app/src/stores" ],
