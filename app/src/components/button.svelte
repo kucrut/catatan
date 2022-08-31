@@ -10,6 +10,7 @@
 	export let type = 'button';
 	export let is_busy = false;
 	export let is_destructive = false;
+	export let is_link = false;
 	export let is_primary = false;
 	export let is_secondary = false;
 	export let is_tertiary = false;
@@ -24,6 +25,7 @@
 	class:has-icon={icon && ! icon_class}
 	class:is-busy={is_busy}
 	class:is-destructive={is_destructive}
+	class:is-link={is_link}
 	class:is-primary={is_primary}
 	class:is-secondary={is_secondary}
 	class:is-tertiary={is_tertiary}
