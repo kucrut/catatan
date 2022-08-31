@@ -1,12 +1,22 @@
 <script lang="ts">
 	import Button from './button.svelte';
-	export let title: string;
+	import { get_store } from '$stores';
 
-	let is_expanded = false;
+	export let title: string;
+	export let id: string;
+
+	const ui = get_store( 'ui' );
+	let is_expanded = $ui.open_panels.includes( id );
+
 	$: icon = is_expanded ? 'arrow-up' : 'arrow-down';
 
 	function handle_click_button(): void {
 		is_expanded = ! is_expanded;
+
+		ui.update( ( { open_panels, ...rest } ) => ( {
+			...rest,
+			open_panels: is_expanded ? [ ...open_panels, id ] : open_panels.filter( i => i !== id ),
+		} ) );
 	}
 </script>
 
