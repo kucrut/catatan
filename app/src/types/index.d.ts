@@ -91,6 +91,7 @@ export interface WP_Media {
 declare global {
 	interface Window {
 		catatanEditor: Config;
+		wp: Record< string, any >;
 	}
 }
 
