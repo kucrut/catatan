@@ -13,9 +13,9 @@ export interface Config {
 	media_rest_route: string;
 	post_id: number;
 	post_list_url: string;
-	post_rest_path: string;
+	post_rest_route: string;
 	post_type: string;
-	post_type_rest_path: string;
+	post_type_rest_route: string;
 }
 
 export interface SelectControlOption {

@@ -22,12 +22,12 @@ export interface Stores {
 let stores: Stores;
 
 export async function init_stores( config: StoresConfig ): Promise< void > {
-	const { media_rest_route, post_id, post_rest_path, post_type_rest_path, ...editor_config } = config;
+	const { media_rest_route, post_id, post_rest_route, post_type_rest_route, ...editor_config } = config;
 
-	const post_type = create_post_type_store( post_type_rest_path );
+	const post_type = create_post_type_store( post_type_rest_route );
 	await post_type.fetch();
 
-	const post = create_post_store( post_rest_path, post_id );
+	const post = create_post_store( post_rest_route, post_id );
 	await post.fetch();
 
 	const taxonomies = create_taxonomies_store( post );

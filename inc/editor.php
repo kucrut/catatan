@@ -126,9 +126,9 @@ function get_config( WP_Post $post, WP_Post_Type $post_type ): array {
 		'media_rest_route' => rest_get_route_for_post_type_items( 'attachment' ),
 		'post_id' => $post->ID,
 		'post_list_url' => $post_list_url,
-		'post_rest_path' => rest_get_route_for_post_type_items( $post->post_type ),
+		'post_rest_route' => rest_get_route_for_post_type_items( $post->post_type ),
 		'post_type' => $post_type->name,
-		'post_type_rest_path' => sprintf( '/wp/v2/types/%s', $post->post_type ),
+		'post_type_rest_route' => sprintf( '/wp/v2/types/%s', $post->post_type ),
 	];
 
 	/**
