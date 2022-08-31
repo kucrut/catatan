@@ -11,13 +11,8 @@
 	let has_focus = false;
 	let input_el: HTMLInputElement;
 
-	function handle_focus_input() {
-		has_focus = true;
-	}
-
-	function handle_click_outside() {
-		has_focus = false;
-	}
+	const handle_focus_input = () => ( has_focus = true );
+	const handle_click_outside = () => ( has_focus = false );
 
 	onMount( () => {
 		// We're attaching it here so we don't occupy the input's focus event.
