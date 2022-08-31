@@ -107,13 +107,17 @@ export default function create_store( api_url: string, is_hierarchical = false )
 
 		async fetch( params = {}, more = false ): Promise< void > {
 			const { include, page = 1 } = params;
-
-			let url = `${ api_url }?context=edit&page=${ page }&per_page=100`;
+			const fetch_params: FetchURLParams = {
+				context: 'edit',
+				page: `${ page }`,
+				per_page: '100',
+			};
 
 			if ( include && include.length ) {
-				url = `${ url }&include=${ include.join( ',' ) }`;
+				fetch_params.include = include.map( i => i.toString() ).join( ',' );
 			}
 
+			const url = generate_url( fetch_params );
 			const response = await api_fetch< Response >( { url, parse: false } );
 			const data = await response.json();
 
@@ -134,8 +138,14 @@ export default function create_store( api_url: string, is_hierarchical = false )
 
 		async search( search: string ): Promise< WP_REST_API_Term[] > {
 			const data = await api_fetch< WP_REST_API_Term[] >( {
-				url: `${ api_url }?context=view&per_page=20&orderby=count&order=desc&search=${ search }`,
 				parse: true,
+				url: generate_url( {
+					search,
+					context: 'view',
+					order: 'desc',
+					orderby: 'count',
+					per_page: '20',
+				} ),
 			} );
 
 			// TODO: Fetch more?
