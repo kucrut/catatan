@@ -16,6 +16,7 @@
 	export let taxonomy: Taxonomy;
 	export let terms: TermsStore;
 
+	const create_keys = [ 'comma', 'enter' ];
 	const editor = get_store( 'editor' );
 
 	const { labels, rest_base: tax_name } = taxonomy;
@@ -45,6 +46,18 @@
 				: [];
 	}
 
+	function add_to_selected( id: number, term?: WP_REST_API_Term ): void {
+		if ( term ) {
+			terms.add( term );
+		}
+
+		editor.add_term( tax_name, id );
+
+		search_term = '';
+		input_value = '';
+		search_result = [];
+	}
+
 	async function handle_input( event: Event & { target: HTMLInputElement } ): Promise< void > {
 		const { value } = event.target;
 
@@ -59,16 +72,33 @@
 		do_search();
 	}
 
+	async function handle_keyup( event: KeyboardEvent ): Promise< void > {
+		const { code } = event;
+		if ( ! create_keys.includes( code.toLocaleLowerCase() ) ) {
+			return;
+		}
+
+		const name = input_value.trim().replaceAll( ',', '' );
+		if ( ! name ) {
+			return;
+		}
+
+		try {
+			const new_term = await terms.create( { name } );
+			add_to_selected( new_term.id, new_term );
+		} catch ( error ) {
+			if ( error.code === 'term_exists' ) {
+				await terms.fetch( { include: [ ...selected, error.data.term_id ] } );
+				add_to_selected( error.data.term_id );
+			}
+		}
+	}
+
 	async function handle_select( event: CustomEvent< number > ) {
 		const { detail: index } = event;
 		const term = search_result[ index ];
 
-		terms.add( term );
-		editor.add_term( tax_name, term.id );
-
-		search_term = '';
-		input_value = '';
-		search_result = [];
+		add_to_selected( term.id, term );
 	}
 
 	onMount( () => {
@@ -85,6 +115,7 @@
 		label={add_new_item}
 		value={input_value}
 		on:input={handle_input}
+		on:keyup={handle_keyup}
 	>
 		<svelte:fragment slot="before-input">
 			{#each token_items as item (item.id)}
