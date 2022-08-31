@@ -39,7 +39,12 @@
 	};
 
 	function handle_select( event: CustomEvent< { selection: WP_Media[] } > ): void {
-		const { alt, filename, id, sizes } = event.detail.selection.at( 0 );
+		const { alt, filename, id, sizes, mime } = event.detail.selection.at( 0 );
+
+		// TODO: Prevent this from the media frame's upload tab.
+		if ( ! mime.startsWith( 'image' ) ) {
+			return;
+		}
 
 		set( id );
 		selected = { alt, filename, id, url: sizes.thumbnail?.url || sizes.full.url };
