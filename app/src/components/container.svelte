@@ -19,12 +19,7 @@
 			<div class="interface-interface-skeleton__editor">
 				<Header />
 				<div class="interface-interface-skeleton__body">
-					<div
-						aria-label={__( 'Editor content' )}
-						class="interface-interface-skeleton__content"
-						role="region"
-						tabindex="-1"
-					>
+					<div aria-label={__( 'Editor content' )} class="interface-interface-skeleton__content" role="region">
 						<Notices />
 						<div class="edit-post-visual-editor">
 							<ContentArea with_editor={supports.editor === true} with_title={supports.title === true} />

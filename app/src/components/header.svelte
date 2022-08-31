@@ -6,7 +6,7 @@
 	import ToggleSidebarButton from './toggle-sidebar-button.svelte';
 </script>
 
-<div aria-label={__( 'Editor top bar' )} class="interface-interface-skeleton__header" role="region" tabindex="-1">
+<div aria-label={__( 'Editor top bar' )} class="interface-interface-skeleton__header" role="region">
 	<div class="edit-post-header">
 		<div class="edit-post-header__toolbar">
 			<div

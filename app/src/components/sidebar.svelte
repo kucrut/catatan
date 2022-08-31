@@ -19,13 +19,9 @@
 	class="interface-interface-skeleton__sidebar"
 	class:hidden={! $ui.is_sidebar_open}
 	role="region"
-	tabindex="-1"
 >
 	<div class="interface-complementary-area edit-post-sidebar">
-		<div
-			class="components-panel__header interface-complementary-area-header edit-post-sidebar__panel-tabs"
-			tabindex="-1"
-		>
+		<div class="components-panel__header interface-complementary-area-header edit-post-sidebar__panel-tabs">
 			<ul>
 				<li>
 					<Button class="edit-post-sidebar__panel-tab is-active">{$post_type.labels.singular_name}</Button>
