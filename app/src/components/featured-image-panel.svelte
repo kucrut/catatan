@@ -4,14 +4,19 @@
 	import { get_store } from '$stores';
 
 	const editor = get_store( 'editor' );
+	const post_type = get_store( 'post_type' );
+
+	const DEFAULT_SET_LABEL = __( 'Set featured image' );
+	const DEFAULT_TITLE = __( 'Featured image' );
+
+	$: set_label = $post_type.labels.set_featured_image || DEFAULT_SET_LABEL;
+	$: title = $post_type.labels.featured_image || DEFAULT_TITLE;
 </script>
 
-<Panel title={__( 'Featured image' )}>
+<Panel {title}>
 	<div class="editor-post-featured-image">
 		{#if ! $editor.data.featured_media}
-			<button type="button" class="components-button editor-post-featured-image__toggle"
-				>{__( 'Set featured image' )}</button
-			>
+			<button type="button" class="components-button editor-post-featured-image__toggle">{set_label}</button>
 		{/if}
 	</div>
 </Panel>
