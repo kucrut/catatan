@@ -36,6 +36,7 @@
 	.interface-interface-skeleton__content {
 		background-color: #fff;
 		width: 100%;
+		/* stylelint-disable-next-line custom-property-pattern */
 		padding-inline: var( --wp--custom--spacing--outer );
 	}
 
