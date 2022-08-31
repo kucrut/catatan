@@ -19,7 +19,7 @@
 	const create_keys = [ 'comma', 'enter' ];
 	const editor = get_store( 'editor' );
 
-	const { labels, rest_base: tax_name } = taxonomy;
+	const { labels, rest_base: tax_name, __can__ } = taxonomy;
 	const { add_new_item, singular_name } = labels;
 	const remove_text = sprintf( __( 'Remove %s' ), singular_name );
 
@@ -73,7 +73,12 @@
 	}
 
 	async function handle_keyup( event: KeyboardEvent ): Promise< void > {
+		if ( ! __can__.create ) {
+			return;
+		}
+
 		const { code } = event;
+
 		if ( ! create_keys.includes( code.toLocaleLowerCase() ) ) {
 			return;
 		}
