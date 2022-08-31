@@ -175,6 +175,7 @@ function render_field_post_types( array $args ): void {
 	$post_types = get_post_types(
 		[
 			'show_in_menu' => true,
+			'show_in_rest' => true,
 			'show_ui' => true,
 		],
 		'objects'
