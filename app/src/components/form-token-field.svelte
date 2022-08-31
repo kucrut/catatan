@@ -17,7 +17,10 @@
 		class="{class_prefix}-field__input-container"
 		tabindex="-1"
 		class:is-active={has_focus}
-		on:click={() => input_el.focus()}
+		on:click={() => {
+			has_focus = true;
+			input_el.focus();
+		}}
 		use:click_outside={{ active: has_focus, callback: () => ( has_focus = false ) }}
 	>
 		<slot name="before-input" {input_el} />
@@ -34,7 +37,7 @@
 			bind:this={input_el}
 			on:blur
 			on:change
-			on:focus={() => ( has_focus = true )}
+			on:focus
 			on:input
 			on:keydown
 			on:keyup
