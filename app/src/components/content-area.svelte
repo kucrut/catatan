@@ -28,14 +28,10 @@
 		margin: 0;
 		display: flex;
 		flex-flow: column nowrap;
-		align-items: center;
-		padding-inline-start: 1rem;
-		padding-inline-end: 1rem;
-		background: #fff none repeat scroll 0% 0%;
 	}
 
 	.editor-styles-wrapper {
 		max-width: 100%;
-		flex: 1 1 0%;
+		flex: 1 1;
 	}
 </style>

@@ -31,3 +31,16 @@
 		</div>
 	</div>
 </div>
+
+<style>
+	.interface-interface-skeleton__content {
+		background-color: #fff;
+		width: 100%;
+		padding-inline: var( --wp--custom--spacing--outer );
+	}
+
+	/* TODO: Center this thing */
+	.edit-post-visual-editor {
+		max-width: 720px;
+	}
+</style>

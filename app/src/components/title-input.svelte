@@ -32,7 +32,7 @@
 		font-weight: 300;
 		/* stylelint-disable custom-property-pattern */
 		font-family: var( --wp--preset--font-family--source-serif-pro );
-		font-size: var( --wp--custom--typography--font-size--gigantic );
+		font-size: var( --wp--preset--font-size--x-large );
 		line-height: var( --wp--custom--typography--line-height--tiny );
 	}
 </style>
