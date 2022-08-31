@@ -1,6 +1,7 @@
 import type { WP_REST_API_Term } from 'wp-types';
 import api_fetch from '@wordpress/api-fetch';
 import { derived, writable, type Readable } from 'svelte/store';
+import { generate_url, type URLParams } from '$utils/url';
 
 export interface NewTerm {
 	name: string;
@@ -24,10 +25,6 @@ interface StoreValue {
 interface FetchParams {
 	page?: number;
 	include?: number[];
-}
-
-interface FetchURLParams {
-	[ k: string ]: string;
 }
 
 /* eslint-disable no-unused-vars */
@@ -70,16 +67,6 @@ export default function create_store( api_url: string, is_hierarchical = false )
 		} );
 	} );
 
-	const generate_url = ( params: FetchURLParams ): string => {
-		const url = new URL( api_url );
-
-		Object.entries( params ).forEach( ( [ key, value ] ) => {
-			url.searchParams.append( key, value );
-		} );
-
-		return url.toString();
-	};
-
 	return {
 		...store,
 
@@ -107,7 +94,7 @@ export default function create_store( api_url: string, is_hierarchical = false )
 
 		async fetch( params = {}, more = false ): Promise< void > {
 			const { include, page = 1 } = params;
-			const fetch_params: FetchURLParams = {
+			const fetch_params: URLParams = {
 				context: 'edit',
 				page: `${ page }`,
 				per_page: '100',
@@ -117,7 +104,7 @@ export default function create_store( api_url: string, is_hierarchical = false )
 				fetch_params.include = include.map( i => i.toString() ).join( ',' );
 			}
 
-			const url = generate_url( fetch_params );
+			const url = generate_url( api_url, fetch_params );
 			const response = await api_fetch< Response >( { url, parse: false } );
 			const data = await response.json();
 
@@ -139,7 +126,7 @@ export default function create_store( api_url: string, is_hierarchical = false )
 		async search( search: string ): Promise< WP_REST_API_Term[] > {
 			const data = await api_fetch< WP_REST_API_Term[] >( {
 				parse: true,
-				url: generate_url( {
+				url: generate_url( api_url, {
 					search,
 					context: 'view',
 					order: 'desc',
