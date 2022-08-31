@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Button from './button.svelte';
 	import ExcerptPanel from './excerpt-panel.svelte';
+	import FeaturedImagePanel from './featured-image-panel.svelte';
 	import FlatTermsPanel from './flat-terms-panel.svelte';
 	import HierarchicalTermsPanel from './hierarchical-terms-panel.svelte';
 	import PermalinkPanel from './permalink-panel.svelte';
@@ -46,6 +47,9 @@
 					{/if}
 				{/if}
 			{/each}
+		{/if}
+		{#if $post_type.supports.thumbnail}
+			<FeaturedImagePanel />
 		{/if}
 		{#if $post_type.supports.excerpt}
 			<ExcerptPanel />
