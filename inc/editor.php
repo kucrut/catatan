@@ -123,6 +123,7 @@ function get_config( WP_Post $post, WP_Post_Type $post_type ): array {
 	$config = [
 		'edit_link' => get_edit_post_link( $post->ID, 'db' ),
 		'editor_id' => CATATAN\EDITOR_ID,
+		'media_rest_route' => rest_get_route_for_post_type_items( 'attachment' ),
 		'post_id' => $post->ID,
 		'post_list_url' => $post_list_url,
 		'post_rest_path' => rest_get_route_for_post_type_items( $post->post_type ),
@@ -281,6 +282,12 @@ function preload_data( WP_Post $post ): void {
 		$post_route,
 		[ $post_route, 'OPTIONS' ],
 	];
+
+	$featured_image_id = get_post_thumbnail_id( $post );
+
+	if ( $featured_image_id ) {
+		$preload_paths[] = rest_get_route_for_post( $featured_image_id );
+	}
 
 	block_editor_rest_api_preload(
 		$preload_paths,
