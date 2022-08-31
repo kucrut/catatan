@@ -58,13 +58,8 @@ function flat_to_nested( flat: TermWithChildren[] ): TermWithChildren[] {
 }
 
 export default function create_store( api_url: string, is_hierarchical = false ): TermsStore {
-	const terms = writable< WP_REST_API_Term[] >();
+	const terms = writable< WP_REST_API_Term[] >( [] );
 	const store = derived< typeof terms, StoreValue >( terms, ( $terms, set ) => {
-		if ( ! $terms ) {
-			set( { flat: [] } );
-			return;
-		}
-
 		set( {
 			flat: $terms,
 			sorted: is_hierarchical ? flat_to_nested( $terms ) : undefined,
