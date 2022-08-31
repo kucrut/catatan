@@ -26,6 +26,10 @@ interface FetchParams {
 	include?: number[];
 }
 
+interface FetchURLParams {
+	[ k: string ]: string;
+}
+
 /* eslint-disable no-unused-vars */
 export interface TermsStore extends Readable< StoreValue > {
 	add( term: WP_REST_API_Term ): void;
@@ -65,6 +69,16 @@ export default function create_store( api_url: string, is_hierarchical = false )
 			sorted: is_hierarchical ? flat_to_nested( $terms ) : undefined,
 		} );
 	} );
+
+	const generate_url = ( params: FetchURLParams ): string => {
+		const url = new URL( api_url );
+
+		Object.entries( params ).forEach( ( [ key, value ] ) => {
+			url.searchParams.append( key, value );
+		} );
+
+		return url.toString();
+	};
 
 	return {
 		...store,
