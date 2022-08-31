@@ -2,9 +2,20 @@
 
 const { wp } = window;
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function get_attachments_collection( ids: number[] ): any {
+	return wp.media.query( {
+		order: 'ASC',
+		orderby: 'post__in',
+		post__in: ids,
+		posts_per_page: -1,
+		query: true,
+		type: 'image',
+	} );
+}
+
 /**
  * Prepare the Featured Image toolbars and frames.
- *
  */
 export function get_featured_image_media_frame(): typeof wp.media.view.MediaFrame.Select {
 	return wp.media.view.MediaFrame.Select.extend( {
