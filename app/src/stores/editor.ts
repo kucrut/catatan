@@ -114,7 +114,7 @@ export default function create_store( options: Options ): EditorStore {
 					// Saving an auto-draft post needs content or excerpt or title to be set.
 					status === 'auto-draft'
 						? Boolean( content || new_content || excerpt || new_excerpt || title || new_title )
-						: Boolean( Object.values( $changes ).filter( Boolean ).length ),
+						: Object.keys( $changes ).length > 0,
 				data: { ...data, ...$changes },
 			};
 		} );
