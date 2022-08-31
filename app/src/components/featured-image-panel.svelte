@@ -16,6 +16,7 @@
 	const editor = get_store( 'editor' );
 	const post_type = get_store( 'post_type' );
 
+	const DEFAULT_DESCRIPTION = __( 'The current image has no alternative text. The file name is: %s' );
 	const DEFAULT_REMOVE_LABEL = __( 'Remove featured image' );
 	const DEFAULT_SET_LABEL = __( 'Set featured image' );
 	const DEFAULT_TITLE = __( 'Featured image' );
@@ -45,10 +46,7 @@
 	$: remove_label = $post_type.labels.remove_featured_image || DEFAULT_REMOVE_LABEL;
 	$: set_label = $post_type.labels.set_featured_image || DEFAULT_SET_LABEL;
 	$: title = $post_type.labels.featured_image || DEFAULT_TITLE;
-	$: description = selected
-		? selected.alt ||
-		  sprintf( __( 'The current image has no alternative text. The file name is: %s' ), selected.filename )
-		: '';
+	$: description = selected ? selected.alt || sprintf( DEFAULT_DESCRIPTION, selected.filename ) : '';
 </script>
 
 <Panel {title}>

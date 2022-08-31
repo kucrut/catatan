@@ -5,6 +5,7 @@
 
 	interface FrameEvents {
 		close: undefined;
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		open: { frame: any };
 		select: { selection: WP_Media[] };
 	}

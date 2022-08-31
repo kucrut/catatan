@@ -91,6 +91,7 @@ export interface WP_Media {
 declare global {
 	interface Window {
 		catatanEditor: Config;
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		wp: Record< string, any >;
 	}
 }

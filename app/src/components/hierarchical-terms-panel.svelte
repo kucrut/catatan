@@ -23,15 +23,18 @@
 
 	$: ( { labels, name, rest_base, slug, __can__ } = taxonomy );
 	$: ( { add_new_item, parent_item, singular_name, new_item_name } = labels );
-	$: term_options = $terms.sorted.length
-		? [
-				{
-					label: `— ${ parent_item } —`,
-					value: '',
-				},
-				...$terms.sorted.reduce( ( prev, current ) => term_to_option( 0, prev, current ), [] ),
-		  ]
-		: [];
+	$: term_options = create_options();
+
+	function create_options(): SelectControlOption[] {
+		if ( ! $terms.sorted.length ) {
+			return [];
+		}
+
+		return [
+			{ label: `— ${ parent_item } —`, value: '' },
+			...$terms.sorted.reduce( ( prev, current ) => term_to_option( 0, prev, current ), [] ),
+		];
+	}
 
 	function handle_click_toggle(): void {
 		is_creating_term = ! is_creating_term;
