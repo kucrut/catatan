@@ -211,7 +211,6 @@ function load( WP_Post_Type $post_type, bool $is_edit = true ): void {
 	do_action( 'catatan__before_load_editor', $post, $post_type, $is_edit );
 
 	enqueue_assets( $post, $post_type );
-	preload_data( $post );
 
 	if ( $is_edit ) {
 		// Because we've removed the page from admin menus, WP does not have the page title anymore, so we need to fix it here.
@@ -240,7 +239,9 @@ function load( WP_Post_Type $post_type, bool $is_edit = true ): void {
  * @return void
  */
 function enqueue_assets( WP_Post $post, WP_Post_Type $post_type ): void {
+	preload_data( $post );
 	wp_enqueue_global_styles_css_custom_properties();
+	wp_enqueue_media( [ 'post' => $post ] );
 
 	Vite\enqueue_asset(
 		dirname( __DIR__ ) . '/app/dist',
