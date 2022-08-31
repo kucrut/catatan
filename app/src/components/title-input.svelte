@@ -27,6 +27,7 @@
 	}
 
 	input {
+		max-width: 100%;
 		border: unset;
 		font-weight: 300;
 		/* stylelint-disable custom-property-pattern */
