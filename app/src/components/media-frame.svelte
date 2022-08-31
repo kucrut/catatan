@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { WP_Media } from '$types';
-	import { get_attachments_collection, get_featured_image_media_frame } from '$utils/media';
+	import { FeaturedImageFrame } from '$utils/media';
 	import { createEventDispatcher, onDestroy, onMount } from 'svelte';
 
 	interface FrameEvents {
@@ -16,6 +16,15 @@
 	const dispatch = createEventDispatcher< FrameEvents >();
 	let frame;
 
+	function handle_open() {
+		if ( selected > 0 ) {
+			const selection = frame.state().get( 'selection' );
+			selection.add( wp.media.attachment( selected ) );
+		}
+
+		dispatch( 'open', { frame } );
+	}
+
 	function handle_select() {
 		const selection = frame.state().get( 'selection' ).toJSON();
 
@@ -23,15 +32,7 @@
 	}
 
 	function create_frame() {
-		const featuredImageFrame = get_featured_image_media_frame();
-
-		const attachments = get_attachments_collection( selected > 0 ? [ selected ] : null );
-		const selection = new wp.media.model.Selection( attachments.models, {
-			props: attachments.props.toJSON(),
-		} );
-
-		frame = new featuredImageFrame( {
-			selection,
+		frame = new FeaturedImageFrame( {
 			editing: false, // TODO.
 			mimeType: [ 'image' ],
 			multiple: false,
@@ -39,8 +40,9 @@
 		} );
 
 		frame.on( 'close', () => dispatch( 'close' ) );
-		frame.on( 'open', () => dispatch( 'open', { frame } ) );
+		frame.on( 'open', handle_open );
 		frame.on( 'select', handle_select );
+		frame.off( 'open', frame.updateSelection, frame );
 
 		wp.media.frame = frame;
 	}
