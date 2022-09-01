@@ -17,6 +17,7 @@ specifiers:
   '@tiptap/extension-table-header': 2.0.0-beta.25
   '@tiptap/extension-table-row': 2.0.0-beta.22
   '@tiptap/extension-text-align': 2.0.0-beta.31
+  '@tiptap/extension-youtube': 2.0.0-beta.6
   '@tiptap/starter-kit': 2.0.0-beta.191
   '@tsconfig/svelte': ^3.0.0
   '@typescript-eslint/eslint-plugin': ^5.36.1
@@ -73,6 +74,7 @@ devDependencies:
   '@tiptap/extension-table-header': 2.0.0-beta.25_jdrcmhoxj44u3cq7gnenksjiqq
   '@tiptap/extension-table-row': 2.0.0-beta.22_jdrcmhoxj44u3cq7gnenksjiqq
   '@tiptap/extension-text-align': 2.0.0-beta.31_jdrcmhoxj44u3cq7gnenksjiqq
+  '@tiptap/extension-youtube': 2.0.0-beta.6_jdrcmhoxj44u3cq7gnenksjiqq
   '@tiptap/starter-kit': 2.0.0-beta.191
   '@tsconfig/svelte': 3.0.0
   '@typescript-eslint/eslint-plugin': 5.36.1_lbwfnm54o3pmr3ypeqp3btnera
@@ -1837,6 +1839,14 @@ packages:
 
   /@tiptap/extension-text/2.0.0-beta.17_jdrcmhoxj44u3cq7gnenksjiqq:
     resolution: {integrity: sha512-OyKL+pqWJEtjyd9/mrsuY1kZh2b3LWpOQDWKtd4aWR4EA0efmQG+7FPwcIeAVEh7ZoqM+/ABCnPjN6IjzIrSfg==}
+    peerDependencies:
+      '@tiptap/core': ^2.0.0-beta.1
+    dependencies:
+      '@tiptap/core': 2.0.0-beta.182
+    dev: true
+
+  /@tiptap/extension-youtube/2.0.0-beta.6_jdrcmhoxj44u3cq7gnenksjiqq:
+    resolution: {integrity: sha512-pTuDcqpzAIavCm2JKzkMy/xwHqJszCgfnAQnwBMk4FvdDduDUNLGPOkXF1pdVhi5WPN3dWD+matoGgWSLIEONA==}
     peerDependencies:
       '@tiptap/core': ^2.0.0-beta.1
     dependencies:
