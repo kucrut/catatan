@@ -2,31 +2,31 @@
 	import { Editor } from '@tiptap/core';
 	import { get_store } from '$stores';
 	import { onDestroy, onMount } from 'svelte';
-	import StarterKit from '@tiptap/starter-kit';
+	import starter_kit from '@tiptap/starter-kit';
 
-	const store = get_store( 'editor' );
+	const editor_store = get_store( 'editor' );
 
 	let editor_el: HTMLDivElement;
-	let instance: Editor;
+	let editor_instance: Editor;
 
 	onMount( () => {
-		instance = new Editor( {
-			content: $store.data.content,
+		editor_instance = new Editor( {
+			content: $editor_store.data.content,
 			element: editor_el,
-			extensions: [ StarterKit ],
+			extensions: [ starter_kit ],
 			onTransaction() {
 				// force re-render so `editor.isActive` works as expected.
-				instance = instance;
+				editor_instance = editor_instance;
 			},
 			onUpdate( { editor } ) {
-				store.update( { content: editor.getHTML() } );
+				editor_store.update( { content: editor.getHTML() } );
 			},
 		} );
 	} );
 
 	onDestroy( () => {
-		if ( instance ) {
-			instance.destroy();
+		if ( editor_instance instanceof Editor ) {
+			editor_instance.destroy();
 		}
 	} );
 </script>
