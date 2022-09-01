@@ -31,6 +31,4 @@
 	} );
 </script>
 
-<div class="is-root-container block-editor-block-list__layout">
-	<div bind:this={editor_el} />
-</div>
+<div class="is-root-container block-editor-block-list__layout" bind:this={editor_el} />
