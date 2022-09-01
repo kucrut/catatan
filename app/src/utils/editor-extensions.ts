@@ -1,7 +1,7 @@
 import type { Extensions } from '@tiptap/core';
 import { __ } from '@wordpress/i18n';
-// import { lowlight } from 'lowlight';
 import code_block_lowlight from '@tiptap/extension-code-block-lowlight';
+import image from '@tiptap/extension-image';
 import placeholder from '@tiptap/extension-placeholder';
 import starter_kit from '@tiptap/starter-kit';
 import { lowlight } from 'lowlight/lib/common';
@@ -11,6 +11,7 @@ lowlight.registerAlias( 'typescript', 'ts' );
 
 export function get_extensions(): Extensions {
 	return [
+		image,
 		code_block_lowlight.configure( {
 			lowlight,
 		} ),

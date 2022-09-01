@@ -7,6 +7,7 @@ specifiers:
   '@sveltejs/vite-plugin-svelte': ^1.0.3
   '@tiptap/core': 2.0.0-beta.182
   '@tiptap/extension-code-block-lowlight': 2.0.0-beta.73
+  '@tiptap/extension-image': 2.0.0-beta.30
   '@tiptap/extension-placeholder': 2.0.0-beta.53
   '@tiptap/starter-kit': 2.0.0-beta.191
   '@tsconfig/svelte': ^3.0.0
@@ -54,6 +55,7 @@ devDependencies:
   '@sveltejs/vite-plugin-svelte': 1.0.3_svelte@3.49.0+vite@3.0.9
   '@tiptap/core': 2.0.0-beta.182
   '@tiptap/extension-code-block-lowlight': 2.0.0-beta.73_giic42g7xysntyllbw3z33pheu
+  '@tiptap/extension-image': 2.0.0-beta.30_jdrcmhoxj44u3cq7gnenksjiqq
   '@tiptap/extension-placeholder': 2.0.0-beta.53_jdrcmhoxj44u3cq7gnenksjiqq
   '@tiptap/starter-kit': 2.0.0-beta.191
   '@tsconfig/svelte': 3.0.0
@@ -1675,6 +1677,14 @@ packages:
     dependencies:
       '@tiptap/core': 2.0.0-beta.182
       prosemirror-state: 1.4.1
+    dev: true
+
+  /@tiptap/extension-image/2.0.0-beta.30_jdrcmhoxj44u3cq7gnenksjiqq:
+    resolution: {integrity: sha512-VhEmgiKkZMiKR7hbpJgIlIUS/QNjSGI5ER7mKDAbuV1IB5yb6nGjZ6o3Exrr2/CaTaW5hQarBC1z2Xgdu05EGg==}
+    peerDependencies:
+      '@tiptap/core': ^2.0.0-beta.1
+    dependencies:
+      '@tiptap/core': 2.0.0-beta.182
     dev: true
 
   /@tiptap/extension-italic/2.0.0-beta.28_jdrcmhoxj44u3cq7gnenksjiqq:
