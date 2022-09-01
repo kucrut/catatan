@@ -1,11 +1,15 @@
 <script lang="ts">
 	import { Editor } from '@tiptap/core';
 	import { get_store } from '$stores';
+	import { lowlight } from 'lowlight';
 	import { onDestroy, onMount } from 'svelte';
 	import { __ } from '@wordpress/i18n';
+	import code_block_lowlight from '@tiptap/extension-code-block-lowlight';
 	import debounce from 'just-debounce-it';
 	import placeholder from '@tiptap/extension-placeholder';
 	import starter_kit from '@tiptap/starter-kit';
+
+	import 'highlight.js/styles/atom-one-dark.css';
 
 	const editor_store = get_store( 'editor' );
 
@@ -17,10 +21,16 @@
 			content: $editor_store.data.content,
 			element: editor_el,
 			extensions: [
+				code_block_lowlight.configure( {
+					lowlight,
+				} ),
 				placeholder.configure( {
 					placeholder: __( 'Start writing…' ),
 				} ),
 				starter_kit.configure( {
+					codeBlock: {
+						HTMLAttributes: { class: 'hljs' },
+					},
 					heading: {
 						levels: [ 2, 3, 4, 5, 6 ],
 					},
