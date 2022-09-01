@@ -16,7 +16,7 @@
 	export let taxonomy: Taxonomy;
 	export let terms: TermsStore;
 
-	const create_keys = [ 'comma', 'enter' ];
+	const keys_to_watch = [ 'Comma', 'Enter', 'Escape' ];
 	const editor = get_store( 'editor' );
 
 	const { labels, rest_base: tax_name, __can__ } = taxonomy;
@@ -72,14 +72,19 @@
 		do_search();
 	}
 
-	async function handle_keyup( event: KeyboardEvent ): Promise< void > {
+	async function handle_keydown( event: KeyboardEvent ): Promise< void > {
 		if ( ! __can__.create ) {
 			return;
 		}
 
 		const { code } = event;
 
-		if ( ! create_keys.includes( code.toLocaleLowerCase() ) ) {
+		if ( ! keys_to_watch.includes( code ) ) {
+			return;
+		}
+
+		if ( code === 'Escape' ) {
+			search_result = [];
 			return;
 		}
 
@@ -120,7 +125,7 @@
 		label={add_new_item}
 		value={input_value}
 		on:input={handle_input}
-		on:keyup={handle_keyup}
+		on:keydown={handle_keydown}
 	>
 		<svelte:fragment slot="before-input">
 			{#each token_items as item (item.id)}
