@@ -3,6 +3,7 @@
 	import { get_store } from '$stores';
 	import { onDestroy, onMount } from 'svelte';
 	import { __ } from '@wordpress/i18n';
+	import debounce from 'just-debounce-it';
 	import placeholder from '@tiptap/extension-placeholder';
 	import starter_kit from '@tiptap/starter-kit';
 
@@ -16,9 +17,13 @@
 			content: $editor_store.data.content,
 			element: editor_el,
 			extensions: [
-				starter_kit,
 				placeholder.configure( {
 					placeholder: __( 'Start writing…' ),
+				} ),
+				starter_kit.configure( {
+					heading: {
+						levels: [ 2, 3, 4, 5, 6 ],
+					},
 				} ),
 			],
 
@@ -26,9 +31,9 @@
 				// force re-render so `editor.isActive` works as expected.
 				editor_instance = editor_instance;
 			},
-			onUpdate( { editor } ) {
+			onUpdate: debounce( ( { editor } ) => {
 				editor_store.update( { content: editor.getHTML() } );
-			},
+			}, 250 ),
 		} );
 	} );
 
