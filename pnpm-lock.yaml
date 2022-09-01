@@ -9,6 +9,7 @@ specifiers:
   '@tiptap/extension-code-block-lowlight': 2.0.0-beta.73
   '@tiptap/extension-image': 2.0.0-beta.30
   '@tiptap/extension-placeholder': 2.0.0-beta.53
+  '@tiptap/extension-text-align': 2.0.0-beta.31
   '@tiptap/starter-kit': 2.0.0-beta.191
   '@tsconfig/svelte': ^3.0.0
   '@typescript-eslint/eslint-plugin': ^5.36.1
@@ -57,6 +58,7 @@ devDependencies:
   '@tiptap/extension-code-block-lowlight': 2.0.0-beta.73_giic42g7xysntyllbw3z33pheu
   '@tiptap/extension-image': 2.0.0-beta.30_jdrcmhoxj44u3cq7gnenksjiqq
   '@tiptap/extension-placeholder': 2.0.0-beta.53_jdrcmhoxj44u3cq7gnenksjiqq
+  '@tiptap/extension-text-align': 2.0.0-beta.31_jdrcmhoxj44u3cq7gnenksjiqq
   '@tiptap/starter-kit': 2.0.0-beta.191
   '@tsconfig/svelte': 3.0.0
   '@typescript-eslint/eslint-plugin': 5.36.1_lbwfnm54o3pmr3ypeqp3btnera
@@ -1732,6 +1734,14 @@ packages:
 
   /@tiptap/extension-strike/2.0.0-beta.29_jdrcmhoxj44u3cq7gnenksjiqq:
     resolution: {integrity: sha512-zqFuY7GfNmZ/KClt6kxQ+msGo3syqucP/Xnlihxi+/h/G+oTvEwyOIXCtDOltvxcsWH/TUsdr5vzLp0j+Mdc6Q==}
+    peerDependencies:
+      '@tiptap/core': ^2.0.0-beta.1
+    dependencies:
+      '@tiptap/core': 2.0.0-beta.182
+    dev: true
+
+  /@tiptap/extension-text-align/2.0.0-beta.31_jdrcmhoxj44u3cq7gnenksjiqq:
+    resolution: {integrity: sha512-gSJqi57piiMPc2r6WEkXv7ZgQIogigsRUhmlnZC/7s3zzOvjXrexWnV0Ctt/9A7BKcM7OHMykpZyoewvk6QRTw==}
     peerDependencies:
       '@tiptap/core': ^2.0.0-beta.1
     dependencies:
