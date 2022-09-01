@@ -27,10 +27,11 @@
 	},
 	"devDependencies": {
 		"@babel/core": "^7.18.13",
-		"@github/textarea-autosize": "^0.2.2",
 		"@kucrut/vite-for-wp": "^0.2.0",
 		"@macfja/svelte-persistent-store": "^2.0.0",
 		"@sveltejs/vite-plugin-svelte": "^1.0.3",
+		"@tiptap/core": "2.0.0-beta.182",
+		"@tiptap/starter-kit": "2.0.0-beta.191",
 		"@tsconfig/svelte": "^3.0.0",
 		"@typescript-eslint/eslint-plugin": "^5.36.1",
 		"@typescript-eslint/parser": "^5.36.1",
