@@ -1,6 +1,6 @@
 <script lang="ts">
-	import ContentInput from './content-input.svelte';
 	import TitleInput from './title-input.svelte';
+	import Lazy from './lazy.svelte';
 
 	export let with_editor: boolean;
 	export let with_title: boolean;
@@ -13,7 +13,7 @@
 				<TitleInput />
 			{/if}
 			{#if with_editor}
-				<ContentInput />
+				<Lazy component={() => import( './editor.svelte' )} />
 			{/if}
 		</div>
 	</div>
