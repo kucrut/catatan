@@ -1,0 +1,29 @@
+import type { Extensions } from '@tiptap/core';
+import { __ } from '@wordpress/i18n';
+// import { lowlight } from 'lowlight';
+import code_block_lowlight from '@tiptap/extension-code-block-lowlight';
+import placeholder from '@tiptap/extension-placeholder';
+import starter_kit from '@tiptap/starter-kit';
+import { lowlight } from 'lowlight/lib/common';
+
+lowlight.registerAlias( 'javascript', 'js' );
+lowlight.registerAlias( 'typescript', 'ts' );
+
+export function get_extensions(): Extensions {
+	return [
+		code_block_lowlight.configure( {
+			lowlight,
+		} ),
+		placeholder.configure( {
+			placeholder: __( 'Start writing…' ),
+		} ),
+		starter_kit.configure( {
+			codeBlock: {
+				HTMLAttributes: { class: 'hljs' },
+			},
+			heading: {
+				levels: [ 2, 3, 4, 5, 6 ],
+			},
+		} ),
+	];
+}
