@@ -1,3 +1,11 @@
-.catatan-editor-page #wpfooter {
-	display: none;
+.catatan-editor-page {
+
+	#wpfooter {
+		display: none;
+	}
+
+	/* stylelint-disable-next-line selector-class-pattern */
+	.ProseMirror {
+		height: 100%;
+	}
 }

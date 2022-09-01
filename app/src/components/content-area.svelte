@@ -31,7 +31,10 @@
 	}
 
 	.editor-styles-wrapper {
+		flex: 1 1 0%;
 		max-width: 100%;
-		flex: 1 1;
+		padding-block-end: 40vh;
+		display: grid;
+		grid-template-rows: auto 1fr;
 	}
 </style>
