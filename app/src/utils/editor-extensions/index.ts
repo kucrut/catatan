@@ -12,6 +12,7 @@ import table_cell from '@tiptap/extension-table-cell';
 import table_header from '@tiptap/extension-table-header';
 import table_row from '@tiptap/extension-table-row';
 import text_align from './text-align';
+import youtube from '@tiptap/extension-youtube';
 import { lowlight } from 'lowlight/lib/common';
 
 export function get_extensions(): Extensions {
@@ -26,8 +27,12 @@ export function get_extensions(): Extensions {
 		table_cell,
 		table_header,
 		table_row,
-		code_block_lowlight.configure( { lowlight } ),
-		link.configure( { openOnClick: false } ),
+		code_block_lowlight.configure( {
+			lowlight,
+		} ),
+		link.configure( {
+			openOnClick: false,
+		} ),
 		text_align.configure( {
 			types: [ 'heading', 'paragraph' ],
 		} ),
@@ -41,6 +46,10 @@ export function get_extensions(): Extensions {
 			heading: {
 				levels: [ 2, 3, 4, 5, 6 ],
 			},
+		} ),
+		youtube.configure( {
+			width: 640,
+			height: 360,
 		} ),
 	];
 }
