@@ -2,6 +2,7 @@ import type { Extensions } from '@tiptap/core';
 import { __ } from '@wordpress/i18n';
 import code_block_lowlight from '@tiptap/extension-code-block-lowlight';
 import image from '@tiptap/extension-image';
+import link from '@tiptap/extension-link';
 import placeholder from '@tiptap/extension-placeholder';
 import starter_kit from '@tiptap/starter-kit';
 import text_align from './text-align';
@@ -13,10 +14,11 @@ lowlight.registerAlias( 'typescript', 'ts' );
 export function get_extensions(): Extensions {
 	return [
 		image,
+		code_block_lowlight.configure( { lowlight } ),
+		link.configure( { openOnClick: false } ),
 		text_align.configure( {
 			types: [ 'heading', 'paragraph' ],
 		} ),
-		code_block_lowlight.configure( { lowlight } ),
 		placeholder.configure( {
 			placeholder: __( 'Start writing…' ),
 		} ),
