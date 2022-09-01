@@ -2,6 +2,8 @@
 	import { Editor } from '@tiptap/core';
 	import { get_store } from '$stores';
 	import { onDestroy, onMount } from 'svelte';
+	import { __ } from '@wordpress/i18n';
+	import placeholder from '@tiptap/extension-placeholder';
 	import starter_kit from '@tiptap/starter-kit';
 
 	const editor_store = get_store( 'editor' );
@@ -13,7 +15,13 @@
 		editor_instance = new Editor( {
 			content: $editor_store.data.content,
 			element: editor_el,
-			extensions: [ starter_kit ],
+			extensions: [
+				starter_kit,
+				placeholder.configure( {
+					placeholder: __( 'Start writing…' ),
+				} ),
+			],
+
 			onTransaction() {
 				// force re-render so `editor.isActive` works as expected.
 				editor_instance = editor_instance;
