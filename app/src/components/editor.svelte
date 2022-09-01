@@ -10,7 +10,7 @@
 	let editor_instance: Editor;
 
 	onMount( async () => {
-		const { get_extensions } = await import( '$utils/editor-extensions' );
+		const { get_extensions } = await import( '$utils/editor-extensions/index' );
 
 		editor_instance = new Editor( {
 			content: $editor_store.data.content,
