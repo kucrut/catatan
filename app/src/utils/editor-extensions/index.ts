@@ -5,15 +5,19 @@ import image from '@tiptap/extension-image';
 import link from '@tiptap/extension-link';
 import placeholder from '@tiptap/extension-placeholder';
 import starter_kit from '@tiptap/starter-kit';
+import subscript from '@tiptap/extension-subscript';
+import superscript from '@tiptap/extension-superscript';
 import text_align from './text-align';
 import { lowlight } from 'lowlight/lib/common';
 
-lowlight.registerAlias( 'javascript', 'js' );
-lowlight.registerAlias( 'typescript', 'ts' );
-
 export function get_extensions(): Extensions {
+	lowlight.registerAlias( 'javascript', 'js' );
+	lowlight.registerAlias( 'typescript', 'ts' );
+
 	return [
 		image,
+		subscript,
+		superscript,
 		code_block_lowlight.configure( { lowlight } ),
 		link.configure( { openOnClick: false } ),
 		text_align.configure( {
