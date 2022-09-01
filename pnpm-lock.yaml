@@ -20,6 +20,7 @@ specifiers:
   eslint: ^8.23.0
   eslint-plugin-prettier: ^4.2.1
   eslint-plugin-svelte3: ^4.0.0
+  highlight.js: ^11.6.0
   just-debounce-it: ^3.1.1
   just-sort-by: ^3.1.1
   lowlight: ^2.7.0
@@ -66,6 +67,7 @@ devDependencies:
   eslint: 8.23.0
   eslint-plugin-prettier: 4.2.1_24ex2pd3iml373sd56g2ntad4m
   eslint-plugin-svelte3: 4.0.0_sfdub7vxhxkt5wmgvhhmmgyu2e
+  highlight.js: 11.6.0
   just-debounce-it: 3.1.1
   just-sort-by: 3.1.1
   lowlight: 2.7.0
