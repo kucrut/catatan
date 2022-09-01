@@ -131,9 +131,15 @@
 				/>
 			{/each}
 		</svelte:fragment>
-		<svelte:fragment slot="after-input">
+		<svelte:fragment slot="after-input" let:input_el>
 			{#if search_term && suggestions.length}
-				<FormTokenFieldSuggestions id={tax_name} items={suggestions} search={search_term} on:select={handle_select} />
+				<FormTokenFieldSuggestions
+					{input_el}
+					id={tax_name}
+					items={suggestions}
+					search={search_term}
+					on:select={handle_select}
+				/>
 			{/if}
 		</svelte:fragment>
 	</FormTokenField>
