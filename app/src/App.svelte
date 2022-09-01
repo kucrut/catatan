@@ -3,6 +3,8 @@
 	import { onMount } from 'svelte';
 	import { init_stores, type StoresConfig } from '$stores';
 
+	import './global.css';
+
 	export let config: StoresConfig;
 
 	let is_ready = false;
