@@ -71,29 +71,13 @@
 		do_search();
 	}
 
-	async function handle_keydown( event: KeyboardEvent ): Promise< void > {
+	async function handle_create( event: CustomEvent< string > ): Promise< void > {
 		if ( ! __can__.create ) {
 			return;
 		}
 
-		const { code } = event;
-
-		if ( ! keys_to_watch.includes( code ) ) {
-			return;
-		}
-
-		if ( code === 'Escape' ) {
-			search_result = [];
-			return;
-		}
-
-		const name = input_value.trim().replaceAll( ',', '' );
-		if ( ! name ) {
-			return;
-		}
-
 		try {
-			const new_term = await terms.create( { name } );
+			const new_term = await terms.create( { name: event.detail } );
 			add_to_selected( new_term.id, new_term );
 		} catch ( error ) {
 			if ( error.code === 'term_exists' ) {
@@ -124,6 +108,7 @@
 		id={tax_name}
 		label={add_new_item}
 		value={input_value}
+		on:create={handle_create}
 		on:input={handle_input}
 		on:select={handle_select}
 	>
