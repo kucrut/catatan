@@ -107,6 +107,7 @@
 	}
 
 	function select_option( index: number ) {
+		hovered_option_index = null;
 		input_el.value = '';
 		dispatch( 'select', index );
 	}
