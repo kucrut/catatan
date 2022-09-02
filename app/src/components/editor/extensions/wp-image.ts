@@ -11,7 +11,7 @@ declare module '@tiptap/core' {
 			/**
 			 * Insert image from WP media library
 			 */
-			setWPImage: ( options: { src: string; alt: string }, content?: JSONContent[] ) => ReturnType;
+			setWPImage: ( options: { src: string; size?: string; alt: string }, content?: JSONContent[] ) => ReturnType;
 		};
 	}
 }
@@ -44,6 +44,22 @@ export const WPImage = Node.create< WPImageOptions >( {
 				default: null,
 				parseHTML: ( element ): string | null => get_img_attribute( 'alt', element ),
 			},
+			size: {
+				default: null,
+				parseHTML: ( element ): string | null => {
+					let found: string;
+
+					for ( const cls of element.classList.entries() ) {
+						const [ , item ] = cls;
+						if ( item.startsWith( 'size-' ) ) {
+							found = item;
+							break;
+						}
+					}
+
+					return found || null;
+				},
+			},
 			src: {
 				default: null,
 				parseHTML: ( element ): string | null => get_img_attribute( 'src', element ),
@@ -68,7 +84,14 @@ export const WPImage = Node.create< WPImageOptions >( {
 	},
 
 	renderHTML( { HTMLAttributes } ) {
-		return [ 'figure', { class: class_name }, [ 'img', HTMLAttributes ], [ 'figcaption', {}, 0 ] ];
+		const { size, ...img_attributes } = HTMLAttributes;
+		let figure_class = class_name;
+
+		if ( size ) {
+			figure_class = `${ figure_class } size-${ size }`;
+		}
+
+		return [ 'figure', { class: figure_class }, [ 'img', img_attributes ], [ 'figcaption', {}, 0 ] ];
 	},
 
 	addCommands() {
