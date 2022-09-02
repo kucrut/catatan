@@ -11,15 +11,20 @@ import table from '@tiptap/extension-table';
 import table_cell from '@tiptap/extension-table-cell';
 import table_header from '@tiptap/extension-table-header';
 import table_row from '@tiptap/extension-table-row';
-import text_align from './text-align';
 import youtube from '@tiptap/extension-youtube';
 import { lowlight } from 'lowlight/lib/common';
+
+import figcaption from './figcaption';
+import figure from './figure';
+import text_align from './text-align';
 
 export function get_extensions(): Extensions {
 	lowlight.registerAlias( 'javascript', 'js' );
 	lowlight.registerAlias( 'typescript', 'ts' );
 
 	return [
+		figcaption,
+		figure,
 		image,
 		subscript,
 		superscript,
