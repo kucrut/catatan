@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { beforeUpdate, createEventDispatcher, onMount } from 'svelte';
-	import { onDestroy } from 'svelte';
+	import { beforeUpdate, createEventDispatcher, onDestroy, onMount } from 'svelte';
 
 	export let id: string;
 	export let input_el: HTMLInputElement;

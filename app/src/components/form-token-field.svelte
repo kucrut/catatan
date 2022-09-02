@@ -21,10 +21,10 @@
 	let hovered_option_index: number | null = null;
 	let input_el: HTMLInputElement;
 
-	$: token_items = value.map( ( label, id, arr ) => ( {
-		id,
-		label,
-		description: sprintf( __( '%s (%d of %d)' ), label, id, arr.length ),
+	$: token_items = value.map( ( term_name, index, arr ) => ( {
+		id: index,
+		label: term_name,
+		description: sprintf( __( '%s (%d of %d)' ), term_name, index, arr.length ),
 	} ) );
 
 	const handle_click_outside = () => ( has_focus = false );
@@ -37,10 +37,9 @@
 
 	function handle_input_keyup( event: KeyboardEvent & { currentTarget: EventTarget & HTMLInputElement } ): void {
 		const { code: key, currentTarget: el } = event;
-		const { value } = el;
 
-		if ( create_keys.includes( key ) && hovered_option_index === null && value.length >= 3 ) {
-			dispatch( 'create', value.trim().replaceAll( ',', '' ) );
+		if ( create_keys.includes( key ) && hovered_option_index === null && el.value.length >= 3 ) {
+			dispatch( 'create', el.value.trim().replaceAll( ',', '' ) );
 			el.value = '';
 		}
 	}

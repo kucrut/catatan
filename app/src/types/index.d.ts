@@ -23,12 +23,6 @@ export interface SelectControlOption {
 	value: string | number;
 }
 
-export interface TokenItem {
-	description: string;
-	id: number | string;
-	label: string;
-}
-
 export type WP_Media_Orientation = 'landscape' | 'portrait';
 
 export interface WP_Media_Size {
