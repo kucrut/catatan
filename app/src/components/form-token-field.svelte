@@ -23,6 +23,7 @@
 	const create_keys = [ 'Comma', 'Enter', 'NumpadEnter' ];
 	const suggestion_key_codes = [ 'ArrowDown', 'ArrowUp', 'Enter', 'Escape' ];
 
+	let options_backup: typeof options = [];
 	let has_focus = false;
 	let hovered_option_index: number | null = null;
 	let input_el: HTMLInputElement;
@@ -44,13 +45,21 @@
 	async function handle_input_keydown(
 		event: KeyboardEvent & { currentTarget: EventTarget & HTMLInputElement },
 	): Promise< void > {
+		const backup_total = options_backup.length;
 		const options_total = options.length;
 
-		if ( ! suggestion_key_codes.includes( event.code ) || options_total < 1 ) {
+		if ( ! suggestion_key_codes.includes( event.code ) || ! ( options_total || backup_total ) ) {
 			return;
 		}
 
 		event.preventDefault();
+
+		if ( [ 'ArrowDown', 'ArrowUp' ].includes( event.code ) && backup_total ) {
+			options = [ ...options_backup ];
+			options_backup = [];
+			return;
+		}
+
 		await tick();
 
 		switch ( event.code ) {
@@ -69,6 +78,7 @@
 				break;
 
 			default: // Escape.
+				options_backup = [ ...options ];
 				options = [];
 				break;
 		}
