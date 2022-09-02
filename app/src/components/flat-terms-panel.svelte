@@ -2,7 +2,7 @@
 	import type { Taxonomy } from '$stores/taxonomies';
 	import type { TermsStore } from '$stores/terms';
 	import type { WP_REST_API_Term } from 'wp-types';
-	import FormTokenField from './form-token-field.svelte';
+	import MultiSelect from './multi-select.svelte';
 	import Panel from './panel.svelte';
 	import debounce from 'just-debounce-it';
 	import { sprintf, __ } from '@wordpress/i18n';
@@ -101,7 +101,7 @@
 </script>
 
 <Panel id="taxonomy-{tax_name}" title={taxonomy.name}>
-	<FormTokenField
+	<MultiSelect
 		{options}
 		{remove_selected_text}
 		{value}

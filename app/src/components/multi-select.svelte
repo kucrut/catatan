@@ -1,6 +1,6 @@
 <script lang="ts">
-	import FormTokenFieldSuggestions from './form-token-field-suggestions.svelte';
-	import FormTokenFieldToken from './form-token-field-token.svelte';
+	import MultiSelectSuggestions from './multi-select-suggestions.svelte';
+	import MultiSelectToken from './multi-select-token.svelte';
 	import { click_outside } from '$actions/click-outside';
 	import { createEventDispatcher, tick } from 'svelte';
 	import { sprintf, __ } from '@wordpress/i18n';
@@ -154,7 +154,7 @@
 	>
 		{#if token_items.length}
 			{#each token_items as item, index (`${ index }${ item.label }`)}
-				<FormTokenFieldToken
+				<MultiSelectToken
 					{...item}
 					{class_prefix}
 					remove_text={remove_selected_text}
@@ -178,7 +178,7 @@
 			on:keyup={handle_input_keyup}
 		/>
 		{#if input_el?.value && options.length}
-			<FormTokenFieldSuggestions
+			<MultiSelectSuggestions
 				{class_prefix}
 				{id}
 				items={options}
