@@ -19,9 +19,6 @@ import figure from './figure';
 import text_align from './text-align';
 
 export function get_extensions(): Extensions {
-	lowlight.registerAlias( 'javascript', 'js' );
-	lowlight.registerAlias( 'typescript', 'ts' );
-
 	return [
 		figcaption,
 		figure,
