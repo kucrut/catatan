@@ -1,10 +1,12 @@
 <script lang="ts">
+	import FormTokenFieldSuggestions from './form-token-field-suggestions.svelte';
 	import { click_outside } from '$actions/click-outside';
 	import { onDestroy, onMount } from 'svelte';
 
 	export let id: string;
 	export let label: string;
 	export let help = '';
+	export let options: string[];
 	export let value: string;
 
 	const class_prefix = 'components-form-token';
@@ -52,7 +54,9 @@
 			on:keydown
 			on:keyup
 		/>
-		<slot name="after-input" {input_el} />
+		{#if value && options.length}
+			<FormTokenFieldSuggestions {id} {input_el} items={options} search={value} on:select />
+		{/if}
 	</div>
 	{#if help}
 		<p id="{class_prefix}-suggestions-howto-{id}" class="{class_prefix}-field__help">{help}</p>

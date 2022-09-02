@@ -5,7 +5,6 @@
 	import type { WP_REST_API_Term } from 'wp-types';
 	import FormTokenField from './form-token-field.svelte';
 	import FormTokenFieldToken from './form-token-field-token.svelte';
-	import FormTokenFieldSuggestions from './form-token-field-suggestions.svelte';
 	import Panel from './panel.svelte';
 	import debounce from 'just-debounce-it';
 	import { sprintf, __ } from '@wordpress/i18n';
@@ -27,7 +26,7 @@
 	let search_result: WP_REST_API_Term[] = [];
 	let search_term = '';
 	let selected: number[] = [];
-	let suggestions: string[] = [];
+	let options: string[] = [];
 	let token_items: TokenItem[] = [];
 
 	const exclude_selected = ( { id } ) => ! selected.includes( id );
@@ -39,7 +38,7 @@
 
 	$: {
 		selected = ( $editor.data[ tax_name ] as typeof selected ) || [];
-		suggestions = search_result.length ? search_result.filter( exclude_selected ).map( ( { name } ) => name ) : [];
+		options = search_result.length ? search_result.filter( exclude_selected ).map( ( { name } ) => name ) : [];
 		token_items =
 			selected.length && $terms.flat?.length
 				? selected.map( ( ...args ) => map_id_to_token_item( $terms.flat, ...args ) ).filter( i => i !== null )
@@ -120,12 +119,13 @@
 
 <Panel id="taxonomy-{tax_name}" title={taxonomy.name}>
 	<FormTokenField
+		{options}
 		help={__( 'Separate with commas or the Enter key.' )}
 		id={tax_name}
 		label={add_new_item}
 		value={input_value}
 		on:input={handle_input}
-		on:keydown={handle_keydown}
+		on:select={handle_select}
 	>
 		<svelte:fragment slot="before-input">
 			{#each token_items as item (item.id)}
@@ -135,17 +135,6 @@
 					on:click={() => editor.remove_term( tax_name, Number( item.id ) )}
 				/>
 			{/each}
-		</svelte:fragment>
-		<svelte:fragment slot="after-input" let:input_el>
-			{#if search_term && suggestions.length}
-				<FormTokenFieldSuggestions
-					{input_el}
-					id={tax_name}
-					items={suggestions}
-					search={search_term}
-					on:select={handle_select}
-				/>
-			{/if}
 		</svelte:fragment>
 	</FormTokenField>
 </Panel>
