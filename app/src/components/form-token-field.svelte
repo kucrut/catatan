@@ -74,7 +74,9 @@
 				break;
 
 			case 'Enter':
-				select_option( hovered_option_index );
+				if ( hovered_option_index !== null ) {
+					select_option( hovered_option_index );
+				}
 				break;
 
 			default: // Escape.
