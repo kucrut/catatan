@@ -46,21 +46,34 @@
 	async function handle_input_keydown(
 		event: KeyboardEvent & { currentTarget: EventTarget & HTMLInputElement },
 	): Promise< void > {
-		if ( ! suggestion_keys.has( event.code ) ) {
+		const { code: key } = event;
+
+		if ( key === 'Backspace' ) {
+			const selected_total = value.length;
+
+			if ( ! input_el.value && selected_total ) {
+				dispatch( 'deselect', selected_total - 1 );
+			}
+
+			return;
+		}
+
+		if ( ! suggestion_keys.has( key ) ) {
 			return;
 		}
 
 		const backup_total = options_backup.length;
 		const options_total = options.length;
 
-		if ( ! options_total || ! backup_total ) {
+		if ( ! ( options_total || backup_total ) ) {
 			return;
 		}
 
+		// Default behaviour is prevented so the cursor doesn't jump around.
 		event.preventDefault();
 
 		// Pressing up or down arrow key, and we have a backup of the options, let's re-use it.
-		if ( select_keys.has( event.code ) && backup_total ) {
+		if ( select_keys.has( key ) && backup_total ) {
 			options = [ ...options_backup ];
 			options_backup = [];
 			return;
@@ -68,7 +81,7 @@
 
 		await tick();
 
-		switch ( event.code ) {
+		switch ( key ) {
 			case 'ArrowDown':
 				hovered_option_index =
 					hovered_option_index === null || hovered_option_index + 1 === options_total ? 0 : hovered_option_index + 1;
