@@ -32,7 +32,7 @@
 	}, 500 );
 
 	$: {
-		selected = ( $editor.data[ tax_name ] as typeof selected ) || [];
+		selected = [ ...( ( $editor.data[ tax_name ] as typeof selected ) || [] ) ].sort();
 		options = search_result.length ? search_result.filter( exclude_selected ).map( ( { name } ) => name ) : [];
 
 		if ( selected.length && $terms.flat?.length ) {
