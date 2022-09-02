@@ -12,9 +12,11 @@
 	const dispatch = createEventDispatcher< { create: string; input: string; select: number } >();
 
 	const class_prefix = 'components-form-token';
+	const create_keys = [ 'Comma', 'Enter', 'NumpadEnter' ];
+
 	let has_focus = false;
-	let input_el: HTMLInputElement;
 	let hovered_option_index: number | null = null;
+	let input_el: HTMLInputElement;
 
 	const handle_click_outside = () => ( has_focus = false );
 
@@ -25,11 +27,7 @@
 	}
 
 	function handle_input_keydown( event: KeyboardEvent ): void {
-		if (
-			[ 'Comma', 'Enter', 'NumpadEnter' ].includes( event.code ) &&
-			hovered_option_index === null &&
-			value.length >= 3
-		) {
+		if ( create_keys.includes( event.code ) && hovered_option_index === null && value.length >= 3 ) {
 			dispatch( 'create', value.trim().replaceAll( ',', '' ) );
 		}
 	}
