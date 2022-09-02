@@ -14,14 +14,10 @@ import table_row from '@tiptap/extension-table-row';
 import youtube from '@tiptap/extension-youtube';
 import { lowlight } from 'lowlight/lib/common';
 
-import figcaption from './figcaption';
-import figure from './figure';
 import text_align from './text-align';
 
 export function get_extensions(): Extensions {
 	return [
-		figcaption,
-		figure,
 		image,
 		subscript,
 		superscript,
