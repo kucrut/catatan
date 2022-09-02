@@ -2,10 +2,13 @@ import type { Changes } from './changes';
 import type { WP_REST_API_Post } from 'wp-types';
 import api_fetch, { type APIFetchOptions } from '@wordpress/api-fetch';
 import create_permission_store, { type Permission, type PermissionStore } from './permission';
+import omit from 'just-omit';
 import { derived, writable, type Readable, type Writable } from 'svelte/store';
 
+const permission_key = '__can__';
+
 export interface Post extends WP_REST_API_Post {
-	__can__?: Permission;
+	[ permission_key ]?: Permission;
 }
 
 export interface PostStore extends Readable< Post > {
@@ -29,7 +32,7 @@ export default function create_store( api_path: string, post_id: number ): PostS
 		( [ $post_store, $permission ], set ) => {
 			set( {
 				...$post_store,
-				__can__: $permission,
+				[ permission_key ]: $permission,
 			} );
 		},
 	);
@@ -56,7 +59,7 @@ export default function create_store( api_path: string, post_id: number ): PostS
 
 		async save( changes: Changes ): Promise< void > {
 			const data = await fetch( {
-				data: changes,
+				data: omit( changes, [ permission_key ] ),
 				method: 'POST',
 			} );
 
@@ -65,9 +68,9 @@ export default function create_store( api_path: string, post_id: number ): PostS
 		},
 
 		async trash(): Promise< void > {
-			const { __can__ } = $store;
+			const { [ permission_key ]: can } = $store;
 
-			if ( ! __can__.delete ) {
+			if ( ! can.delete ) {
 				throw new Error( 'You do not have permission to trash this post.' );
 			}
 
