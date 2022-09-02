@@ -2,7 +2,7 @@
 	import FormTokenFieldSuggestions from './form-token-field-suggestions.svelte';
 	import FormTokenFieldToken from './form-token-field-token.svelte';
 	import { click_outside } from '$actions/click-outside';
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, tick } from 'svelte';
 	import { sprintf, __ } from '@wordpress/i18n';
 
 	export let id: string;
@@ -41,7 +41,9 @@
 		dispatch( 'input', event.currentTarget.value );
 	}
 
-	function handle_input_keydown( event: KeyboardEvent & { currentTarget: EventTarget & HTMLInputElement } ): void {
+	async function handle_input_keydown(
+		event: KeyboardEvent & { currentTarget: EventTarget & HTMLInputElement },
+	): Promise< void > {
 		const options_total = options.length;
 
 		if ( ! suggestion_key_codes.includes( event.code ) || options_total < 1 ) {
@@ -49,6 +51,7 @@
 		}
 
 		event.preventDefault();
+		await tick();
 
 		switch ( event.code ) {
 			case 'ArrowDown':
