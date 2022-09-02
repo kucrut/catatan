@@ -1,35 +1,26 @@
 <script lang="ts">
-	import { beforeUpdate, createEventDispatcher, onDestroy, onMount } from 'svelte';
+	import { afterUpdate, createEventDispatcher } from 'svelte';
 
 	export let id: string;
-	export let input_el: HTMLInputElement;
 	export let items: string[];
 	export let search: string;
+	export let selected_index: number | null = null;
 
-	const dispatch = createEventDispatcher< { 'hover-item': number; 'select-item': number } >();
 	const class_prefix = 'components-form-token-field';
 	const id_prefix = 'components-form-token-suggestions';
-	const keys_to_watch = [ 'Enter', 'ArrowDown', 'ArrowUp' ];
 
 	let list: HTMLUListElement;
-	let hovered_index: number | null = null;
 	let list_height: number;
 	let scroll_height: number;
 
-	function hover_item( index: typeof hovered_index ): void {
-		dispatch( 'hover-item', index );
-	}
-
-	function select_item( index: number ): void {
-		dispatch( 'select-item', index );
-	}
+	const dispatch = createEventDispatcher< { 'hover-item': number; 'select-item': number } >();
 
 	function scroll_to_item( going_up: boolean ): void {
 		if ( scroll_height <= list_height ) {
 			return;
 		}
 
-		const item = list.children[ hovered_index ] as HTMLLIElement;
+		const item = list.children[ selected_index ] as HTMLLIElement;
 		let item_offset = item.offsetTop;
 
 		if ( ! going_up ) {
@@ -41,54 +32,11 @@
 		}
 	}
 
-	function handle_keydown( event: KeyboardEvent ): void {
-		const { code } = event;
-
-		if ( ! keys_to_watch.includes( code ) ) {
-			return;
-		}
-
-		event.preventDefault();
-
-		const total = items.length;
-
-		switch ( code ) {
-			case 'ArrowDown':
-				hovered_index = hovered_index === null || hovered_index + 1 === total ? 0 : hovered_index + 1;
-				scroll_to_item( false );
-				break;
-
-			case 'ArrowUp':
-				hovered_index = hovered_index === null || hovered_index === 0 ? total - 1 : hovered_index - 1;
-				scroll_to_item( true );
-				break;
-
-			default: // Enter.
-				if ( hovered_index !== null ) {
-					select_item( hovered_index );
-				}
-				break;
-		}
-	}
-
 	$: regex = new RegExp( `(.*)(${ search })(.*)`, 'i' );
 
-	onMount( () => {
+	afterUpdate( () => {
 		list_height = list.clientHeight;
 		scroll_height = list.scrollHeight;
-
-		if ( input_el ) {
-			input_el.addEventListener( 'keydown', handle_keydown );
-		}
-	} );
-
-	beforeUpdate( () => {
-		hover_item( hovered_index );
-	} );
-
-	onDestroy( () => {
-		hover_item( null );
-		input_el.removeEventListener( 'keydown', handle_keydown );
 	} );
 </script>
 
@@ -96,14 +44,14 @@
 	{#each items as label, index (index + label)}
 		{@const  matched = regex.exec( label ) }
 		<li
-			aria-selected={hovered_index === index}
+			aria-selected={selected_index === index}
 			class="{class_prefix}__suggestion"
-			class:is-selected={hovered_index === index}
+			class:is-selected={selected_index === index}
 			id="{id_prefix}-{id}-{index}"
 			role="option"
-			on:click={() => select_item( index )}
-			on:mouseenter={() => ( hovered_index = index )}
-			on:mouseleave={() => ( hovered_index = null )}
+			on:click={() => dispatch( 'select-item', index )}
+			on:mouseenter={() => dispatch( 'hover-item', index )}
+			on:mouseleave={() => dispatch( 'hover-item', null )}
 		>
 			<span aria-label={label}>
 				{#if matched}
