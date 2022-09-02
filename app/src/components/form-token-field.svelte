@@ -1,7 +1,7 @@
 <script lang="ts">
 	import FormTokenFieldSuggestions from './form-token-field-suggestions.svelte';
 	import { click_outside } from '$actions/click-outside';
-	import { onDestroy, onMount } from 'svelte';
+	import { createEventDispatcher, onDestroy, onMount } from 'svelte';
 
 	export let id: string;
 	export let label: string;
@@ -9,20 +9,47 @@
 	export let options: string[];
 	export let value: string;
 
+	const dispatch = createEventDispatcher< { create: string; select: number } >();
+
 	const class_prefix = 'components-form-token';
 	let has_focus = false;
 	let input_el: HTMLInputElement;
+	let hovered_option_index: number | null = null;
+
+	const handle_click_outside = () => ( has_focus = false );
 
 	const handle_input_focus = () => ( has_focus = true );
-	const handle_click_outside = () => ( has_focus = false );
+
+	function handle_input_keydown( event: KeyboardEvent ): void {
+		if (
+			[ 'Comma', 'Enter', 'NumpadEnter' ].includes( event.code ) &&
+			hovered_option_index === null &&
+			value.length >= 3
+		) {
+			dispatch( 'create', value.trim().replaceAll( ',', '' ) );
+		}
+	}
+
+	function handle_option_hover( event: CustomEvent< number | null > ): void {
+		hovered_option_index = event.detail;
+	}
+
+	function handle_option_select( event: CustomEvent< number > ) {
+		hovered_option_index = event.detail;
+		dispatch( 'select', hovered_option_index );
+	}
 
 	onMount( () => {
 		// We're attaching it here so we don't occupy the input's focus event.
-		input_el.addEventListener( 'focus', handle_input_focus );
+		if ( input_el ) {
+			input_el.addEventListener( 'focus', handle_input_focus );
+			input_el.addEventListener( 'keydown', handle_input_keydown );
+		}
 	} );
 
 	onDestroy( () => {
 		input_el.removeEventListener( 'focus', handle_input_focus );
+		input_el.removeEventListener( 'keydown', handle_input_keydown );
 	} );
 </script>
 
@@ -55,7 +82,14 @@
 			on:keyup
 		/>
 		{#if value && options.length}
-			<FormTokenFieldSuggestions {id} {input_el} items={options} search={value} on:select />
+			<FormTokenFieldSuggestions
+				{id}
+				{input_el}
+				items={options}
+				search={value}
+				on:hover-item={handle_option_hover}
+				on:select-item={handle_option_select}
+			/>
 		{/if}
 	</div>
 	{#if help}
