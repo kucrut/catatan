@@ -1,7 +1,7 @@
 <script lang="ts">
 	import FormTokenFieldSuggestions from './form-token-field-suggestions.svelte';
 	import { click_outside } from '$actions/click-outside';
-	import { createEventDispatcher, onDestroy, onMount } from 'svelte';
+	import { createEventDispatcher } from 'svelte';
 
 	export let id: string;
 	export let label: string;
@@ -42,19 +42,6 @@
 		hovered_option_index = event.detail;
 		dispatch( 'select', hovered_option_index );
 	}
-
-	onMount( () => {
-		// We're attaching it here so we don't occupy the input's focus event.
-		if ( input_el ) {
-			input_el.addEventListener( 'focus', handle_input_focus );
-			input_el.addEventListener( 'keydown', handle_input_keydown );
-		}
-	} );
-
-	onDestroy( () => {
-		input_el.removeEventListener( 'focus', handle_input_focus );
-		input_el.removeEventListener( 'keydown', handle_input_keydown );
-	} );
 </script>
 
 <div class="{class_prefix}-field">
@@ -80,9 +67,9 @@
 			bind:this={input_el}
 			on:blur
 			on:change
-			on:focus
+			on:focus={handle_input_focus}
 			on:input={handle_input_change}
-			on:keydown
+			on:keydown={handle_input_keydown}
 			on:keyup
 		/>
 		{#if value && options.length}
