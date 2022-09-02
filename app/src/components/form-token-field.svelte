@@ -12,10 +12,16 @@
 	export let remove_selected_text: string;
 	export let value: string[] = [];
 
-	const dispatch = createEventDispatcher< { create: string; deselect: number; input: string; select: number } >();
+	const dispatch = createEventDispatcher< {
+		create: string;
+		deselect: number;
+		input: string;
+		select: number;
+	} >();
 
 	const class_prefix = 'components-form-token';
 	const create_keys = [ 'Comma', 'Enter', 'NumpadEnter' ];
+	const suggestion_key_codes = [ 'ArrowDown', 'ArrowUp', 'Enter', 'Escape' ];
 
 	let has_focus = false;
 	let hovered_option_index: number | null = null;
@@ -33,6 +39,36 @@
 
 	function handle_input_change( event: Event & { currentTarget: EventTarget & HTMLInputElement } ): void {
 		dispatch( 'input', event.currentTarget.value );
+	}
+
+	function handle_input_keydown( event: KeyboardEvent & { currentTarget: EventTarget & HTMLInputElement } ): void {
+		const options_total = options.length;
+
+		if ( ! suggestion_key_codes.includes( event.code ) || options_total < 1 ) {
+			return;
+		}
+
+		event.preventDefault();
+
+		switch ( event.code ) {
+			case 'ArrowDown':
+				hovered_option_index =
+					hovered_option_index === null || hovered_option_index + 1 === options_total ? 0 : hovered_option_index + 1;
+				break;
+
+			case 'ArrowUp':
+				hovered_option_index =
+					hovered_option_index === null || hovered_option_index === 0 ? options_total - 1 : hovered_option_index - 1;
+				break;
+
+			case 'Enter':
+				select_option( hovered_option_index );
+				break;
+
+			default: // Escape.
+				options = [];
+				break;
+		}
 	}
 
 	function handle_input_keyup( event: KeyboardEvent & { currentTarget: EventTarget & HTMLInputElement } ): void {
@@ -63,9 +99,13 @@
 	}
 
 	function handle_option_select( event: CustomEvent< number > ) {
-		input_el.value = '';
 		hovered_option_index = event.detail;
-		dispatch( 'select', hovered_option_index );
+		select_option( hovered_option_index );
+	}
+
+	function select_option( index: number ) {
+		input_el.value = '';
+		dispatch( 'select', index );
 	}
 </script>
 
@@ -99,14 +139,15 @@
 			bind:this={input_el}
 			on:focus={handle_input_focus}
 			on:input={handle_input_change}
+			on:keydown={handle_input_keydown}
 			on:keyup={handle_input_keyup}
 		/>
 		{#if input_el?.value && options.length}
 			<FormTokenFieldSuggestions
 				{id}
-				{input_el}
 				items={options}
 				search={input_el.value}
+				selected_index={hovered_option_index}
 				on:hover-item={handle_option_hover}
 				on:select-item={handle_option_select}
 			/>
