@@ -13,16 +13,16 @@
 	let has_focus = false;
 	let input_el: HTMLInputElement;
 
-	const handle_focus_input = () => ( has_focus = true );
+	const handle_input_focus = () => ( has_focus = true );
 	const handle_click_outside = () => ( has_focus = false );
 
 	onMount( () => {
 		// We're attaching it here so we don't occupy the input's focus event.
-		input_el.addEventListener( 'focus', handle_focus_input );
+		input_el.addEventListener( 'focus', handle_input_focus );
 	} );
 
 	onDestroy( () => {
-		input_el.removeEventListener( 'focus', handle_focus_input );
+		input_el.removeEventListener( 'focus', handle_input_focus );
 	} );
 </script>
 
