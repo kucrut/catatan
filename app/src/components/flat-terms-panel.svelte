@@ -57,11 +57,9 @@
 		search_result = [];
 	}
 
-	async function handle_input( event: Event & { target: HTMLInputElement } ): Promise< void > {
-		const { value } = event.target;
-
-		input_value = value;
-		search_term = value.length >= 3 ? value : '';
+	async function handle_input( event: CustomEvent< string > ): Promise< void > {
+		input_value = event.detail;
+		search_term = event.detail.length >= 3 ? event.detail : '';
 
 		if ( ! search_term ) {
 			search_result = [];
