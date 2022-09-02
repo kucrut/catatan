@@ -65,12 +65,9 @@
 			size="5"
 			type="text"
 			bind:this={input_el}
-			on:blur
-			on:change
 			on:focus={handle_input_focus}
 			on:input={handle_input_change}
 			on:keydown={handle_input_keydown}
-			on:keyup
 		/>
 		{#if value && options.length}
 			<FormTokenFieldSuggestions
