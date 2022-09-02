@@ -3,10 +3,10 @@
 module.exports = {
 	root: true,
 	extends: [
-		'plugin:@typescript-eslint/recommended',
 		'plugin:@wordpress/eslint-plugin/custom',
 		'plugin:@wordpress/eslint-plugin/esnext',
 		'plugin:@wordpress/eslint-plugin/jsdoc',
+		'plugin:@typescript-eslint/recommended',
 	],
 	env: {
 		browser: true,

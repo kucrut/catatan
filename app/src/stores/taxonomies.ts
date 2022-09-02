@@ -23,7 +23,6 @@ export type Taxonomies = Taxonomy[];
 
 export interface TaxonomiesStore extends Readable< Taxonomies > {
 	fetch(): Promise< void >;
-	// eslint-disable-next-line no-unused-vars
 	get_terms_store( tax_name: string ): TermsStore | undefined;
 }
 

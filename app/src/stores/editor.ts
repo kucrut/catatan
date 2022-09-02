@@ -24,15 +24,12 @@ export interface Editor {
 }
 
 export interface EditorStore extends Readable< Editor > {
-	// eslint-disable-next-line no-unused-vars
 	add_term( taxonomy: string, term_id: number ): void;
-	// eslint-disable-next-line no-unused-vars
 	remove_term( taxonomy: string, term_id: number ): void;
 	clear(): void;
 	fetch(): Promise< void >;
 	save(): Promise< void >;
 	trash(): Promise< void >;
-	// eslint-disable-next-line no-unused-vars
 	update( new_changes: Changes ): void;
 }
 

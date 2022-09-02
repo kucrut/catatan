@@ -14,9 +14,7 @@ export interface Notice {
 export type Notices = Notice[];
 
 export interface NoticesStore extends Readable< Notices > {
-	// eslint-disable-next-line no-unused-vars
 	add( item: Notice ): void;
-	// eslint-disable-next-line no-unused-vars
 	remove( item_id: Notice[ 'id' ] ): void;
 }
 

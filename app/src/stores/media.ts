@@ -2,12 +2,10 @@ import type { WP_REST_API_Media } from '$types';
 import api_fetch from '@wordpress/api-fetch';
 import { derived, writable, type Readable } from 'svelte/store';
 
-/* eslint-disable no-unused-vars */
 export interface MediaStore extends Readable< WP_REST_API_Media[] > {
 	fetch( id: number ): Promise< WP_REST_API_Media >;
 	get( media_id: number ): WP_REST_API_Media | Promise< WP_REST_API_Media >;
 }
-/* eslint-enable */
 
 export default function create_store( api_path: string ): MediaStore {
 	const media_store = writable< WP_REST_API_Media[] >( [] );

@@ -27,14 +27,12 @@ interface FetchParams {
 	include?: number[];
 }
 
-/* eslint-disable no-unused-vars */
 export interface TermsStore extends Readable< StoreValue > {
 	add( term: WP_REST_API_Term ): void;
 	create( data: NewTerm ): Promise< WP_REST_API_Term >;
 	fetch( params?: FetchParams, more?: boolean ): Promise< void >;
 	search( term: string ): Promise< WP_REST_API_Term[] >;
 }
-/* eslint-enable */
 
 function flat_to_nested( flat: TermWithChildren[] ): TermWithChildren[] {
 	const map = {};

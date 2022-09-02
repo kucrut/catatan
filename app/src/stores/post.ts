@@ -13,7 +13,6 @@ export interface Post extends WP_REST_API_Post {
 
 export interface PostStore extends Readable< Post > {
 	fetch(): Promise< void >;
-	// eslint-disable-next-line no-unused-vars
 	save( changes: Changes ): Promise< void >;
 	trash(): Promise< void >;
 }
