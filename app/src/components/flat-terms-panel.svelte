@@ -1,16 +1,13 @@
 <script lang="ts">
 	import type { Taxonomy } from '$stores/taxonomies';
 	import type { TermsStore } from '$stores/terms';
-	import type { TokenItem } from '$types';
 	import type { WP_REST_API_Term } from 'wp-types';
 	import FormTokenField from './form-token-field.svelte';
-	import FormTokenFieldToken from './form-token-field-token.svelte';
 	import Panel from './panel.svelte';
 	import debounce from 'just-debounce-it';
 	import { sprintf, __ } from '@wordpress/i18n';
 	import { onMount } from 'svelte';
 	import { get_store } from '$stores';
-	import { map_id_to_token_item } from '$utils/terms';
 
 	export let taxonomy: Taxonomy;
 	export let terms: TermsStore;
@@ -19,13 +16,13 @@
 
 	const { labels, rest_base: tax_name, __can__ } = taxonomy;
 	const { add_new_item, singular_name } = labels;
-	const remove_text = sprintf( __( 'Remove %s' ), singular_name );
+	const remove_selected_text = sprintf( __( 'Remove %s' ), singular_name );
 
 	let options: string[] = [];
 	let search_result: WP_REST_API_Term[] = [];
 	let search_term = '';
 	let selected: number[] = [];
-	let token_items: TokenItem[] = [];
+	let value: string[] = [];
 
 	const exclude_selected = ( { id } ) => ! selected.includes( id );
 
@@ -37,10 +34,14 @@
 	$: {
 		selected = ( $editor.data[ tax_name ] as typeof selected ) || [];
 		options = search_result.length ? search_result.filter( exclude_selected ).map( ( { name } ) => name ) : [];
-		token_items =
-			selected.length && $terms.flat?.length
-				? selected.map( ( ...args ) => map_id_to_token_item( $terms.flat, ...args ) ).filter( i => i !== null )
-				: [];
+
+		if ( selected.length && $terms.flat?.length ) {
+			value = selected
+				.map( term_id => $terms.flat.find( ( { id } ) => term_id === id )?.name || null )
+				.filter( i => i !== null );
+		} else {
+			value = [];
+		}
 	}
 
 	function add_to_selected( id: number, term?: WP_REST_API_Term ): void {
@@ -88,6 +89,10 @@
 		add_to_selected( term.id, term );
 	}
 
+	function handle_deselect( event: CustomEvent< number > ): void {
+		editor.remove_term( tax_name, selected.at( event.detail ) );
+	}
+
 	onMount( () => {
 		if ( selected.length ) {
 			terms.fetch( { include: selected } );
@@ -98,21 +103,14 @@
 <Panel id="taxonomy-{tax_name}" title={taxonomy.name}>
 	<FormTokenField
 		{options}
+		{remove_selected_text}
+		{value}
 		help={__( 'Separate with commas or the Enter key.' )}
 		id={tax_name}
 		label={add_new_item}
 		on:create={handle_create}
+		on:deselect={handle_deselect}
 		on:input={handle_input}
 		on:select={handle_select}
-	>
-		<svelte:fragment slot="before-input">
-			{#each token_items as item (item.id)}
-				<FormTokenFieldToken
-					{...item}
-					button_text={remove_text}
-					on:click={() => editor.remove_term( tax_name, Number( item.id ) )}
-				/>
-			{/each}
-		</svelte:fragment>
-	</FormTokenField>
+	/>
 </Panel>
