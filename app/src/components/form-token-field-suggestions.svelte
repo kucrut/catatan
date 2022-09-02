@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { createEventDispatcher, onMount } from 'svelte';
+	import { beforeUpdate, createEventDispatcher, onMount } from 'svelte';
 	import { onDestroy } from 'svelte';
 
 	export let id: string;
@@ -7,7 +7,7 @@
 	export let items: string[];
 	export let search: string;
 
-	const dispatch = createEventDispatcher< { select: number } >();
+	const dispatch = createEventDispatcher< { 'hover-item': number; 'select-item': number } >();
 	const class_prefix = 'components-form-token-field';
 	const id_prefix = 'components-form-token-suggestions';
 	const keys_to_watch = [ 'Enter', 'ArrowDown', 'ArrowUp' ];
@@ -17,8 +17,12 @@
 	let list_height: number;
 	let scroll_height: number;
 
+	function hover_item( index: typeof hovered_index ): void {
+		dispatch( 'hover-item', index );
+	}
+
 	function select_item( index: number ): void {
-		dispatch( 'select', index );
+		dispatch( 'select-item', index );
 	}
 
 	function scroll_to_item( going_up: boolean ): void {
@@ -73,10 +77,18 @@
 	onMount( () => {
 		list_height = list.clientHeight;
 		scroll_height = list.scrollHeight;
-		input_el.addEventListener( 'keydown', handle_keydown );
+
+		if ( input_el ) {
+			input_el.addEventListener( 'keydown', handle_keydown );
+		}
+	} );
+
+	beforeUpdate( () => {
+		hover_item( hovered_index );
 	} );
 
 	onDestroy( () => {
+		hover_item( null );
 		input_el.removeEventListener( 'keydown', handle_keydown );
 	} );
 </script>
