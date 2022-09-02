@@ -71,9 +71,3 @@
 		</li>
 	{/each}
 </ul>
-
-<style>
-	ul {
-		position: relative;
-	}
-</style>

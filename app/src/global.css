@@ -2,6 +2,12 @@
 	display: none;
 }
 
+/* Core style fixes/overrides */
+.components-form-token-field__suggestion-list {
+	position: relative;
+}
+
+/* TipTap/ProseMirror fixes/overrides */
 /* stylelint-disable-next-line selector-class-pattern */
 .ProseMirror {
 	height: 100%;
