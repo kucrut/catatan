@@ -1,14 +1,18 @@
 <script lang="ts">
 	import FormTokenFieldSuggestions from './form-token-field-suggestions.svelte';
+	import FormTokenFieldToken from './form-token-field-token.svelte';
 	import { click_outside } from '$actions/click-outside';
 	import { createEventDispatcher } from 'svelte';
+	import { sprintf, __ } from '@wordpress/i18n';
 
 	export let id: string;
 	export let label: string;
 	export let help = '';
-	export let options: string[];
+	export let options: string[] = [];
+	export let remove_selected_text: string;
+	export let value: string[] = [];
 
-	const dispatch = createEventDispatcher< { create: string; input: string; select: number } >();
+	const dispatch = createEventDispatcher< { create: string; deselect: number; input: string; select: number } >();
 
 	const class_prefix = 'components-form-token';
 	const create_keys = [ 'Comma', 'Enter', 'NumpadEnter' ];
@@ -17,7 +21,11 @@
 	let hovered_option_index: number | null = null;
 	let input_el: HTMLInputElement;
 
-	$: all_options = [ ...options ];
+	$: token_items = value.map( ( label, id, arr ) => ( {
+		id,
+		label,
+		description: sprintf( __( '%s (%d of %d)' ), label, id, arr.length ),
+	} ) );
 
 	const handle_click_outside = () => ( has_focus = false );
 
@@ -57,7 +65,15 @@
 		on:click={() => input_el.focus()}
 		use:click_outside={{ active: has_focus, callback: handle_click_outside }}
 	>
-		<slot name="before-input" {input_el} />
+		{#if token_items.length}
+			{#each token_items as item, index (`${ index }${ item.label }`)}
+				<FormTokenFieldToken
+					{...item}
+					remove_text={remove_selected_text}
+					on:click={() => dispatch( 'deselect', index )}
+				/>
+			{/each}
+		{/if}
 		<input
 			aria-describedby={help ? `${ class_prefix }-suggestions-howto-${ id }` : null}
 			aria-expanded="false"
@@ -72,11 +88,11 @@
 			on:input={handle_input_change}
 			on:keyup={handle_input_keyup}
 		/>
-		{#if input_el?.value && all_options.length}
+		{#if input_el?.value && options.length}
 			<FormTokenFieldSuggestions
 				{id}
 				{input_el}
-				items={all_options}
+				items={options}
 				search={input_el.value}
 				on:hover-item={handle_option_hover}
 				on:select-item={handle_option_select}
