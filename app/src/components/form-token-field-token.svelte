@@ -1,22 +1,23 @@
 <script lang="ts">
-	import type { TokenItem } from '$types';
 	import Button from './button.svelte';
 
-	export let button_text: string;
-	export let description: TokenItem[ 'description' ];
-	export let id: TokenItem[ 'id' ];
-	export let label: TokenItem[ 'label' ];
+	export let remove_text: string;
+	export let description: string;
+	export let id: number | string;
+	export let label: string;
 
 	const class_prefix = 'components-form-token-field__token';
 </script>
 
 <span class={class_prefix}
 	><span class="{class_prefix}-text" id="{class_prefix}-text-{id}">
-		<span class="components-visually-hidden">{description}</span>
+		{#if description}
+			<span class="components-visually-hidden">{description}</span>
+		{/if}
 		<span aria-hidden="true">{label}</span>
 	</span><Button
 		aria-describedby="{class_prefix}-text-{id}"
-		aria-label={button_text}
+		aria-label={remove_text}
 		class="components-form-token-field__remove-token"
 		icon="close"
 		on:click
