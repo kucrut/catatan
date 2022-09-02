@@ -13,7 +13,7 @@
 				<TitleInput />
 			{/if}
 			{#if with_editor}
-				<Lazy component={() => import( './editor.svelte' )} />
+				<Lazy component={() => import( './editor/editor.svelte' )} />
 			{/if}
 		</div>
 	</div>
