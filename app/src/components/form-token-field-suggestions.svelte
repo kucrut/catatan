@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { afterUpdate, createEventDispatcher } from 'svelte';
+	import { afterUpdate, beforeUpdate, createEventDispatcher } from 'svelte';
 
 	export let id: string;
 	export let items: string[];
@@ -11,16 +11,16 @@
 
 	let list: HTMLUListElement;
 	let list_height: number;
+	let prev_selected_index: number = -1;
 	let scroll_height: number;
 
 	const dispatch = createEventDispatcher< { 'hover-item': number; 'select-item': number } >();
 
-	function scroll_to_item( going_up: boolean ): void {
+	function scroll_to_item( item: HTMLLIElement, going_up: boolean ): void {
 		if ( scroll_height <= list_height ) {
 			return;
 		}
 
-		const item = list.children[ selected_index ] as HTMLLIElement;
 		let item_offset = item.offsetTop;
 
 		if ( ! going_up ) {
@@ -34,9 +34,17 @@
 
 	$: regex = new RegExp( `(.*)(${ search })(.*)`, 'i' );
 
+	beforeUpdate( () => {
+		prev_selected_index = selected_index;
+	} );
+
 	afterUpdate( () => {
 		list_height = list.clientHeight;
 		scroll_height = list.scrollHeight;
+
+		if ( selected_index !== null ) {
+			scroll_to_item( list.children[ selected_index ] as HTMLLIElement, prev_selected_index < selected_index );
+		}
 	} );
 </script>
 
