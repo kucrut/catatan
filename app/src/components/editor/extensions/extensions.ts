@@ -34,6 +34,7 @@ export function get_extensions(): Extensions {
 		table_row,
 		code_block_lowlight.configure( {
 			lowlight,
+			HTMLAttributes: { class: 'hljs' },
 		} ),
 		link.configure( {
 			openOnClick: false,
@@ -45,9 +46,7 @@ export function get_extensions(): Extensions {
 			placeholder: __( 'Start writing…' ),
 		} ),
 		starter_kit.configure( {
-			codeBlock: {
-				HTMLAttributes: { class: 'hljs' },
-			},
+			codeBlock: false,
 			heading: {
 				levels: [ 2, 3, 4, 5, 6 ],
 			},
