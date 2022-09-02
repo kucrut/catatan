@@ -7,7 +7,6 @@
 	export let label: string;
 	export let help = '';
 	export let options: string[];
-	export let value: string;
 
 	const dispatch = createEventDispatcher< { create: string; input: string; select: number } >();
 
@@ -18,6 +17,8 @@
 	let hovered_option_index: number | null = null;
 	let input_el: HTMLInputElement;
 
+	$: all_options = [ ...options ];
+
 	const handle_click_outside = () => ( has_focus = false );
 
 	const handle_input_focus = () => ( has_focus = true );
@@ -26,9 +27,13 @@
 		dispatch( 'input', event.currentTarget.value );
 	}
 
-	function handle_input_keydown( event: KeyboardEvent ): void {
-		if ( create_keys.includes( event.code ) && hovered_option_index === null && value.length >= 3 ) {
+	function handle_input_keyup( event: KeyboardEvent & { currentTarget: EventTarget & HTMLInputElement } ): void {
+		const { code: key, currentTarget: el } = event;
+		const { value } = el;
+
+		if ( create_keys.includes( key ) && hovered_option_index === null && value.length >= 3 ) {
 			dispatch( 'create', value.trim().replaceAll( ',', '' ) );
+			el.value = '';
 		}
 	}
 
@@ -37,6 +42,7 @@
 	}
 
 	function handle_option_select( event: CustomEvent< number > ) {
+		input_el.value = '';
 		hovered_option_index = event.detail;
 		dispatch( 'select', hovered_option_index );
 	}
@@ -53,7 +59,6 @@
 	>
 		<slot name="before-input" {input_el} />
 		<input
-			{value}
 			aria-describedby={help ? `${ class_prefix }-suggestions-howto-${ id }` : null}
 			aria-expanded="false"
 			autocomplete="off"
@@ -65,14 +70,14 @@
 			bind:this={input_el}
 			on:focus={handle_input_focus}
 			on:input={handle_input_change}
-			on:keydown={handle_input_keydown}
+			on:keyup={handle_input_keyup}
 		/>
-		{#if value && options.length}
+		{#if input_el?.value && all_options.length}
 			<FormTokenFieldSuggestions
 				{id}
 				{input_el}
-				items={options}
-				search={value}
+				items={all_options}
+				search={input_el.value}
 				on:hover-item={handle_option_hover}
 				on:select-item={handle_option_select}
 			/>

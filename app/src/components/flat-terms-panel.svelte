@@ -15,18 +15,16 @@
 	export let taxonomy: Taxonomy;
 	export let terms: TermsStore;
 
-	const keys_to_watch = [ 'Comma', 'Enter', 'Escape' ];
 	const editor = get_store( 'editor' );
 
 	const { labels, rest_base: tax_name, __can__ } = taxonomy;
 	const { add_new_item, singular_name } = labels;
 	const remove_text = sprintf( __( 'Remove %s' ), singular_name );
 
-	let input_value = '';
+	let options: string[] = [];
 	let search_result: WP_REST_API_Term[] = [];
 	let search_term = '';
 	let selected: number[] = [];
-	let options: string[] = [];
 	let token_items: TokenItem[] = [];
 
 	const exclude_selected = ( { id } ) => ! selected.includes( id );
@@ -53,12 +51,10 @@
 		editor.add_term( tax_name, id );
 
 		search_term = '';
-		input_value = '';
 		search_result = [];
 	}
 
 	async function handle_input( event: CustomEvent< string > ): Promise< void > {
-		input_value = event.detail;
 		search_term = event.detail.length >= 3 ? event.detail : '';
 
 		if ( ! search_term ) {
@@ -105,7 +101,6 @@
 		help={__( 'Separate with commas or the Enter key.' )}
 		id={tax_name}
 		label={add_new_item}
-		value={input_value}
 		on:create={handle_create}
 		on:input={handle_input}
 		on:select={handle_select}
