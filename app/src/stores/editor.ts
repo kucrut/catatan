@@ -4,6 +4,7 @@ import type { Notice, NoticesStore } from './notices';
 import type { PostStore } from './post';
 import type { PostTypeStore } from './post-type';
 import create_changes_store, { type Changes } from './changes';
+import omit from 'just-omit';
 import { __, sprintf } from '@wordpress/i18n';
 import { writable, type Readable } from 'svelte/store';
 
@@ -84,15 +85,14 @@ export default function create_store( options: Options ): EditorStore {
 			return;
 		}
 
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		const { content, excerpt, status, title, guid, _links, ...rest } = $post;
+		const { content, excerpt, status, title, ...rest } = $post;
 		// auto-draft posts have default title that we don't want to use.
 		const proper_title = status === 'auto-draft' ? '' : title?.raw || '';
 
 		update( $editor => ( {
 			...$editor,
 			data: {
-				...rest,
+				...omit( rest, [ 'generated_slug', 'permalink_template', 'guid', '_links' ] ),
 				status,
 				content: content?.raw || '',
 				excerpt: excerpt?.raw || '',
