@@ -9,7 +9,7 @@
 	export let options: string[];
 	export let value: string;
 
-	const dispatch = createEventDispatcher< { create: string; select: number } >();
+	const dispatch = createEventDispatcher< { create: string; input: string; select: number } >();
 
 	const class_prefix = 'components-form-token';
 	let has_focus = false;
@@ -19,6 +19,10 @@
 	const handle_click_outside = () => ( has_focus = false );
 
 	const handle_input_focus = () => ( has_focus = true );
+
+	function handle_input_change( event: Event & { currentTarget: EventTarget & HTMLInputElement } ): void {
+		dispatch( 'input', event.currentTarget.value );
+	}
 
 	function handle_input_keydown( event: KeyboardEvent ): void {
 		if (
@@ -77,7 +81,7 @@
 			on:blur
 			on:change
 			on:focus
-			on:input
+			on:input={handle_input_change}
 			on:keydown
 			on:keyup
 		/>
