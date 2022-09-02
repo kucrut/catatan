@@ -18,6 +18,8 @@ export interface Config {
 	post_type_rest_route: string;
 }
 
+export type InputKeyboardEvent = KeyboardEvent & { currentTarget: EventTarget & HTMLInputElement };
+
 export interface SelectControlOption {
 	label: string;
 	value: string | number;

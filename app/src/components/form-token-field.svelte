@@ -4,6 +4,7 @@
 	import { click_outside } from '$actions/click-outside';
 	import { createEventDispatcher, tick } from 'svelte';
 	import { sprintf, __ } from '@wordpress/i18n';
+	import type { InputKeyboardEvent } from '$types';
 
 	export let id: string;
 	export let label: string;
@@ -39,13 +40,11 @@
 
 	const handle_input_focus = () => ( has_focus = true );
 
-	function handle_input_change( event: Event & { currentTarget: EventTarget & HTMLInputElement } ): void {
+	function handle_input_change( event: InputKeyboardEvent ): void {
 		dispatch( 'input', event.currentTarget.value );
 	}
 
-	async function handle_input_keydown(
-		event: KeyboardEvent & { currentTarget: EventTarget & HTMLInputElement },
-	): Promise< void > {
+	async function handle_input_keydown( event: InputKeyboardEvent ): Promise< void > {
 		const { code: key } = event;
 
 		if ( key === 'Backspace' ) {
@@ -105,7 +104,7 @@
 		}
 	}
 
-	function handle_input_keyup( event: KeyboardEvent & { currentTarget: EventTarget & HTMLInputElement } ): void {
+	function handle_input_keyup( event: InputKeyboardEvent ): void {
 		const { code: key, currentTarget: el } = event;
 
 		if ( create_keys.has( key ) && hovered_option_index === null && el.value.length >= 3 ) {
