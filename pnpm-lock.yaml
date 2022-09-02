@@ -32,6 +32,7 @@ specifiers:
   eslint-plugin-svelte3: ^4.0.0
   highlight.js: ^11.6.0
   just-debounce-it: ^3.1.1
+  just-omit: ^2.1.1
   just-sort-by: ^3.1.1
   lowlight: ^2.7.0
   postcss: ^8.4.16
@@ -89,6 +90,7 @@ devDependencies:
   eslint-plugin-svelte3: 4.0.0_sfdub7vxhxkt5wmgvhhmmgyu2e
   highlight.js: 11.6.0
   just-debounce-it: 3.1.1
+  just-omit: 2.1.1
   just-sort-by: 3.1.1
   lowlight: 2.7.0
   postcss: 8.4.16
@@ -4103,6 +4105,10 @@ packages:
 
   /just-debounce-it/3.1.1:
     resolution: {integrity: sha512-oPsuRyWp99LJaQ4KXC3A42tQNqkRTcPy0A8BCkRZ5cPCgsx81upB2KUrmHZvDUNhnCDKe7MshfTuWFQB9iXwDg==}
+    dev: true
+
+  /just-omit/2.1.1:
+    resolution: {integrity: sha512-8uVewf9TeKrmuOONgSZvcnaOsBXsz0a+XuWW7GhupeuaShTrTu5TRoCN0uPO5rKljKZhOUG65gidfpUs6t0TAQ==}
     dev: true
 
   /just-sort-by/3.1.1:
