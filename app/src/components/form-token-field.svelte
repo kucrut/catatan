@@ -20,8 +20,9 @@
 	} >();
 
 	const class_prefix = 'components-form-token';
-	const create_keys = [ 'Comma', 'Enter', 'NumpadEnter' ];
-	const suggestion_key_codes = [ 'ArrowDown', 'ArrowUp', 'Enter', 'Escape' ];
+	const create_keys = new Set( [ 'Comma', 'Enter', 'NumpadEnter' ] );
+	const select_keys = new Set( [ 'ArrowDown', 'ArrowUp' ] );
+	const suggestion_keys = new Set( [ ...select_keys, 'Enter', 'Escape' ] );
 
 	let options_backup: typeof options = [];
 	let has_focus = false;
@@ -45,16 +46,21 @@
 	async function handle_input_keydown(
 		event: KeyboardEvent & { currentTarget: EventTarget & HTMLInputElement },
 	): Promise< void > {
+		if ( ! suggestion_keys.has( event.code ) ) {
+			return;
+		}
+
 		const backup_total = options_backup.length;
 		const options_total = options.length;
 
-		if ( ! suggestion_key_codes.includes( event.code ) || ! ( options_total || backup_total ) ) {
+		if ( ! options_total || ! backup_total ) {
 			return;
 		}
 
 		event.preventDefault();
 
-		if ( [ 'ArrowDown', 'ArrowUp' ].includes( event.code ) && backup_total ) {
+		// Pressing up or down arrow key, and we have a backup of the options, let's re-use it.
+		if ( select_keys.has( event.code ) && backup_total ) {
 			options = [ ...options_backup ];
 			options_backup = [];
 			return;
@@ -89,7 +95,7 @@
 	function handle_input_keyup( event: KeyboardEvent & { currentTarget: EventTarget & HTMLInputElement } ): void {
 		const { code: key, currentTarget: el } = event;
 
-		if ( create_keys.includes( key ) && hovered_option_index === null && el.value.length >= 3 ) {
+		if ( create_keys.has( key ) && hovered_option_index === null && el.value.length >= 3 ) {
 			const new_token_index = token_items.length;
 			const new_token_label = el.value.trim().replaceAll( ',', '' );
 			const new_token_desc = sprintf( __( '%s (%d of %d)' ), new_token_label, new_token_index, new_token_index + 1 );
