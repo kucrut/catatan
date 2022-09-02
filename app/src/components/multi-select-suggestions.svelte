@@ -11,7 +11,7 @@
 
 	let list: HTMLUListElement;
 	let list_height: number;
-	let prev_selected_index: number = -1;
+	let prev_selected_index = -1;
 	let scroll_height: number;
 
 	const dispatch = createEventDispatcher< { 'hover-item': number; 'select-item': number } >();
