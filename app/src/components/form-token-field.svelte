@@ -39,7 +39,21 @@
 		const { code: key, currentTarget: el } = event;
 
 		if ( create_keys.includes( key ) && hovered_option_index === null && el.value.length >= 3 ) {
-			dispatch( 'create', el.value.trim().replaceAll( ',', '' ) );
+			const new_token_index = token_items.length;
+			const new_token_label = el.value.trim().replaceAll( ',', '' );
+			const new_token_desc = sprintf( __( '%s (%d of %d)' ), new_token_label, new_token_index, new_token_index + 1 );
+
+			dispatch( 'create', new_token_label );
+
+			// Temporarily add the new token to the collection to make the UI snappy.
+			token_items = [
+				...token_items,
+				{
+					description: new_token_desc,
+					id: new_token_index,
+					label: new_token_label,
+				},
+			];
 			el.value = '';
 		}
 	}
