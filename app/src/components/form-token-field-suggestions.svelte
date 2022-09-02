@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { afterUpdate, beforeUpdate, createEventDispatcher } from 'svelte';
 
+	export let class_prefix: string;
 	export let id: string;
 	export let items: string[];
 	export let search: string;
 	export let selected_index: number | null = null;
 
-	const class_prefix = 'components-form-token-field';
 	const id_prefix = 'components-form-token-suggestions';
 
 	let list: HTMLUListElement;

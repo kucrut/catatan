@@ -6,6 +6,7 @@
 	import { sprintf, __ } from '@wordpress/i18n';
 	import type { InputKeyboardEvent } from '$types';
 
+	export let class_prefix = 'components-form-token-field';
 	export let id: string;
 	export let label: string;
 	export let help = '';
@@ -20,7 +21,6 @@
 		select: number;
 	} >();
 
-	const class_prefix = 'components-form-token';
 	const create_keys = new Set( [ 'Comma', 'Enter', 'NumpadEnter' ] );
 	const select_keys = new Set( [ 'ArrowDown', 'ArrowUp' ] );
 	const suggestion_keys = new Set( [ ...select_keys, 'Enter', 'Escape' ] );
@@ -143,10 +143,10 @@
 	}
 </script>
 
-<div class="{class_prefix}-field">
-	<label for="{class_prefix}-input-{id}" class="{class_prefix}-field__label">{label}</label>
+<div class={class_prefix}>
+	<label for="{class_prefix}-input-{id}" class="{class_prefix}__label">{label}</label>
 	<div
-		class="{class_prefix}-field__input-container"
+		class="{class_prefix}__input-container"
 		tabindex="-1"
 		class:is-active={has_focus}
 		on:click={() => input_el.focus()}
@@ -156,6 +156,7 @@
 			{#each token_items as item, index (`${ index }${ item.label }`)}
 				<FormTokenFieldToken
 					{...item}
+					{class_prefix}
 					remove_text={remove_selected_text}
 					on:click={() => dispatch( 'deselect', index )}
 				/>
@@ -165,7 +166,7 @@
 			aria-describedby={help ? `${ class_prefix }-suggestions-howto-${ id }` : null}
 			aria-expanded="false"
 			autocomplete="off"
-			class="{class_prefix}-field__input"
+			class="{class_prefix}__input"
 			id="{class_prefix}-input-{id}"
 			role="combobox"
 			size="5"
@@ -178,6 +179,7 @@
 		/>
 		{#if input_el?.value && options.length}
 			<FormTokenFieldSuggestions
+				{class_prefix}
 				{id}
 				items={options}
 				search={input_el.value}
@@ -188,7 +190,7 @@
 		{/if}
 	</div>
 	{#if help}
-		<p id="{class_prefix}-suggestions-howto-{id}" class="{class_prefix}-field__help">{help}</p>
+		<p id="{class_prefix}-suggestions-howto-{id}" class="{class_prefix}__help">{help}</p>
 	{/if}
 </div>
 
