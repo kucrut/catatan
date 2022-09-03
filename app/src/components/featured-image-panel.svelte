@@ -53,7 +53,7 @@
 			try {
 				const { alt_text: alt, id, media_details } = await media.fetch( $editor.data.featured_media );
 				const { original_image: filename, sizes } = media_details;
-				selected = { alt, filename, id, url: sizes.thumbnail?.source_url || sizes.full.source_url };
+				selected = { alt, filename, id, url: sizes.medium?.source_url || sizes.full.source_url };
 			} catch {
 				// TODO
 			}
