@@ -1,11 +1,13 @@
 <script lang="ts">
 	import { __ } from '@wordpress/i18n';
 	import ContentArea from './content-area.svelte';
+	import EditorMenu from './editor-menu.svelte';
 	import Header from './header.svelte';
 	import Notices from './notices.svelte';
 	import Sidebar from './sidebar.svelte';
 	import { get_store } from '$stores';
 
+	const editor = get_store( 'editor' );
 	const post_type = get_store( 'post_type' );
 	const ui = get_store( 'ui' );
 
@@ -21,6 +23,9 @@
 				<div class="interface-interface-skeleton__body">
 					<div aria-label={__( 'Editor content' )} class="interface-interface-skeleton__content" role="region">
 						<Notices />
+						{#if $editor.editor}
+							<EditorMenu />
+						{/if}
 						<div class="edit-post-visual-editor">
 							<ContentArea with_editor={supports.editor === true} with_title={supports.title === true} />
 						</div>
@@ -35,6 +40,9 @@
 <style>
 	.interface-interface-skeleton__content {
 		background-color: #fff;
+	}
+	.edit-post-visual-editor {
+		background-color: inherit;
 		width: 100%;
 		/* stylelint-disable-next-line custom-property-pattern */
 		padding-inline: var( --wp--custom--spacing--outer );
