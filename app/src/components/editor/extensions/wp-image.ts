@@ -40,7 +40,7 @@ export const WPImage = Node.create< WPImageOptions >( {
 	content: 'inline*',
 	draggable: true,
 	group: 'block',
-	name: 'wp-image',
+	name: 'wpImage',
 
 	addAttributes() {
 		return {
