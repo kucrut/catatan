@@ -10,6 +10,12 @@
 	const store = get_store( 'editor' );
 	const editor_options = {
 		content: $store.data.content,
+		onCreate( { editor } ) {
+			store.set_editor( editor );
+		},
+		onDestroy() {
+			store.remove_editor();
+		},
 		onUpdate: debounce( ( { editor } ): void => {
 			store.update( { content: editor.getHTML() } );
 		}, 250 ),
