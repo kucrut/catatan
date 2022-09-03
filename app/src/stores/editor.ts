@@ -31,6 +31,7 @@ export interface EditorStore extends Readable< Editor > {
 	clear(): void;
 	fetch(): Promise< void >;
 	save(): Promise< void >;
+	set_editor( editor: TipTapEditor ): void;
 	trash(): Promise< void >;
 	update( new_changes: Changes ): void;
 }
@@ -127,27 +128,6 @@ export default function create_store( options: Options ): EditorStore {
 		...editor,
 
 		fetch: post.fetch,
-
-		add_term( taxonomy: string, term_id: number ): void {
-			if ( ! ( taxonomy in $store.data ) ) {
-				return;
-			}
-
-			const next_terms = [ ...( $store.data[ taxonomy ] as number[] ), term_id ];
-
-			this.update( { [ taxonomy ]: next_terms } );
-		},
-
-		remove_term( taxonomy: string, term_id: number ): void {
-			if ( ! ( taxonomy in $store.data ) ) {
-				return;
-			}
-
-			const current_terms = $store.data[ taxonomy ] as number[];
-			const next_terms = current_terms.filter( id => term_id !== id );
-
-			this.update( { [ taxonomy ]: next_terms } );
-		},
 
 		clear(): void {
 			changes.delete();
@@ -261,6 +241,35 @@ export default function create_store( options: Options ): EditorStore {
 				is_saved: false,
 				was_saving: false,
 			} ) );
+		},
+
+		/* Terms-related methods */
+
+		add_term( taxonomy: string, term_id: number ): void {
+			if ( ! ( taxonomy in $store.data ) ) {
+				return;
+			}
+
+			const next_terms = [ ...( $store.data[ taxonomy ] as number[] ), term_id ];
+
+			this.update( { [ taxonomy ]: next_terms } );
+		},
+
+		remove_term( taxonomy: string, term_id: number ): void {
+			if ( ! ( taxonomy in $store.data ) ) {
+				return;
+			}
+
+			const current_terms = $store.data[ taxonomy ] as number[];
+			const next_terms = current_terms.filter( id => term_id !== id );
+
+			this.update( { [ taxonomy ]: next_terms } );
+		},
+
+		/* Editor/TipTap-related methods() */
+
+		set_editor( tiptap: TipTapEditor ): void {
+			update( $editor => ( { editor: tiptap, ...$editor } ) );
 		},
 	};
 }
