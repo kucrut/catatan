@@ -1,36 +1,22 @@
 <script lang="ts">
-	import { Editor } from '@tiptap/core';
-	import { get_store } from '$stores';
+	import { Editor, type EditorOptions } from '@tiptap/core';
 	import { onDestroy, onMount } from 'svelte';
-	import debounce from 'just-debounce-it';
-
-	interface CallbackArgs {
-		editor: Editor;
-	}
 
 	let cls = '';
 	export { cls as class };
-
-	const store = get_store( 'editor' );
+	export let options: Partial< EditorOptions >;
 
 	let element: HTMLDivElement;
 	let tiptap: Editor;
 
-	onMount( async () => {
-		const { get_extensions } = await import( './extensions/extensions' );
-
+	onMount( () => {
 		tiptap = new Editor( {
+			...options,
 			element,
-			content: $store.data.content,
-			extensions: get_extensions(),
-
 			onTransaction() {
 				// Force re-render so `editor.isActive` works as expected.
 				tiptap = tiptap;
 			},
-			onUpdate: debounce( ( { editor }: CallbackArgs ): void => {
-				store.update( { content: editor.getHTML() } );
-			}, 250 ),
 		} );
 	} );
 

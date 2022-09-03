@@ -1,9 +1,19 @@
 <script lang="ts">
 	import TitleInput from './title-input.svelte';
 	import Lazy from './lazy.svelte';
+	import debounce from 'just-debounce-it';
+	import { get_store } from '$stores';
 
 	export let with_editor: boolean;
 	export let with_title: boolean;
+
+	const store = get_store( 'editor' );
+	const editor_options = {
+		content: $store.data.content,
+		onUpdate: debounce( ( { editor } ): void => {
+			store.update( { content: editor.getHTML() } );
+		}, 250 ),
+	};
 </script>
 
 <div class="edit-post-visual-editor__content-area">
@@ -13,10 +23,13 @@
 				<TitleInput />
 			{/if}
 			{#if with_editor}
-				<Lazy
-					class="is-root-container block-editor-block-list__layout"
-					component={() => import( './editor/editor.svelte' )}
-				/>
+				{#await import( '$components/editor/extensions/extensions' ) then extensions}
+					<Lazy
+						class="is-root-container block-editor-block-list__layout"
+						component={() => import( './editor/editor.svelte' )}
+						options={{ ...editor_options, extensions: extensions.get_extensions() }}
+					/>
+				{/await}
 			{/if}
 		</div>
 	</div>
