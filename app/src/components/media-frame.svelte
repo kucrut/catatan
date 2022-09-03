@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { WP_Media } from '$types';
-	import { FeaturedImageFrame } from '$utils/media';
+	import { FeaturedImageFrame, InsertImageFrame } from '$utils/media';
 	import { createEventDispatcher, onDestroy, onMount } from 'svelte';
 
 	interface FrameEvents {
@@ -10,8 +10,10 @@
 		select: { selection: WP_Media[] };
 	}
 
-	type FrameType = 'featured-image' | 'select';
+	type FrameOptions = { [ k: string ]: any };
+	type FrameType = 'featured-image' | 'insert';
 
+	export let options: FrameOptions = {};
 	export let selected: number[] = [];
 	export let type: FrameType;
 
@@ -37,12 +39,30 @@
 	}
 
 	function create_frame() {
-		frame = new FeaturedImageFrame( {
-			editing: false, // TODO.
-			mimeType: [ 'image' ],
-			multiple: false,
-			state: 'featured-image',
-		} );
+		switch ( type ) {
+			case 'featured-image':
+				frame = new FeaturedImageFrame( {
+					...options,
+					editing: false, // TODO.
+					mimeType: [ 'image' ],
+					multiple: false,
+					state: 'featured-image',
+				} );
+				break;
+
+			default: // insert.
+				frame = new InsertImageFrame( {
+					...options,
+					editing: false,
+					multiple: false,
+					state: 'library',
+					library: {
+						...( options.library || {} ),
+						type: [ 'image' ],
+					},
+				} );
+				break;
+		}
 
 		frame.on( 'close', () => dispatch( 'close' ) );
 		frame.on( 'open', handle_open );
