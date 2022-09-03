@@ -6,6 +6,8 @@
 	export { cls as class };
 	export let options: Partial< EditorOptions >;
 
+	const { onTransaction = () => {} } = options;
+
 	let element: HTMLDivElement;
 	let tiptap: Editor;
 
@@ -13,9 +15,10 @@
 		tiptap = new Editor( {
 			...options,
 			element,
-			onTransaction() {
+			onTransaction( ...args ) {
 				// Force re-render so `editor.isActive` works as expected.
 				tiptap = tiptap;
+				onTransaction( ...args );
 			},
 		} );
 	} );
