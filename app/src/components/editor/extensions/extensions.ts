@@ -19,8 +19,6 @@ import wp_image from './wp-image';
 
 export function get_extensions(): Extensions {
 	return [
-		// figure,
-		// figcaption,
 		image,
 		subscript,
 		superscript,
@@ -34,6 +32,7 @@ export function get_extensions(): Extensions {
 			HTMLAttributes: { class: 'hljs' },
 		} ),
 		link.configure( {
+			autolink: false,
 			openOnClick: false,
 		} ),
 		text_align.configure( {
