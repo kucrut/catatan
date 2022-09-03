@@ -31,7 +31,7 @@ declare module '@tiptap/core' {
 			/**
 			 * Insert image from WP media library
 			 */
-			setWPImage: ( options: WPImageAttributes, content?: JSONContent[] ) => ReturnType;
+			insertWPImage: ( options: WPImageAttributes, content?: JSONContent[] ) => ReturnType;
 		};
 	}
 }
@@ -127,7 +127,7 @@ export const WPImage = Node.create< WPImageOptions >( {
 
 	addCommands() {
 		return {
-			setWPImage: ( options, content ): Command => {
+			insertWPImage: ( options, content ): Command => {
 				return ( { commands } ) => {
 					return commands.insertContent( {
 						content,
