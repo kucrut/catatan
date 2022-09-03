@@ -10,7 +10,10 @@
 		select: { selection: WP_Media[] };
 	}
 
+	type FrameType = 'featured-image' | 'select';
+
 	export let selected: number[] = [];
+	export let type: FrameType;
 
 	const { wp } = window;
 	const dispatch = createEventDispatcher< FrameEvents >();
