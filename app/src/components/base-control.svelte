@@ -8,6 +8,10 @@
 	export let label = '';
 	export let type = 'base';
 
+	if ( ! label ) {
+		cls = `${ cls } has-no-label`;
+	}
+
 	if ( type !== 'base' ) {
 		cls = `${ cls } components-${ type }-control`;
 	}
