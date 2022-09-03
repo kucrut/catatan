@@ -10,7 +10,7 @@
 		select: { selection: WP_Media[] };
 	}
 
-	export let selected: number;
+	export let selected = 0;
 
 	const { wp } = window;
 	const dispatch = createEventDispatcher< FrameEvents >();
