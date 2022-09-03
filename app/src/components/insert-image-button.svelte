@@ -36,7 +36,7 @@
 				type: 'wpImage',
 				attrs: {
 					attachmentId: 142,
-					size: 'medium',
+					size: size_name,
 					imgAttrs: {
 						alt,
 						height: size_data.height,
