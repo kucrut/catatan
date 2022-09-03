@@ -11,35 +11,34 @@
 	let cls = '';
 	export { cls as class };
 
-	const editor_store = get_store( 'editor' );
+	const store = get_store( 'editor' );
 
-	let editor_el: HTMLDivElement;
-	let editor_instance: Editor;
+	let element: HTMLDivElement;
+	let tiptap: Editor;
 
 	onMount( async () => {
 		const { get_extensions } = await import( './extensions/extensions' );
 
-		editor_instance = new Editor( {
-			content: $editor_store.data.content,
-			element: editor_el,
+		tiptap = new Editor( {
+			element,
+			content: $store.data.content,
 			extensions: get_extensions(),
 
 			onTransaction() {
-				// force re-render so `editor.isActive` works as expected.
-				editor_instance = editor_instance;
+				// Force re-render so `editor.isActive` works as expected.
+				tiptap = tiptap;
 			},
 			onUpdate: debounce( ( { editor }: CallbackArgs ): void => {
-				editor_store.update( { content: editor.getHTML() } );
-				console.log( editor.getJSON() );
+				store.update( { content: editor.getHTML() } );
 			}, 250 ),
 		} );
 	} );
 
 	onDestroy( () => {
-		if ( editor_instance instanceof Editor ) {
-			editor_instance.destroy();
+		if ( tiptap instanceof Editor ) {
+			tiptap.destroy();
 		}
 	} );
 </script>
 
-<div class={cls} bind:this={editor_el} />
+<div class={cls} bind:this={element} />
