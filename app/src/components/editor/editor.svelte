@@ -4,6 +4,10 @@
 	import { onDestroy, onMount } from 'svelte';
 	import debounce from 'just-debounce-it';
 
+	interface CallbackArgs {
+		editor: Editor;
+	}
+
 	const editor_store = get_store( 'editor' );
 
 	let editor_el: HTMLDivElement;
@@ -21,8 +25,9 @@
 				// force re-render so `editor.isActive` works as expected.
 				editor_instance = editor_instance;
 			},
-			onUpdate: debounce( ( { editor } ) => {
+			onUpdate: debounce( ( { editor }: CallbackArgs ): void => {
 				editor_store.update( { content: editor.getHTML() } );
+				console.log( editor.getJSON() );
 			}, 250 ),
 		} );
 	} );
