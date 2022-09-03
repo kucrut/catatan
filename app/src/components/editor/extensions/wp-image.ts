@@ -10,7 +10,9 @@ export interface WPImageAttributes {
 		alt: string;
 		height?: number;
 		loading?: 'eager' | 'lazy';
+		sizes?: string;
 		src: string;
+		srcset?: string;
 		width?: number;
 	};
 	size?: string;
