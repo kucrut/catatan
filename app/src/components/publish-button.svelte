@@ -5,11 +5,18 @@
 	import { is_draft } from '$utils/post';
 
 	const editor = get_store( 'editor' );
+	let is_disabled: boolean;
 
-	$: is_disabled = $editor.data.status === 'auto-draft' && ! $editor.can_save;
 	$: is_draft_post = is_draft( $editor.data.status );
 	// TODO: Schedule.
 	$: text = is_draft_post ? __( 'Publish' ) : __( 'Update' );
+	$: {
+		if ( $editor.data.status === 'auto-draft' ) {
+			is_disabled = true;
+		} else {
+			is_disabled = $editor.data.status === 'publish' && ! $editor.is_dirty;
+		}
+	}
 
 	function handle_click(): void {
 		if ( is_draft_post ) {
