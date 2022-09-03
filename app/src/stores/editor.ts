@@ -1,4 +1,5 @@
 import type { Config } from '$types';
+import type { Editor as TipTapEditor } from '@tiptap/core';
 import type { WP_REST_API_Post, WP_REST_API_Type } from 'wp-types';
 import type { Notice, NoticesStore } from './notices';
 import type { PostStore } from './post';
@@ -15,11 +16,12 @@ export interface Options extends Pick< Config, 'edit_link' | 'post_id' | 'post_l
 }
 
 export interface Editor {
-	data: Changes;
 	can_save: boolean;
+	data: Changes;
 	is_dirty: boolean;
 	is_saved: boolean;
 	is_saving: boolean;
+	editor?: TipTapEditor;
 	was_saving: boolean;
 }
 
