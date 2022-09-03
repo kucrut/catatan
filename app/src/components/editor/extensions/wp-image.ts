@@ -104,7 +104,7 @@ export const WPImage = Node.create< WPImageOptions >( {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	renderHTML( { node, HTMLAttributes } ): any {
 		const { attachmentId, imgAttrs, size } = HTMLAttributes;
-		let figure_class = class_name;
+		let figure_class = `wp-block ${ class_name }`;
 
 		if ( size ) {
 			figure_class = `${ figure_class } ${ size_class_prefix }${ size }`;
