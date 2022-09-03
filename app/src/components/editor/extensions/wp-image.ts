@@ -5,7 +5,10 @@ const class_name = 'wp-block-image';
 export interface WPImageAttributes {
 	imgAttrs: {
 		alt: string;
+		height?: number;
+		loading?: 'eager' | 'lazy';
 		src: string;
+		width?: number;
 	};
 	size?: string;
 }
