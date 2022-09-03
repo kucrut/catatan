@@ -36,8 +36,6 @@ declare module '@tiptap/core' {
 	}
 }
 
-export const inputRegex = /(?:^|\s)(!\[(.+|:?)]\((\S+)(?:(?:\s+)["'](\S+)["'])?\))$/;
-
 export const WPImage = Node.create< WPImageOptions >( {
 	content: 'inline*',
 	draggable: true,
@@ -103,23 +101,28 @@ export const WPImage = Node.create< WPImageOptions >( {
 		];
 	},
 
-	renderHTML( { HTMLAttributes } ) {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	renderHTML( { node, HTMLAttributes } ): any {
 		const { attachmentId, imgAttrs, size } = HTMLAttributes;
 		let figure_class = class_name;
-		let image_attributes = { ...imgAttrs };
 
 		if ( size ) {
 			figure_class = `${ figure_class } ${ size_class_prefix }${ size }`;
 		}
 
-		if ( attachmentId ) {
-			image_attributes = {
-				...image_attributes,
-				class: `${ attachment_id_class_prefix }-${ attachmentId }`,
-			};
-		}
-
-		return [ 'figure', { class: figure_class }, [ 'img', image_attributes ], [ 'figcaption', {}, 0 ] ];
+		return [
+			'figure',
+			{ class: figure_class },
+			[
+				'img',
+				{
+					...imgAttrs,
+					class: attachmentId ? attachment_id_class_prefix + attachmentId : null,
+				},
+			],
+			// TODO: Find better way for this.
+			node.textContent ? [ 'figcaption', {}, 0 ] : null,
+		].filter( i => i !== null );
 	},
 
 	addCommands() {
