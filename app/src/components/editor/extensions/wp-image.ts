@@ -1,5 +1,15 @@
 import { Node, type Attributes, type Command, type JSONContent } from '@tiptap/core';
 
+const class_name = 'wp-block-image';
+
+export interface WPImageAttributes {
+	imgAttrs: {
+		alt: string;
+		src: string;
+	};
+	size?: string;
+}
+
 export interface WPImageOptions {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	HTMLAttributes: Record< string, any >;
@@ -11,25 +21,12 @@ declare module '@tiptap/core' {
 			/**
 			 * Insert image from WP media library
 			 */
-			setWPImage: ( options: { src: string; size?: string; alt: string }, content?: JSONContent[] ) => ReturnType;
+			setWPImage: ( options: WPImageAttributes, content?: JSONContent[] ) => ReturnType;
 		};
 	}
 }
 
 export const inputRegex = /(?:^|\s)(!\[(.+|:?)]\((\S+)(?:(?:\s+)["'](\S+)["'])?\))$/;
-
-const class_name = 'wp-block-image';
-
-type ImgAttribute = 'alt' | 'src';
-
-function get_img_attribute( attribute: ImgAttribute, element: HTMLElement ): string | null {
-	if ( ! element.firstElementChild || element.firstElementChild.nodeName !== 'IMG' ) {
-		return null;
-	}
-
-	const img = element.firstElementChild as HTMLImageElement;
-	return img[ attribute ];
-}
 
 export const WPImage = Node.create< WPImageOptions >( {
 	content: 'inline*',
@@ -40,9 +37,20 @@ export const WPImage = Node.create< WPImageOptions >( {
 
 	addAttributes() {
 		return {
-			alt: {
+			imgAttrs: {
 				default: null,
-				parseHTML: ( element ): string | null => get_img_attribute( 'alt', element ),
+				parseHTML: ( element ): WPImageAttributes[ 'imgAttrs' ] | null => {
+					if ( ! element.firstElementChild || element.firstElementChild.nodeName !== 'IMG' ) {
+						return null;
+					}
+
+					const img = element.firstElementChild as HTMLImageElement;
+
+					return {
+						alt: img.alt,
+						src: img.src,
+					};
+				},
 			},
 			size: {
 				default: null,
@@ -59,10 +67,6 @@ export const WPImage = Node.create< WPImageOptions >( {
 
 					return found || null;
 				},
-			},
-			src: {
-				default: null,
-				parseHTML: ( element ): string | null => get_img_attribute( 'src', element ),
 			},
 		};
 	},
@@ -84,14 +88,14 @@ export const WPImage = Node.create< WPImageOptions >( {
 	},
 
 	renderHTML( { HTMLAttributes } ) {
-		const { size, ...img_attributes } = HTMLAttributes;
+		const { size, imgAttrs } = HTMLAttributes;
 		let figure_class = class_name;
 
 		if ( size ) {
 			figure_class = `${ figure_class } size-${ size }`;
 		}
 
-		return [ 'figure', { class: figure_class }, [ 'img', img_attributes ], [ 'figcaption', {}, 0 ] ];
+		return [ 'figure', { class: figure_class }, [ 'img', imgAttrs ], [ 'figcaption', {}, 0 ] ];
 	},
 
 	addCommands() {
