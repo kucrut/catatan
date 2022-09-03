@@ -37,11 +37,11 @@ declare module '@tiptap/core' {
 }
 
 export const WPImage = Node.create< WPImageOptions >( {
+	allowGapCursor: true, // TODO: Make this work!
 	content: 'inline*',
 	draggable: true,
 	group: 'block',
 	name: 'wpImage',
-	priority: 1000,
 
 	addAttributes() {
 		return {
@@ -69,9 +69,9 @@ export const WPImage = Node.create< WPImageOptions >( {
 
 					return {
 						alt: img.alt,
-						sizes: img.sizes,
+						sizes: img.sizes || null,
 						src: img.src,
-						srcset: img.srcset,
+						srcset: img.srcset || null,
 					};
 				},
 			},
@@ -91,11 +91,12 @@ export const WPImage = Node.create< WPImageOptions >( {
 			{
 				tag: 'figure',
 				getAttrs: ( node ): false | Attributes => {
-					if ( typeof node === 'string' ) {
-						return false;
-					}
-
-					return node.classList.contains( class_name ) && null;
+					return typeof node !== 'string' &&
+						node.classList.contains( class_name ) &&
+						node.firstElementChild &&
+						node.firstElementChild.tagName === 'IMG'
+						? null
+						: false;
 				},
 			},
 		];
