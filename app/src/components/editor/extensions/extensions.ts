@@ -14,15 +14,13 @@ import table_row from '@tiptap/extension-table-row';
 import youtube from '@tiptap/extension-youtube';
 import { lowlight } from 'lowlight/lib/common';
 
-import figure from './figure';
-import figcaption from './figcaption';
 import text_align from './text-align';
 import wp_image from './wp-image';
 
 export function get_extensions(): Extensions {
 	return [
-		figure,
-		figcaption,
+		// figure,
+		// figcaption,
 		image,
 		subscript,
 		superscript,
