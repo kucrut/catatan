@@ -45,6 +45,7 @@
 </div>
 
 <style lang="postcss">
+	/* stylelint-disable custom-property-pattern */
 	.edit-post-visual-editor__post-title-wrapper {
 		margin-block-start: 2rem;
 		margin-block-end: 0.5rem;
