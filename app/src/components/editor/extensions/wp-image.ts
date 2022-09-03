@@ -3,6 +3,8 @@ import { Node, type Attributes, type Command, type JSONContent } from '@tiptap/c
 const class_name = 'wp-block-image';
 const attachment_id_class_prefix = 'wp-image-';
 const attachment_id_regex = new RegExp( `((${ attachment_id_class_prefix })(\\d+))` );
+const size_class_prefix = 'size-';
+const size_class_regex = new RegExp( `((${ size_class_prefix })(\\w+))` );
 
 export interface WPImageAttributes {
 	attachmentId: number;
@@ -75,17 +77,9 @@ export const WPImage = Node.create< WPImageOptions >( {
 			size: {
 				default: null,
 				parseHTML: ( element ): string | null => {
-					let found: string;
+					const size_match = size_class_regex.exec( element.className );
 
-					for ( const cls of element.classList.entries() ) {
-						const [ , item ] = cls;
-						if ( item.startsWith( 'size-' ) ) {
-							found = item;
-							break;
-						}
-					}
-
-					return found || null;
+					return size_match ? size_match[ 3 ] : null;
 				},
 			},
 		};
@@ -113,7 +107,7 @@ export const WPImage = Node.create< WPImageOptions >( {
 		let image_attributes = { ...imgAttrs };
 
 		if ( size ) {
-			figure_class = `${ figure_class } size-${ size }`;
+			figure_class = `${ figure_class } ${ size_class_prefix }${ size }`;
 		}
 
 		if ( attachmentId ) {
