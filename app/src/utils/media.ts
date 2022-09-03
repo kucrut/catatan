@@ -1,6 +1,6 @@
 /* eslint-disable object-shorthand, prefer-rest-params, @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-function-return-type */
 
-// Borrowed from Gutenberg's source.
+// Borrowed from Gutenberg's source: packages/media-utils/src/components/media-upload/index.js
 
 const { wp } = window;
 
@@ -58,6 +58,9 @@ export const FeaturedImageFrame = wp.media.view.MediaFrame.Select.extend( {
 		] );
 	},
 } );
+
+// TODO: Add image sizes dropdown on the frame sidebar.
+export const InsertImageFrame = wp.media.view.MediaFrame.Select.extend( {} );
 
 export function get_attachments_collection( ids: number[] ) {
 	return wp.media.query( {
