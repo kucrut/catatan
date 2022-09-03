@@ -29,7 +29,7 @@
 
 		if ( ! is_disabled && ( ctrlKey || metaKey ) && code === 'KeyS' ) {
 			event.preventDefault();
-			save();
+			editor.save();
 		}
 	}
 
