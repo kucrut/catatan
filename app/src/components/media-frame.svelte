@@ -10,16 +10,18 @@
 		select: { selection: WP_Media[] };
 	}
 
-	export let selected = 0;
+	export let selected: number[] = [];
 
 	const { wp } = window;
 	const dispatch = createEventDispatcher< FrameEvents >();
 	let frame;
 
 	function handle_open() {
-		if ( selected > 0 ) {
+		const ids = selected.filter( id => typeof id === 'number' && id > 0 );
+
+		if ( ids.length ) {
 			const selection = frame.state().get( 'selection' );
-			selection.add( wp.media.attachment( selected ) );
+			ids.forEach( id => selection.add( wp.media.attachment( id ) ) );
 		}
 
 		dispatch( 'open', { frame } );
