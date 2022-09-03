@@ -26,14 +26,15 @@ export interface Editor {
 }
 
 export interface EditorStore extends Readable< Editor > {
-	add_term( taxonomy: string, term_id: number ): void;
-	remove_term( taxonomy: string, term_id: number ): void;
 	clear(): void;
 	fetch(): Promise< void >;
 	save(): Promise< void >;
-	set_editor( editor: TipTapEditor ): void;
 	trash(): Promise< void >;
 	update( new_changes: Changes ): void;
+	add_term( taxonomy: string, term_id: number ): void;
+	remove_term( taxonomy: string, term_id: number ): void;
+	set_editor( editor: TipTapEditor ): void;
+	remove_editor(): void;
 }
 
 function confirm_leave( event: BeforeUnloadEvent ): string {
@@ -266,10 +267,14 @@ export default function create_store( options: Options ): EditorStore {
 			this.update( { [ taxonomy ]: next_terms } );
 		},
 
-		/* Editor/TipTap-related methods() */
+		/* TipTap-related methods() */
 
 		set_editor( tiptap: TipTapEditor ): void {
 			update( $editor => ( { editor: tiptap, ...$editor } ) );
+		},
+
+		remove_editor(): void {
+			update( $editor => ( { editor: null, ...$editor } ) );
 		},
 	};
 }
