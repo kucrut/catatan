@@ -119,7 +119,7 @@ export const WPImage = Node.create< WPImageOptions >( {
 		if ( attachmentId ) {
 			image_attributes = {
 				...image_attributes,
-				class: `wp-image-${ attachmentId }`,
+				class: `${ attachment_id_class_prefix }-${ attachmentId }`,
 			};
 		}
 
