@@ -41,6 +41,7 @@ export const WPImage = Node.create< WPImageOptions >( {
 	draggable: true,
 	group: 'block',
 	name: 'wpImage',
+	priority: 1000,
 
 	addAttributes() {
 		return {
@@ -88,7 +89,6 @@ export const WPImage = Node.create< WPImageOptions >( {
 	parseHTML() {
 		return [
 			{
-				priority: 1,
 				tag: 'figure',
 				getAttrs: ( node ): false | Attributes => {
 					if ( typeof node === 'string' ) {
