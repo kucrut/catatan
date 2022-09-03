@@ -8,6 +8,9 @@
 		editor: Editor;
 	}
 
+	let cls = '';
+	export { cls as class };
+
 	const editor_store = get_store( 'editor' );
 
 	let editor_el: HTMLDivElement;
@@ -39,4 +42,4 @@
 	} );
 </script>
 
-<div class="is-root-container block-editor-block-list__layout" bind:this={editor_el} />
+<div class={cls} bind:this={editor_el} />
