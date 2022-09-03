@@ -40,7 +40,7 @@
 		}
 
 		set( id );
-		selected = { alt, filename, id, url: sizes.thumbnail?.url || sizes.full.url };
+		selected = { alt, filename, id, url: sizes.medium?.url || sizes.full.url };
 	}
 
 	$: remove_label = $post_type.labels.remove_featured_image || DEFAULT_REMOVE_LABEL;
