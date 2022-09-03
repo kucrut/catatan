@@ -9,6 +9,7 @@
 	$: is_active = ( key: string ) => $store.editor.isActive( key );
 	$: button_class = ( key: string ) => class_names( is_active( key ) ? 'is-pressed' : '', 'components-toolbar-button' );
 	$: run = ( task: string ) => () => $store.editor.chain().focus()[ task ]().run();
+	$: has_no_selection = $store.editor.view.state.selection.empty;
 </script>
 
 <div
@@ -39,7 +40,7 @@
 				title={__( 'Inline code Ctrl + E' )}
 				on:click={run( 'toggleCode' )}
 			/>
-			<Button aria-label={__( 'Link' )} class="components-toolbar-button" icon="link" disabled />
+			<Button aria-label={__( 'Link' )} class="components-toolbar-button" disabled={has_no_selection} icon="link" />
 		</div>
 	</div>
 </div>
