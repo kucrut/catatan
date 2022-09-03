@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { get_store } from '$stores';
 	import { __ } from '@wordpress/i18n';
+	import InsertImageButton from './insert-image-button.svelte';
 	import PreviewButton from './preview-button.svelte';
 	import PublishButton from './publish-button.svelte';
 	import SaveButton from './save-button.svelte';
@@ -18,7 +19,9 @@
 				class="components-accessible-toolbar edit-post-header-toolbar"
 				role="toolbar"
 			>
-				<div class="edit-post-header-toolbar__left" />
+				<div class="edit-post-header-toolbar__left">
+					<InsertImageButton />
+				</div>
 			</div>
 		</div>
 		<div class="edit-post-header__settings">
