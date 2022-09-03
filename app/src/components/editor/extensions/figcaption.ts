@@ -3,7 +3,7 @@
 import { Node } from '@tiptap/core';
 
 export default Node.create( {
-	name: 'figureCaption',
+	name: 'figcaption',
 	content: 'inline*',
 	group: 'block',
 	defining: true,
