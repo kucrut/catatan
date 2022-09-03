@@ -4,7 +4,7 @@
 	import { init_stores, type StoresConfig } from '$stores';
 
 	import 'highlight.js/styles/atom-one-dark.css';
-	import './global.css';
+	import './global.postcss';
 
 	export let config: StoresConfig;
 
