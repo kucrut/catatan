@@ -7,13 +7,6 @@
 	import { get_store } from '$stores';
 	import { onMount } from 'svelte';
 
-	interface Media {
-		alt: string;
-		filename: string;
-		id: number;
-		url: string;
-	}
-
 	const editor = get_store( 'editor' );
 	const media = get_store( 'media' );
 	const post_type = get_store( 'post_type' );
@@ -25,7 +18,7 @@
 	const class_prefix = 'editor-post-featured-image';
 
 	let is_frame_open = false;
-	let selected: Media;
+	let selected: Pick< WP_Media, 'alt' | 'filename' | 'id' | 'url' >;
 
 	const close_frame = () => ( is_frame_open = false );
 	const open_frame = () => ( is_frame_open = true );
