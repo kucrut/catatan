@@ -57,14 +57,14 @@
 			text = __( 'Saving' );
 		}
 
+		if ( ! $editor.can_save ) {
+			is_disabled = true;
+		}
+
 		if ( is_not_draft ) {
 			icon = '';
 			is_disabled = false;
 			text = __( 'Switch to draft' );
-		}
-
-		if ( ! $editor.can_save ) {
-			is_disabled = true;
 		}
 
 		cls += ' editor-post-saved-state';
