@@ -10,7 +10,7 @@
 	const store = get_store( 'editor' );
 	const editor_options = {
 		content: $store.data.content,
-		onCreate( { editor } ) {
+		onTransaction( { editor } ) {
 			store.set_editor( editor );
 		},
 		onDestroy() {
