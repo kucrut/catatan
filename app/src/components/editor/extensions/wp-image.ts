@@ -70,7 +70,9 @@ export const WPImage = Node.create< WPImageOptions >( {
 
 					return {
 						alt: img.alt,
+						sizes: img.sizes,
 						src: img.src,
+						srcset: img.srcset,
 					};
 				},
 			},
