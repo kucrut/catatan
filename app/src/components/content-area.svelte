@@ -29,7 +29,7 @@
 				<TitleInput />
 			{/if}
 			{#if with_editor}
-				{#await import( '$components/editor/extensions/extensions' ) then extensions}
+				{#await import( '../tiptap-extensions/extensions' ) then extensions}
 					<Lazy
 						class="is-root-container block-editor-block-list__layout"
 						component={() => import( './tiptap.svelte' )}
