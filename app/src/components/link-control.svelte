@@ -42,7 +42,7 @@
 				checked={is_checked}
 				class="{class_prefix}__setting"
 				id={input_id}
-				label="Open in new tab"
+				label={__( 'Open in new tab' )}
 				on:click={handle_check}
 			/>
 		</fieldset>
