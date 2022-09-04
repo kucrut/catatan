@@ -2,6 +2,7 @@
 	import BaseControl from './base-control.svelte';
 	import Button from './button.svelte';
 	import FormToggle from './form-toggle.svelte';
+	import { __ } from '@wordpress/i18n';
 
 	const class_prefix = 'block-editor-link-control';
 	const input_id = 'block-editor-url-input';
@@ -35,7 +36,7 @@
 	</div>
 	<div class="{class_prefix}__tools">
 		<fieldset class="{class_prefix}__settings">
-			<legend class="components-visually-hidden">Currently selected link settings</legend>
+			<legend class="components-visually-hidden">{__( 'Currently selected link settings' )}</legend>
 			<FormToggle
 				checked={is_checked}
 				class="{class_prefix}__setting"
