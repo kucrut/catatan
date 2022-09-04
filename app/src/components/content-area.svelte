@@ -32,7 +32,7 @@
 				{#await import( '$components/editor/extensions/extensions' ) then extensions}
 					<Lazy
 						class="is-root-container block-editor-block-list__layout"
-						component={() => import( './editor/editor.svelte' )}
+						component={() => import( './tiptap.svelte' )}
 						options={{ ...editor_options, extensions: extensions.get_extensions() }}
 					/>
 				{/await}
