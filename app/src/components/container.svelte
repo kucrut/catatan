@@ -1,15 +1,19 @@
 <script lang="ts">
 	import { __ } from '@wordpress/i18n';
-	import ContentArea from './content-area.svelte';
+	import Editor from './editor.svelte';
 	import EditorMenu from './editor-menu.svelte';
 	import Header from './header.svelte';
 	import Notices from './notices.svelte';
 	import Sidebar from './sidebar.svelte';
+	import TitleInput from './title-input.svelte';
 	import { get_store } from '$stores';
 
 	const editor = get_store( 'editor' );
 	const post_type = get_store( 'post_type' );
 	const ui = get_store( 'ui' );
+
+	$: with_editor = $post_type.supports.editor === true;
+	$: with_title = $post_type.supports.title === true;
 </script>
 
 <div class="block-editor">
@@ -21,14 +25,22 @@
 				<div class="interface-interface-skeleton__body">
 					<div aria-label={__( 'Editor content' )} class="interface-interface-skeleton__content" role="region">
 						<Notices />
-						{#if $editor.editor}
+						{#if with_editor && $editor.editor}
 							<EditorMenu />
 						{/if}
 						<div class="edit-post-visual-editor">
-							<ContentArea
-								with_editor={$post_type.supports.editor === true}
-								with_title={$post_type.supports.title === true}
-							/>
+							<div class="edit-post-visual-editor__content-area">
+								<div class="is-desktop-preview">
+									<div class="editor-styles-wrapper block-editor-writing-flow">
+										{#if with_title}
+											<TitleInput />
+										{/if}
+										{#if with_editor}
+											<Editor />
+										{/if}
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 					<Sidebar />
@@ -49,8 +61,26 @@
 		padding-inline: var( --wp--custom--spacing--outer );
 	}
 
-	/* TODO: Center this thing */
+	/* TODO: Center this thing? */
 	.edit-post-visual-editor {
 		max-width: 720px;
+	}
+
+	/* TODO: Make this toggleable via the "Preview" button. */
+	.is-desktop-preview {
+		box-sizing: border-box;
+		height: 100%;
+		width: 100%;
+		margin: 0;
+		display: flex;
+		flex-flow: column nowrap;
+	}
+
+	.editor-styles-wrapper {
+		flex: 1 1 0%;
+		max-width: 100%;
+		padding-block-end: 40vh;
+		display: grid;
+		grid-template-rows: auto 1fr;
 	}
 </style>
