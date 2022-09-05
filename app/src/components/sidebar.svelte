@@ -27,7 +27,7 @@
 					<Button class="edit-post-sidebar__panel-tab is-active">{$post_type.labels.singular_name}</Button>
 				</li>
 			</ul>
-			<Button aria-label={__( 'Close settings' )} icon="close" on:click={() => ui.close_sidebar()} />
+			<Button aria-label={__( 'Close settings' )} icon="close" on:click={() => ui.toggle( 'sidebar' )} />
 		</div>
 		<StatusPanel />
 		{#if $post_type.viewable}

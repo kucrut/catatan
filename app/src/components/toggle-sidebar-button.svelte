@@ -12,5 +12,5 @@
 	aria-pressed={$ui.is_sidebar_open}
 	class={$ui.is_sidebar_open ? 'is-pressed' : ''}
 	icon="gear"
-	on:click={() => ui.toggle_sidebar()}
+	on:click={() => ui.toggle( 'sidebar' )}
 />
