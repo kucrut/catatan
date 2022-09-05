@@ -1,11 +1,9 @@
 <script lang="ts">
-	import type { LinkAttributes } from '$types';
 	import Editor from './editor.svelte';
 	import EditorMenu from './editor-menu.svelte';
 	import Header from './header.svelte';
 	import LinkControl from './link-control.svelte';
 	import Notices from './notices.svelte';
-	import Popover from './popover.svelte';
 	import Sidebar from './sidebar.svelte';
 	import TitleInput from './title-input.svelte';
 	import { get_store } from '$stores';
@@ -15,15 +13,8 @@
 	const post_type = get_store( 'post_type' );
 	const ui = get_store( 'ui' );
 
-	const close_link_control = () => editor.edit_link( null );
-
 	$: with_editor = $post_type.supports.editor === true;
 	$: with_title = $post_type.supports.title === true;
-
-	function set_link( event: CustomEvent< LinkAttributes > ) {
-		$editor.editor.chain().focus().setLink( event.detail ).run();
-		close_link_control();
-	}
 </script>
 
 <div class="block-editor">
@@ -53,9 +44,7 @@
 							</div>
 						</div>
 						{#if typeof $editor.edited_link === 'string'}
-							<Popover is_without_arrow on:close={close_link_control} on:escape={close_link_control}>
-								<LinkControl value={$editor.edited_link} on:submit={set_link} />
-							</Popover>
+							<LinkControl />
 						{/if}
 					</div>
 					<Sidebar />
