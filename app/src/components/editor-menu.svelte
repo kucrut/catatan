@@ -5,11 +5,20 @@
 	import { get_store } from '$stores';
 
 	const store = get_store( 'editor' );
+	const active_class = 'is-pressed';
 
 	$: is_active = ( key: string ) => $store.editor.isActive( key );
-	$: button_class = ( key: string ) => class_names( is_active( key ) ? 'is-pressed' : '', 'components-toolbar-button' );
+	$: button_class = ( key: string ) => class_names( is_active( key ) ? active_class : '', 'components-toolbar-button' );
 	$: run = ( task: string ) => () => $store.editor.chain().focus()[ task ]().run();
-	$: has_no_selection = $store.editor.view.state.selection.empty;
+	$: is_link_selected = $store.editor.getAttributes( 'link' ).href;
+
+	function handle_click_link() {
+		if ( is_link_selected ) {
+			$store.editor.chain().focus().unsetLink().run();
+		} else {
+			store.edit_link( '' );
+		}
+	}
 </script>
 
 <div
@@ -41,11 +50,10 @@
 				on:click={run( 'toggleCode' )}
 			/>
 			<Button
-				aria-label={__( 'Link' )}
-				class="components-toolbar-button"
-				disabled={has_no_selection}
-				icon="link"
-				on:click={() => store.edit_link( '' )}
+				aria-label={is_link_selected ? __( 'Unlink' ) : __( 'Link' )}
+				class={class_names( is_link_selected ? active_class : '', 'components-toolbar-button' )}
+				icon={is_link_selected ? 'unlink' : 'link'}
+				on:click={handle_click_link}
 			/>
 		</div>
 	</div>
