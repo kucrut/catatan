@@ -9,7 +9,6 @@ export interface Ui {
 type ToggleType = 'sidebar';
 
 export interface UiStore extends PersistentStore< Ui > {
-	close_sidebar(): void;
 	toggle( type: ToggleType ): void;
 }
 
@@ -25,15 +24,7 @@ export default function create_store(): UiStore {
 
 	return {
 		...store,
-
 		update,
-
-		close_sidebar(): void {
-			update( value => ( {
-				...value,
-				is_sidebar_open: false,
-			} ) );
-		},
 
 		toggle( type: ToggleType ): void {
 			const key = `is_${ type }_open`;
