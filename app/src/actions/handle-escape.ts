@@ -11,8 +11,6 @@ export function handle_escape( node: HTMLElement, params: Params ): ActionReturn
 		if ( event.code === 'Escape' ) {
 			current_callback();
 		}
-
-		console.log( 'boo' );
 	};
 
 	const toggle = ( active: boolean, current_params: Params ): void => {

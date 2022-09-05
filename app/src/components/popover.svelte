@@ -13,7 +13,9 @@
 	const class_prefix = 'components-popover';
 </script>
 
+<!-- svelte-ignore a11y-autofocus -->
 <div
+	autofocus
 	class={class_prefix}
 	tabindex="-1"
 	class:components-animate__appear={animate === 'appear'}
