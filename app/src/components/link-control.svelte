@@ -19,8 +19,16 @@
 	const handle_check = () => ( should_open_in_new_tab = ! should_open_in_new_tab );
 
 	function handle_submit() {
-		if ( ! ( value || value.startsWith( '/' ) || value.startsWith( '#' ) ) ) {
+		if ( ! value ) {
 			return;
+		}
+
+		try {
+			new URL( value );
+		} catch {
+			if ( ! ( value.startsWith( '/' ) || value.startsWith( '#' ) ) ) {
+				return;
+			}
 		}
 
 		// TODO: Search posts.
