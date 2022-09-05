@@ -40,7 +40,13 @@
 				title={__( 'Inline code Ctrl + E' )}
 				on:click={run( 'toggleCode' )}
 			/>
-			<Button aria-label={__( 'Link' )} class="components-toolbar-button" disabled={has_no_selection} icon="link" />
+			<Button
+				aria-label={__( 'Link' )}
+				class="components-toolbar-button"
+				disabled={has_no_selection}
+				icon="link"
+				on:click={() => store.edit_link( '' )}
+			/>
 		</div>
 	</div>
 </div>
