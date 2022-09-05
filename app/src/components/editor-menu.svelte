@@ -55,6 +55,7 @@
 				class={class_names( is_link_selected ? active_class : '', 'components-toolbar-button' )}
 				disabled={has_no_selection && ! is_link_selected}
 				icon={is_link_selected ? 'unlink' : 'link'}
+				title={is_link_selected ? __( 'Unlink' ) : null}
 				on:click={handle_click_link}
 			/>
 		</div>
