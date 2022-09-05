@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { click_outside } from '$actions/click-outside';
 	import { createEventDispatcher } from 'svelte';
+	import { trap_focus } from '$actions/trap-focus';
 
 	export let animate: null | 'appear' = null;
 	export let is_from_center = false;
@@ -19,6 +20,7 @@
 	class:is-from-top={is_from_top}
 	class:is-without-arrow={is_without_arrow}
 	use:click_outside={{ active: true, callback: () => dispatch( 'close' ) }}
+	use:trap_focus
 >
 	<div class="{class_prefix}__content">
 		<slot />
