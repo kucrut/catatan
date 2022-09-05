@@ -15,12 +15,14 @@
 	const post_type = get_store( 'post_type' );
 	const ui = get_store( 'ui' );
 
+	const close_link_control = () => editor.edit_link( null );
+
 	$: with_editor = $post_type.supports.editor === true;
 	$: with_title = $post_type.supports.title === true;
 
 	function set_link( event: CustomEvent< LinkAttributes > ) {
 		$editor.editor.chain().focus().setLink( event.detail ).run();
-		editor.edit_link( null );
+		close_link_control();
 	}
 </script>
 
@@ -51,7 +53,7 @@
 							</div>
 						</div>
 						{#if typeof $editor.edited_link === 'string'}
-							<Popover is_without_arrow>
+							<Popover is_without_arrow on:close={close_link_control}>
 								<LinkControl value={$editor.edited_link} on:submit={set_link} />
 							</Popover>
 						{/if}
