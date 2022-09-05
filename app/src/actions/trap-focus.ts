@@ -1,16 +1,21 @@
 import type { ActionReturn } from 'svelte/action';
 
-export function trap_focus( node: HTMLElement ): ActionReturn< undefined > {
-	const focusable_els = node.querySelectorAll(
-		'a[href]:not([disabled]), button:not([disabled]), textarea:not([disabled]), input[type="text"]:not([disabled]), input[type="radio"]:not([disabled]), input[type="checkbox"]:not([disabled]), select:not([disabled])',
+function get_focusable_elements( element: HTMLElement ): Element[] {
+	return [
+		...element.querySelectorAll( '[tabindex]:not([tabindex="-1"]), a[href], button, details, input, select, textarea' ),
+	].filter(
+		el => ! el.hasAttribute( 'disabled' ) && ! el.hasAttribute( 'hidden' ) && ! el.getAttribute( 'aria-hidden' ),
 	);
-	const last_focusable_el = focusable_els[ focusable_els.length - 1 ];
+}
 
+export function trap_focus( node: HTMLElement ): ActionReturn< undefined > {
 	function handle_keydown( event: KeyboardEvent ): void {
 		if ( event.code !== 'Tab' ) {
 			return;
 		}
 
+		const focusable_els = get_focusable_elements( node );
+		const last_focusable_el = focusable_els[ focusable_els.length - 1 ];
 		const active_el = node.ownerDocument.activeElement;
 		let el_to_focus: HTMLAnchorElement;
 
