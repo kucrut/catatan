@@ -1,12 +1,15 @@
 <script lang="ts">
-	import { __ } from '@wordpress/i18n';
+	import type { LinkAttributes } from '$types';
 	import Editor from './editor.svelte';
 	import EditorMenu from './editor-menu.svelte';
 	import Header from './header.svelte';
+	import LinkControl from './link-control.svelte';
 	import Notices from './notices.svelte';
+	import Popover from './popover.svelte';
 	import Sidebar from './sidebar.svelte';
 	import TitleInput from './title-input.svelte';
 	import { get_store } from '$stores';
+	import { __ } from '@wordpress/i18n';
 
 	const editor = get_store( 'editor' );
 	const post_type = get_store( 'post_type' );
@@ -14,6 +17,11 @@
 
 	$: with_editor = $post_type.supports.editor === true;
 	$: with_title = $post_type.supports.title === true;
+
+	function set_link( event: CustomEvent< LinkAttributes > ) {
+		$editor.editor.chain().focus().setLink( event.detail ).run();
+		editor.edit_link( null );
+	}
 </script>
 
 <div class="block-editor">
@@ -42,6 +50,11 @@
 								</div>
 							</div>
 						</div>
+						{#if typeof $editor.edited_link === 'string'}
+							<Popover is_without_arrow>
+								<LinkControl value={$editor.edited_link} on:submit={set_link} />
+							</Popover>
+						{/if}
 					</div>
 					<Sidebar />
 				</div>
