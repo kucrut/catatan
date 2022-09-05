@@ -36,7 +36,7 @@
 	}
 </script>
 
-<form tabindex="-1" class={class_prefix} on:submit|preventDefault={handle_submit}>
+<form class={class_prefix} on:submit|preventDefault={handle_submit}>
 	<div class="{class_prefix}__search-input-wrapper">
 		<div class="{class_prefix}__search-input-container">
 			<BaseControl class="{class_prefix}__field {class_prefix}__search-input">
