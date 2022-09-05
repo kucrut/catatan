@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { click_outside } from '$actions/click-outside';
 	import { createEventDispatcher } from 'svelte';
+	import { handle_escape } from '$actions/handle-escape';
 	import { trap_focus } from '$actions/trap-focus';
 
 	export let animate: null | 'appear' = null;
@@ -8,7 +9,7 @@
 	export let is_from_top = false;
 	export let is_without_arrow = false;
 
-	const dispatch = createEventDispatcher< { close: undefined } >();
+	const dispatch = createEventDispatcher< { close: undefined; escape: undefined } >();
 	const class_prefix = 'components-popover';
 </script>
 
@@ -20,6 +21,7 @@
 	class:is-from-top={is_from_top}
 	class:is-without-arrow={is_without_arrow}
 	use:click_outside={{ active: true, callback: () => dispatch( 'close' ) }}
+	use:handle_escape={{ callback: () => dispatch( 'escape' ) }}
 	use:trap_focus
 >
 	<div class="{class_prefix}__content">
