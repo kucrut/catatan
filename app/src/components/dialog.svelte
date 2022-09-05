@@ -8,7 +8,6 @@
 	export let open = true;
 
 	const dispatch = createEventDispatcher< { close: undefined; escape: undefined } >();
-	const class_prefix = 'components-popover';
 </script>
 
 <!-- svelte-ignore a11y-autofocus -->
@@ -20,7 +19,7 @@
 	use:handle_escape={{ callback: () => dispatch( 'escape' ) }}
 	use:trap_focus
 >
-	<div class="{class_prefix}__content">
+	<div class="components-popover__content">
 		<slot />
 	</div>
 </dialog>
