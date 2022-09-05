@@ -53,7 +53,7 @@
 							</div>
 						</div>
 						{#if typeof $editor.edited_link === 'string'}
-							<Popover is_without_arrow on:close={close_link_control}>
+							<Popover is_without_arrow on:close={close_link_control} on:escape={close_link_control}>
 								<LinkControl value={$editor.edited_link} on:submit={set_link} />
 							</Popover>
 						{/if}
