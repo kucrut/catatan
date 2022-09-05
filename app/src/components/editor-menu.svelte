@@ -10,6 +10,7 @@
 	$: is_active = ( key: string ) => $store.editor.isActive( key );
 	$: button_class = ( key: string ) => class_names( is_active( key ) ? active_class : '', 'components-toolbar-button' );
 	$: run = ( task: string ) => () => $store.editor.chain().focus()[ task ]().run();
+	$: has_no_selection = $store.editor.view.state.selection.empty;
 	$: is_link_selected = $store.editor.getAttributes( 'link' ).href;
 
 	function handle_click_link() {
@@ -52,6 +53,7 @@
 			<Button
 				aria-label={is_link_selected ? __( 'Unlink' ) : __( 'Link' )}
 				class={class_names( is_link_selected ? active_class : '', 'components-toolbar-button' )}
+				disabled={has_no_selection && ! is_link_selected}
 				icon={is_link_selected ? 'unlink' : 'link'}
 				on:click={handle_click_link}
 			/>
