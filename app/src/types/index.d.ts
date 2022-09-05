@@ -20,6 +20,11 @@ export interface Config {
 
 export type InputKeyboardEvent = KeyboardEvent & { currentTarget: EventTarget & HTMLInputElement };
 
+export interface LinkAttributes {
+	href: string;
+	target?: string;
+}
+
 export interface SelectControlOption {
 	label: string;
 	value: string | number;
