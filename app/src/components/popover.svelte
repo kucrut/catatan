@@ -4,24 +4,17 @@
 	import { handle_escape } from '$actions/handle-escape';
 	import { trap_focus } from '$actions/trap-focus';
 
-	export let animate: null | 'appear' = null;
-	export let is_from_center = false;
-	export let is_from_top = false;
-	export let is_without_arrow = false;
+	export let autofocus = true;
 
 	const dispatch = createEventDispatcher< { close: undefined; escape: undefined } >();
 	const class_prefix = 'components-popover';
 </script>
 
 <!-- svelte-ignore a11y-autofocus -->
-<div
-	autofocus
-	class={class_prefix}
+<dialog
+	{autofocus}
+	open
 	tabindex="-1"
-	class:components-animate__appear={animate === 'appear'}
-	class:is-from-center={is_from_center}
-	class:is-from-top={is_from_top}
-	class:is-without-arrow={is_without_arrow}
 	use:click_outside={{ active: true, callback: () => dispatch( 'close' ) }}
 	use:handle_escape={{ callback: () => dispatch( 'escape' ) }}
 	use:trap_focus
@@ -29,15 +22,13 @@
 	<div class="{class_prefix}__content">
 		<slot />
 	</div>
-</div>
+</dialog>
 
 <style>
-	.components-popover {
-		top: 25%;
-		left: 50%;
-		transform: translate( 50%, -50% );
-		opacity: unset;
-		display: grid;
-		place-items: center;
+	dialog {
+		z-index: 10000;
+		margin-block-start: 1rem;
+		padding: unset;
+		border: unset;
 	}
 </style>
