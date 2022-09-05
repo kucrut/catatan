@@ -18,6 +18,7 @@ export interface Options extends Pick< Config, 'edit_link' | 'post_id' | 'post_l
 export interface Editor {
 	can_save: boolean;
 	data: Changes;
+	edited_link: null | string;
 	is_dirty: boolean;
 	is_saved: boolean;
 	is_saving: boolean;
@@ -35,6 +36,7 @@ export interface EditorStore extends Readable< Editor > {
 	remove_term( taxonomy: string, term_id: number ): void;
 	set_editor( editor: TipTapEditor ): void;
 	remove_editor(): void;
+	edit_link( link?: string ): void;
 }
 
 function confirm_leave( event: BeforeUnloadEvent ): string {
@@ -68,8 +70,9 @@ export default function create_store( options: Options ): EditorStore {
 	let $store: Editor;
 
 	const { update, ...editor } = writable< Editor >( {
-		data: {},
 		can_save: false,
+		data: {},
+		edited_link: null,
 		is_dirty: false,
 		is_saved: false,
 		is_saving: false,
@@ -275,6 +278,14 @@ export default function create_store( options: Options ): EditorStore {
 
 		remove_editor(): void {
 			update( $editor => ( { editor: null, ...$editor } ) );
+		},
+
+		edit_link( edited_link = '' ): void {
+			update( $editor => ( {
+				...$editor,
+				edited_link,
+				is_editing_link: true,
+			} ) );
 		},
 	};
 }
