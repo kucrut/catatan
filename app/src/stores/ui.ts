@@ -6,9 +6,11 @@ export interface Ui {
 	open_panels: string[];
 }
 
+type ToggleType = 'sidebar';
+
 export interface UiStore extends PersistentStore< Ui > {
 	close_sidebar(): void;
-	toggle_sidebar(): void;
+	toggle( type: ToggleType ): void;
 }
 
 export default function create_store(): UiStore {
@@ -33,10 +35,12 @@ export default function create_store(): UiStore {
 			} ) );
 		},
 
-		toggle_sidebar(): void {
-			update( value => ( {
-				...value,
-				is_sidebar_open: ! value.is_sidebar_open,
+		toggle( type: ToggleType ): void {
+			const key = `is_${ type }_open`;
+
+			update( $value => ( {
+				...$value,
+				[ key ]: ! $value[ key ],
 			} ) );
 		},
 	};
