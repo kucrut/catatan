@@ -25,3 +25,19 @@ export function term_to_option(
 
 	return next;
 }
+
+export function filter_by_name( search: string, term: TermWithChildren ): TermWithChildren | null {
+	if ( ! search ) {
+		return term;
+	}
+
+	const children = term.children.map( item => filter_by_name( search, item ) ).filter( t => t !== null );
+
+	return children.length || term.name.toLocaleLowerCase().includes( search.toLowerCase() )
+		? { ...term, children }
+		: null;
+}
+
+export function filter_choices( terms: TermWithChildren[], search: string ): TermWithChildren[] {
+	return terms.map( item => filter_by_name( search, item ) ).filter( t => t !== null );
+}

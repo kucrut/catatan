@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { SelectControlOption } from '$types';
 	import type { Taxonomy } from '$stores/taxonomies';
-	import type { NewTerm, TermsStore } from '$stores/terms';
+	import type { NewTerm, TermsStore, TermWithChildren } from '$stores/terms';
 	import Button from './button.svelte';
 	import HierarchicalTermsChoice from './hierarchical-terms-choice.svelte';
 	import Panel from './panel.svelte';
@@ -10,7 +10,7 @@
 	import { get_store } from '$stores';
 	import { onMount } from 'svelte';
 	import { sprintf, __ } from '@wordpress/i18n';
-	import { term_to_option } from '$utils/terms';
+	import { filter_choices, term_to_option } from '$utils/terms';
 
 	export let taxonomy: Taxonomy;
 	export let terms: TermsStore;
@@ -20,10 +20,14 @@
 	const class_prefix = 'editor-post-taxonomies__hierarchical-terms';
 	let is_creating_term = false;
 	let is_create_button_disabled = true;
+	let search = '';
+	let choices: TermWithChildren[];
 	let term_options: SelectControlOption[];
 
-	$: ( { labels, name, rest_base, slug, __can__ } = taxonomy );
-	$: ( { add_new_item, parent_item, singular_name, new_item_name } = labels );
+	$: ( { labels, name, rest_base: tax_name, slug, __can__ } = taxonomy );
+	$: ( { add_new_item, parent_item, search_items, singular_name, new_item_name } = labels );
+	$: panel_id = `taxonomy-panel-${ tax_name }`;
+	$: choices = filter_choices( $terms.sorted || [], search );
 	$: term_options = create_options();
 
 	function create_options(): SelectControlOption[] {
@@ -65,7 +69,7 @@
 		try {
 			const { id } = await terms.create( params );
 
-			editor.add_term( rest_base, id );
+			editor.add_term( tax_name, id );
 			form.reset();
 		} catch ( error ) {
 			notices.add( {
@@ -77,14 +81,28 @@
 		}
 	}
 
+	function handle_search_input( event: Event & { target: HTMLInputElement } ): void {
+		search = event.target.value;
+	}
+
 	onMount( () => {
 		terms.fetch( { page: 1 }, true );
 	} );
 </script>
 
-<Panel id="taxonomy-{name}" title={name}>
+<Panel id={panel_id} title={name}>
+	{#if $terms.flat.length > 10}
+		<TextControl
+			autocomplete="off"
+			class="{class_prefix}-filter"
+			id="{panel_id}-filter"
+			label={search_items}
+			value={search}
+			on:input={handle_search_input}
+		/>
+	{/if}
 	<div class="{class_prefix}-list">
-		<HierarchicalTermsChoice {class_prefix} {taxonomy} terms={$terms.sorted || []} />
+		<HierarchicalTermsChoice {class_prefix} {taxonomy} terms={choices} />
 	</div>
 	{#if __can__.create}
 		<Button is_link aria-expanded={is_creating_term} class="{class_prefix}-add" on:click={handle_click_toggle}
