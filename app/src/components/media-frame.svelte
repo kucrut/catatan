@@ -10,6 +10,7 @@
 		select: { selection: WP_Media[] };
 	}
 
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	type FrameOptions = { [ k: string ]: any };
 	type FrameType = 'featured-image' | 'insert';
 

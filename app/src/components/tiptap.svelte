@@ -6,6 +6,7 @@
 	export { cls as class };
 	export let options: Partial< EditorOptions >;
 
+	// eslint-disable-next-line @typescript-eslint/no-empty-function
 	const { onTransaction = () => {} } = options;
 
 	let element: HTMLDivElement;
