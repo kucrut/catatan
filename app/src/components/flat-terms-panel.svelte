@@ -15,7 +15,8 @@
 	const editor = get_store( 'editor' );
 
 	const { labels, rest_base: tax_name, __can__ } = taxonomy;
-	const { add_new_item, singular_name } = labels;
+	const { add_new_item, singular_name, name: title } = labels;
+	const panel_id = `taxonomy-panel-${ tax_name }`;
 	const remove_selected_text = sprintf( __( 'Remove %s' ), singular_name );
 
 	let options: string[] = [];
@@ -100,13 +101,13 @@
 	} );
 </script>
 
-<Panel id="taxonomy-{tax_name}" title={taxonomy.name}>
+<Panel id={panel_id} {title}>
 	<MultiSelect
 		{options}
 		{remove_selected_text}
 		{value}
 		help={__( 'Separate with commas or the Enter key.' )}
-		id={tax_name}
+		id="{panel_id}-select"
 		label={add_new_item}
 		on:create={handle_create}
 		on:deselect={handle_deselect}
