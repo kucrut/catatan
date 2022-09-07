@@ -1,10 +1,10 @@
 <script lang="ts">
+	import type { InputKeyboardEvent } from '$types';
 	import MultiSelectSuggestions from './multi-select-suggestions.svelte';
 	import MultiSelectToken from './multi-select-token.svelte';
 	import { click_outside } from '$actions/click-outside';
 	import { createEventDispatcher, tick } from 'svelte';
 	import { sprintf, __ } from '@wordpress/i18n';
-	import type { InputKeyboardEvent } from '$types';
 
 	export let class_prefix = 'components-form-token-field';
 	export let id: string;
@@ -30,7 +30,10 @@
 	let hovered_option_index: number | null = null;
 	let input_el: HTMLInputElement;
 
+	$: description_id = `${ id }-howto`;
 	$: has_suggestions = Boolean( input_el?.value && options.length );
+	$: input_id = `${ id }-input`;
+	$: suggestions_list_id = `${ id }-suggestions`;
 	$: token_items = value.map( ( term_name, index, arr ) => ( {
 		id: index,
 		label: term_name,
@@ -145,7 +148,7 @@
 </script>
 
 <div class={class_prefix}>
-	<label for="{class_prefix}-input-{id}" class="{class_prefix}__label">{label}</label>
+	<label for={input_id} class="{class_prefix}__label">{label}</label>
 	<div
 		class="{class_prefix}__input-container"
 		tabindex="-1"
@@ -164,11 +167,12 @@
 			{/each}
 		{/if}
 		<input
-			aria-describedby={help ? `${ class_prefix }-suggestions-howto-${ id }` : null}
+			aria-describedby={help ? description_id : null}
 			aria-expanded={has_suggestions}
+			aria-controls={suggestions_list_id}
 			autocomplete="off"
 			class="{class_prefix}__input"
-			id="{class_prefix}-input-{id}"
+			id={input_id}
 			role="combobox"
 			size="5"
 			type="text"
@@ -181,7 +185,7 @@
 		{#if has_suggestions}
 			<MultiSelectSuggestions
 				{class_prefix}
-				{id}
+				id={suggestions_list_id}
 				items={options}
 				search={input_el.value}
 				selected_index={hovered_option_index}
@@ -191,7 +195,7 @@
 		{/if}
 	</div>
 	{#if help}
-		<p id="{class_prefix}-suggestions-howto-{id}" class="{class_prefix}__help">{help}</p>
+		<p class="{class_prefix}__help" id={description_id}>{help}</p>
 	{/if}
 </div>
 

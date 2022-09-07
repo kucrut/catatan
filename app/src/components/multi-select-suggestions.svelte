@@ -7,8 +7,6 @@
 	export let search: string;
 	export let selected_index: number | null = null;
 
-	const id_prefix = 'components-form-token-suggestions';
-
 	let list: HTMLUListElement;
 	let list_height: number;
 	let prev_selected_index = -1;
@@ -48,14 +46,14 @@
 	} );
 </script>
 
-<ul class="{class_prefix}__suggestions-list" id="{id_prefix}-{id}" role="listbox" bind:this={list}>
+<ul {id} class="{class_prefix}__suggestions-list" role="listbox" bind:this={list}>
 	{#each items as label, index (index + label)}
 		{@const  matched = regex.exec( label ) }
 		<li
 			aria-selected={selected_index === index}
 			class="{class_prefix}__suggestion"
 			class:is-selected={selected_index === index}
-			id="{id_prefix}-{id}-{index}"
+			id="{id}-{index}"
 			role="option"
 			on:click={() => dispatch( 'select-item', index )}
 			on:mouseenter={() => dispatch( 'hover-item', index )}
