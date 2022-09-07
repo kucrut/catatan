@@ -20,7 +20,7 @@ export default function create_store( api_path: string ): MediaStore {
 
 		async fetch( id: number ): Promise< WP_REST_API_Media > {
 			const data = await api_fetch< WP_REST_API_Media >( {
-				path: `${ api_path }/${ id }`,
+				path: `${ api_path }/${ id }?context=edit`,
 				parse: true,
 			} );
 
