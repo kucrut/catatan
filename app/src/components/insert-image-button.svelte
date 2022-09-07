@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { WP_Media, WP_Media_Size } from '$types';
+	import type { WP_Media, WP_REST_API_Media_Size } from '$types';
 	import Button from './button.svelte';
 	import MediaFrame from './media-frame.svelte';
 	import { __ } from '@wordpress/i18n';
@@ -8,6 +8,7 @@
 	const button_label = __( 'Insert image' );
 	const frame_title = __( 'Select or Upload Media' );
 	const size_names = [ 'medium', 'full' ];
+	const media = get_store( 'media' );
 	const store = get_store( 'editor' );
 
 	let should_open_frame = false;
@@ -15,11 +16,13 @@
 	const close_frame = () => ( should_open_frame = false );
 	const open_frame = () => ( should_open_frame = true );
 
-	function handle_select( event: CustomEvent< { selection: WP_Media[] } > ): void {
-		const media = event.detail.selection.at( 0 );
-		const { alt, caption, id, sizes } = media;
+	async function handle_select( event: CustomEvent< { selection: WP_Media[] } > ): Promise< void > {
+		const { id } = event.detail.selection.at( 0 );
+		const { alt, caption, media_details } = await media.get( id );
+		const { sizes } = media_details;
+
 		let size_name: string;
-		let size_data: WP_Media_Size;
+		let size_data: WP_REST_API_Media_Size;
 
 		for ( const size of size_names ) {
 			if ( size in sizes ) {
@@ -40,12 +43,12 @@
 					imgAttrs: {
 						alt,
 						height: size_data.height,
-						src: size_data.url,
+						src: size_data.source_url,
 						width: size_data.width,
 						// TODO: srcset & sizes attributes.
 					},
 				},
-				content: caption ? [ { type: 'text', text: caption } ] : undefined,
+				content: caption.raw ? [ { type: 'text', text: caption.raw } ] : undefined,
 			} )
 			.run();
 	}
