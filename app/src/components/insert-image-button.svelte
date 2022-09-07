@@ -17,7 +17,7 @@
 
 	function handle_select( event: CustomEvent< { selection: WP_Media[] } > ): void {
 		const media = event.detail.selection.at( 0 );
-		const { alt, caption, sizes } = media;
+		const { alt, caption, id, sizes } = media;
 		let size_name: string;
 		let size_data: WP_Media_Size;
 
@@ -35,7 +35,7 @@
 			.insertContent( {
 				type: 'wpImage',
 				attrs: {
-					attachmentId: 142,
+					attachmentId: id,
 					size: size_name,
 					imgAttrs: {
 						alt,
