@@ -10,10 +10,10 @@
 	const size_names = [ 'medium', 'full' ];
 	const store = get_store( 'editor' );
 
-	let is_frame_open = false;
+	let should_open_frame = false;
 
-	const close_frame = () => ( is_frame_open = false );
-	const open_frame = () => ( is_frame_open = true );
+	const close_frame = () => ( should_open_frame = false );
+	const open_frame = () => ( should_open_frame = true );
 
 	function handle_select( event: CustomEvent< { selection: WP_Media[] } > ): void {
 		const media = event.detail.selection.at( 0 );
@@ -53,6 +53,6 @@
 
 <Button icon="image" aria-label={button_label} on:click={open_frame} />
 
-{#if is_frame_open}
+{#if should_open_frame}
 	<MediaFrame options={{ title: frame_title }} type="insert" on:close={close_frame} on:select={handle_select} />
 {/if}
