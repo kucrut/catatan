@@ -30,6 +30,7 @@
 	let hovered_option_index: number | null = null;
 	let input_el: HTMLInputElement;
 
+	$: has_suggestions = Boolean( input_el?.value && options.length );
 	$: token_items = value.map( ( term_name, index, arr ) => ( {
 		id: index,
 		label: term_name,
@@ -164,7 +165,7 @@
 		{/if}
 		<input
 			aria-describedby={help ? `${ class_prefix }-suggestions-howto-${ id }` : null}
-			aria-expanded="false"
+			aria-expanded={has_suggestions}
 			autocomplete="off"
 			class="{class_prefix}__input"
 			id="{class_prefix}-input-{id}"
@@ -177,7 +178,7 @@
 			on:keydown={handle_input_keydown}
 			on:keyup={handle_input_keyup}
 		/>
-		{#if input_el?.value && options.length}
+		{#if has_suggestions}
 			<MultiSelectSuggestions
 				{class_prefix}
 				{id}
