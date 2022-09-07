@@ -58,16 +58,14 @@
 	.interface-interface-skeleton__content {
 		background-color: #fff;
 	}
-	.edit-post-visual-editor {
-		background-color: inherit;
-		width: 100%;
-		/* stylelint-disable-next-line custom-property-pattern */
-		padding-inline: var( --wp--custom--spacing--outer );
-	}
 
 	/* TODO: Center this thing? */
 	.edit-post-visual-editor {
+		background-color: inherit;
 		max-width: 720px;
+		width: 100%;
+		/* stylelint-disable-next-line custom-property-pattern */
+		padding-inline: var( --wp--custom--spacing--outer );
 	}
 
 	/* TODO: Make this toggleable via the "Preview" button. */
