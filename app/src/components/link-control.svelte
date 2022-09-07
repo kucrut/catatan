@@ -50,14 +50,9 @@
 			<div class="{class_prefix}__search-input-container">
 				<BaseControl class="{class_prefix}__field {class_prefix}__search-input">
 					<input
-						required
-						aria-autocomplete="list"
-						aria-expanded="false"
 						aria-label={__( 'URL' )}
-						aria-owns={input_id}
 						class="{input_id}__input"
 						placeholder={__( 'Search or type url' )}
-						role="combobox"
 						type="text"
 						bind:value
 					/>
