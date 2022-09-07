@@ -4,15 +4,12 @@
 	import { handle_escape } from '$actions/handle-escape';
 	import { trap_focus } from '$actions/trap-focus';
 
-	export let autofocus = true;
 	export let open = true;
 
 	const dispatch = createEventDispatcher< { close: undefined; escape: undefined } >();
 </script>
 
-<!-- svelte-ignore a11y-autofocus -->
 <dialog
-	{autofocus}
 	{open}
 	tabindex="-1"
 	use:click_outside={{ active: true, callback: () => dispatch( 'close' ) }}
