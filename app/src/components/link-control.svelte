@@ -49,7 +49,9 @@
 		<div class="{class_prefix}__search-input-wrapper">
 			<div class="{class_prefix}__search-input-container">
 				<BaseControl class="{class_prefix}__field {class_prefix}__search-input">
+					<!-- svelte-ignore a11y-autofocus -->
 					<input
+						autofocus
 						aria-label={__( 'URL' )}
 						class="{input_id}__input"
 						placeholder={__( 'Search or type url' )}
