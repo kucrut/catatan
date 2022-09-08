@@ -15,7 +15,7 @@
 			const { left, top } = el.ownerDocument.activeElement.getBoundingClientRect();
 
 			el.style.left = `${ left }px`;
-			el.style.top = `calc( ${ top }px + 1.75rem )`;
+			el.style.top = `calc( ${ top }px + 4rem )`;
 		}
 	} );
 </script>
@@ -43,7 +43,6 @@
 
 	.is-anchored {
 		position: fixed;
-		margin-block: 1rem unset;
-		margin-inline: unset;
+		margin: unset;
 	}
 </style>
