@@ -19,7 +19,6 @@ import wp_image from './wp-image';
 
 export function get_extensions(): Extensions {
 	return [
-		image,
 		subscript,
 		superscript,
 		table,
@@ -31,6 +30,7 @@ export function get_extensions(): Extensions {
 			lowlight,
 			HTMLAttributes: { class: 'hljs' },
 		} ),
+		image.configure( { inline: true } ),
 		link.configure( {
 			autolink: false,
 			linkOnPaste: false,
