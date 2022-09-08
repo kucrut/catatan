@@ -22,7 +22,6 @@
 
 <dialog
 	{open}
-	tabindex="-1"
 	bind:this={el}
 	class:is-anchored={is_anchored}
 	use:click_outside={{ active: true, callback: () => dispatch( 'close' ) }}
