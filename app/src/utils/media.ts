@@ -1,5 +1,7 @@
 /* eslint-disable object-shorthand, prefer-rest-params, @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-function-return-type */
 
+import type { WP_REST_API_Media, WP_REST_API_Media_Size } from '$types';
+
 // Borrowed from Gutenberg's source: packages/media-utils/src/components/media-upload/index.js
 
 const { wp } = window;
@@ -71,4 +73,33 @@ export function get_attachments_collection( ids: number[] ) {
 		query: true,
 		type: 'image',
 	} );
+}
+
+export function generate_attributes( media: WP_REST_API_Media, target_size = 'medium' ) {
+	const { alt, caption, id, media_details } = media;
+	const { sizes } = media_details;
+	const size_names = target_size === 'full' ? [ target_size ] : [ target_size, 'full' ];
+
+	let size_name: string;
+	let size_data: WP_REST_API_Media_Size;
+
+	for ( const size of size_names ) {
+		if ( size in sizes ) {
+			size_name = size;
+			size_data = sizes[ size_name ];
+			break;
+		}
+	}
+
+	return {
+		attachmentId: id,
+		caption: caption?.raw || '',
+		size: size_name,
+		imgAttrs: {
+			alt,
+			height: size_data.height,
+			src: size_data.source_url,
+			width: size_data.width,
+		},
+	};
 }
