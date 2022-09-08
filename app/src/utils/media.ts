@@ -1,6 +1,7 @@
 /* eslint-disable object-shorthand, prefer-rest-params, @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-function-return-type */
 
 import type { WP_REST_API_Media, WP_REST_API_Media_Size } from '$types';
+import type { WPImageAttributes } from '../tiptap-extensions/wp-image';
 
 // Borrowed from Gutenberg's source: packages/media-utils/src/components/media-upload/index.js
 
@@ -75,7 +76,7 @@ export function get_attachments_collection( ids: number[] ) {
 	} );
 }
 
-export function generate_attributes( media: WP_REST_API_Media, target_size = 'medium' ) {
+export function generate_attributes( media: WP_REST_API_Media, target_size = 'medium' ): WPImageAttributes {
 	const { alt, caption, id, media_details } = media;
 	const { sizes } = media_details;
 	const size_names = target_size === 'full' ? [ target_size ] : [ target_size, 'full' ];
@@ -92,10 +93,10 @@ export function generate_attributes( media: WP_REST_API_Media, target_size = 'me
 	}
 
 	return {
-		attachmentId: id,
+		id,
 		caption: caption?.raw || '',
 		size: size_name,
-		imgAttrs: {
+		img: {
 			alt,
 			height: size_data.height,
 			src: size_data.source_url,

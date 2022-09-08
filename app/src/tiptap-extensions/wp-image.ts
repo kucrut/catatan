@@ -7,8 +7,9 @@ const size_class_prefix = 'size-';
 const size_class_regex = new RegExp( `((${ size_class_prefix })(\\w+))` );
 
 export interface WPImageAttributes {
-	attachmentId: number;
-	imgAttrs: {
+	caption?: string;
+	id: number;
+	img: {
 		alt: string;
 		height?: number;
 		loading?: 'eager' | 'lazy';
@@ -45,7 +46,15 @@ export const WPImage = Node.create< WPImageOptions >( {
 
 	addAttributes() {
 		return {
-			attachmentId: {
+			caption: {
+				default: null,
+				parseHTML: ( element ): string | null => {
+					const figcaption = element.querySelector( ':scope > figcaption' ) as HTMLElement | null;
+
+					return figcaption?.innerText || null;
+				},
+			},
+			id: {
 				default: null,
 				parseHTML: ( element ): number | null => {
 					if ( ! element.firstElementChild || element.firstElementChild.nodeName !== 'IMG' ) {
@@ -58,9 +67,9 @@ export const WPImage = Node.create< WPImageOptions >( {
 					return id_match ? Number( id_match[ 3 ] ) : null;
 				},
 			},
-			imgAttrs: {
+			img: {
 				default: null,
-				parseHTML: ( element ): WPImageAttributes[ 'imgAttrs' ] | null => {
+				parseHTML: ( element ): WPImageAttributes[ 'img' ] | null => {
 					if ( ! element.firstElementChild || element.firstElementChild.nodeName !== 'IMG' ) {
 						return null;
 					}
@@ -104,7 +113,7 @@ export const WPImage = Node.create< WPImageOptions >( {
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	renderHTML( { node, HTMLAttributes } ): any {
-		const { attachmentId, imgAttrs, size } = HTMLAttributes;
+		const { id, img, size } = HTMLAttributes;
 		let figure_class = class_name;
 
 		if ( size ) {
@@ -117,8 +126,8 @@ export const WPImage = Node.create< WPImageOptions >( {
 			[
 				'img',
 				{
-					...imgAttrs,
-					class: attachmentId ? attachment_id_class_prefix + attachmentId : null,
+					...img,
+					class: id ? attachment_id_class_prefix + id : null,
 				},
 			],
 			// TODO: Find better way for this.
