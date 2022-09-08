@@ -7,11 +7,13 @@
 	import StatusPanel from './status-panel.svelte';
 	import { get_store } from '$stores';
 
+	export let hidden = false;
+
 	const post_type = get_store( 'post_type' );
 	const taxonomies = get_store( 'taxonomies' );
 </script>
 
-<div class="components-panel">
+<div {hidden} class="components-panel">
 	<StatusPanel />
 	{#if $post_type.viewable}
 		<PermalinkPanel />
