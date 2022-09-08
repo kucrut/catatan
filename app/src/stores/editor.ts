@@ -27,7 +27,6 @@ export interface Editor {
 }
 
 export interface EditorStore extends Readable< Editor > {
-	clear(): void;
 	fetch(): Promise< void >;
 	save(): Promise< void >;
 	trash(): Promise< void >;
@@ -132,10 +131,6 @@ export default function create_store( options: Options ): EditorStore {
 		...editor,
 
 		fetch: post.fetch,
-
-		clear(): void {
-			changes.delete();
-		},
 
 		async save(): Promise< void > {
 			if ( ! $store.can_save ) {
