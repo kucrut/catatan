@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Editor, type EditorOptions } from '@tiptap/core';
-	import { onDestroy, onMount } from 'svelte';
+	import { onMount } from 'svelte';
 
 	let cls = '';
 	export { cls as class };
@@ -22,12 +22,8 @@
 				onTransaction( ...args );
 			},
 		} );
-	} );
 
-	onDestroy( () => {
-		if ( tiptap instanceof Editor ) {
-			tiptap.destroy();
-		}
+		return () => tiptap.destroy();
 	} );
 </script>
 

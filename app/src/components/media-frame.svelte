@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { WP_Media } from '$types';
 	import { FeaturedImageFrame, InsertImageFrame } from '$utils/media';
-	import { createEventDispatcher, onDestroy, onMount } from 'svelte';
+	import { createEventDispatcher, onMount } from 'svelte';
 
 	interface FrameEvents {
 		close: undefined;
@@ -73,12 +73,10 @@
 		wp.media.frame = frame;
 	}
 
-	onDestroy( () => {
-		frame.remove();
-	} );
-
 	onMount( () => {
 		create_frame();
 		frame.open();
+
+		return () => frame.remove();
 	} );
 </script>
