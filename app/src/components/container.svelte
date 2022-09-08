@@ -2,7 +2,6 @@
 	import Editor from './editor.svelte';
 	import EditorMenu from './editor-menu.svelte';
 	import Header from './header.svelte';
-	import LinkControl from './link-control.svelte';
 	import Notices from './notices.svelte';
 	import Sidebar from './sidebar.svelte';
 	import TitleInput from './title-input.svelte';
@@ -43,9 +42,6 @@
 								</div>
 							</div>
 						</div>
-						{#if typeof $editor.edited_link === 'string'}
-							<LinkControl />
-						{/if}
 					</div>
 					<Sidebar />
 				</div>

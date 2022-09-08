@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Button from '$components/button.svelte';
+	import LinkControl from './link-control.svelte';
 	import { __ } from '@wordpress/i18n';
 	import { class_names } from '$utils/css';
 	import { get_store } from '$stores';
@@ -58,6 +59,9 @@
 				title={is_link_selected ? __( 'Unlink' ) : null}
 				on:click={handle_click_link}
 			/>
+			{#if $store.edited_link !== null}
+				<LinkControl />
+			{/if}
 		</div>
 	</div>
 </div>
