@@ -7,13 +7,13 @@
 	export let href = '';
 	export let icon = '';
 	export let icon_class = '';
-	export let type = 'button';
 	export let is_busy = false;
 	export let is_destructive = false;
 	export let is_link = false;
 	export let is_primary = false;
 	export let is_secondary = false;
 	export let is_tertiary = false;
+	export let type = 'button';
 
 	$: tag = href ? 'a' : 'button';
 	$: props = tag === 'a' ? { href } : { type };
