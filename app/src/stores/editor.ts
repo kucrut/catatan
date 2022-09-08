@@ -27,7 +27,7 @@ export interface Editor {
 }
 
 export interface EditorStore extends Readable< Editor > {
-	fetch(): Promise< void >;
+	fetch: PostStore[ 'fetch' ];
 	save(): Promise< void >;
 	trash(): Promise< void >;
 	update( new_changes: Changes ): void;
