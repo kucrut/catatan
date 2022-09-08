@@ -11,7 +11,7 @@
 	$: button_class = ( key: string ) => class_names( is_active( key ) ? active_class : '', 'components-toolbar-button' );
 	$: run = ( task: string ) => () => $store.editor.chain().focus()[ task ]().run();
 	$: has_no_selection = $store.editor.view.state.selection.empty;
-	$: is_link_selected = $store.editor.getAttributes( 'link' ).href;
+	$: is_link_selected = $store.editor.isActive( 'link' );
 
 	function handle_click_link() {
 		if ( is_link_selected ) {
