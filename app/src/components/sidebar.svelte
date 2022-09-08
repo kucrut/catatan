@@ -25,6 +25,7 @@
 			<ul>
 				<li>
 					<Button class="edit-post-sidebar__panel-tab is-active">{$post_type.labels.singular_name}</Button>
+					<Button class="edit-post-sidebar__panel-tab">{__( 'Block' )}</Button>
 				</li>
 			</ul>
 			<Button aria-label={__( 'Close settings' )} icon="close" on:click={() => ui.toggle( 'sidebar' )} />
