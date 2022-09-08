@@ -1,4 +1,5 @@
 import type { Config } from '$types';
+import create_block_store, { type BlocksStore } from './blocks';
 import create_editor_store, { type EditorStore } from './editor';
 import create_media_store, { type MediaStore } from './media';
 import create_notices_store, { type NoticesStore } from './notices';
@@ -10,6 +11,7 @@ import create_ui_store, { type UiStore } from './ui';
 export type StoresConfig = Omit< Config, 'editor_id' >;
 
 export interface Stores {
+	blocks: BlocksStore;
 	editor: EditorStore;
 	media: MediaStore;
 	notices: NoticesStore;
@@ -33,10 +35,12 @@ export async function init_stores( config: StoresConfig ): Promise< void > {
 	const taxonomies = create_taxonomies_store( post );
 	await taxonomies.fetch();
 
+	const blocks = create_block_store();
 	const media = create_media_store( media_rest_route );
 	const notices = create_notices_store();
 
 	stores = {
+		blocks,
 		media,
 		notices,
 		post,
