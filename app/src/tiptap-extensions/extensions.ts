@@ -33,6 +33,7 @@ export function get_extensions(): Extensions {
 		} ),
 		link.configure( {
 			autolink: false,
+			linkOnPaste: false,
 			openOnClick: false,
 		} ),
 		text_align.configure( {
