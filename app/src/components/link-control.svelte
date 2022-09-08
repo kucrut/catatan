@@ -7,11 +7,13 @@
 	import VisuallyHidden from './visually-hidden.svelte';
 	import { __ } from '@wordpress/i18n';
 	import { get_store } from '$stores';
+	import { onMount } from 'svelte';
 
 	const editor = get_store( 'editor' );
 	const class_prefix = 'block-editor-link-control';
 	const input_id = 'block-editor-url-input';
 
+	let input_el: HTMLInputElement;
 	let should_open_in_new_tab = false;
 	let value = $editor.edited_link;
 
@@ -42,20 +44,23 @@
 		$editor.editor.chain().focus().setLink( attributes ).run();
 		close();
 	}
+
+	onMount( () => {
+		input_el.focus();
+	} );
 </script>
 
-<Dialog open on:close={close} on:escape={close}>
+<Dialog is_anchored open on:close={close} on:escape={close}>
 	<form class={class_prefix} on:submit|preventDefault={handle_submit}>
 		<div class="{class_prefix}__search-input-wrapper">
 			<div class="{class_prefix}__search-input-container">
 				<BaseControl class="{class_prefix}__field {class_prefix}__search-input">
-					<!-- svelte-ignore a11y-autofocus -->
 					<input
-						autofocus
 						aria-label={__( 'URL' )}
 						class="{input_id}__input"
 						placeholder={__( 'Search or type url' )}
 						type="text"
+						bind:this={input_el}
 						bind:value
 					/>
 				</BaseControl>
