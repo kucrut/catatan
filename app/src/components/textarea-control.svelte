@@ -8,6 +8,7 @@
 
 <BaseControl {id} {label}>
 	<textarea {id} {value} class="components-textarea-control__input " rows="4" on:input />
+	<slot name="help" slot="help" />
 </BaseControl>
 
 <style>
