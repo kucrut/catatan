@@ -18,12 +18,12 @@
 
 	$: attributes = $blocks.editor.getAttributes( block_name );
 
-	function handle_alt_change( event: Event & { target: HTMLTextAreaElement } ) {
+	function handle_alt_change( event: InputEvent & { currentTarget: HTMLTextAreaElement } ) {
 		$blocks.editor.commands.updateAttributes( block_name, {
 			...attributes,
 			img: {
 				...attributes.img,
-				alt: event.target.value,
+				alt: event.currentTarget.value,
 			},
 		} );
 	}
