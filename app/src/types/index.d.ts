@@ -8,6 +8,7 @@ export type MapToBoolean< O > = {
 };
 
 export interface Config {
+	block_alignments: Record< string, string >;
 	edit_link: string;
 	editor_id: string;
 	image_default_size: string;

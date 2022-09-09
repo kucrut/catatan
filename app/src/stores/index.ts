@@ -25,6 +25,7 @@ let stores: Stores;
 
 export async function init_stores( config: StoresConfig ): Promise< void > {
 	const {
+		block_alignments,
 		image_default_size,
 		image_size_names,
 		media_rest_route,
@@ -43,7 +44,7 @@ export async function init_stores( config: StoresConfig ): Promise< void > {
 	const taxonomies = create_taxonomies_store( post );
 	await taxonomies.fetch();
 
-	const blocks = create_block_store( { image_default_size, image_size_names } );
+	const blocks = create_block_store( { block_alignments, image_default_size, image_size_names } );
 	const media = create_media_store( media_rest_route );
 	const notices = create_notices_store();
 
