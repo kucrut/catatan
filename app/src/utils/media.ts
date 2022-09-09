@@ -1,6 +1,6 @@
 /* eslint-disable object-shorthand, prefer-rest-params, @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-function-return-type */
 
-import type { WP_REST_API_Media, WP_REST_API_Media_Size } from '$types';
+import type { SelectControlOption, WP_REST_API_Media, WP_REST_API_Media_Size } from '$types';
 import type { WPImageAttributes } from '../tiptap-extensions/wp-image';
 
 // Borrowed from Gutenberg's source: packages/media-utils/src/components/media-upload/index.js
@@ -103,4 +103,14 @@ export function generate_attributes( media: WP_REST_API_Media, target_size = 'me
 			width: size_data.width,
 		},
 	};
+}
+
+export function get_attachment_size_options( media: WP_REST_API_Media ): SelectControlOption[] {
+	const { media_details } = media;
+	const { sizes } = media_details;
+
+	return Object.keys( sizes ).map( size => ( {
+		label: size,
+		value: size,
+	} ) );
 }
