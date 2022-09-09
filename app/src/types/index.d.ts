@@ -117,7 +117,6 @@ export interface WP_REST_API_Media_Details {
 }
 
 export interface WP_REST_API_Media extends BetterOmit< Attachment, 'alt' | 'media_details' > {
-	alt: string;
 	media_details: WP_REST_API_Media_Details;
 }
 

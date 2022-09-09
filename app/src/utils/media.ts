@@ -77,7 +77,8 @@ export function get_attachments_collection( ids: number[] ) {
 }
 
 export function generate_attributes( media: WP_REST_API_Media, target_size = 'medium' ): WPImageAttributes {
-	const { alt, caption, id, media_details } = media;
+	const { alt_text, caption, id, media_details } = media;
+
 	const { sizes } = media_details;
 	const size_names = target_size === 'full' ? [ target_size ] : [ target_size, 'full' ];
 
@@ -97,7 +98,7 @@ export function generate_attributes( media: WP_REST_API_Media, target_size = 'me
 		caption: caption?.raw || '',
 		size: size_name,
 		img: {
-			alt,
+			alt: alt_text,
 			height: size_data.height,
 			src: size_data.source_url,
 			width: size_data.width,
