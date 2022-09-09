@@ -10,6 +10,8 @@ export type MapToBoolean< O > = {
 export interface Config {
 	edit_link: string;
 	editor_id: string;
+	image_default_size: string;
+	image_size_names: Record< string, string >;
 	media_rest_route: string;
 	post_id: number;
 	post_list_url: string;
