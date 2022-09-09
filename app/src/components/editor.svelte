@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { EditorOptions } from '@tiptap/core';
 	import debounce from 'just-debounce-it';
+	import omit from 'just-omit';
 	import { get_store } from '$stores';
 
 	const blocks = get_store( 'blocks' );
@@ -15,7 +16,7 @@
 			} ) );
 		},
 		onDestroy() {
-			blocks.update( ( { editor: _, ...$blocks } ) => $blocks );
+			blocks.update( $blocks => omit( $blocks, [ 'editor' ] ) );
 		},
 		onUpdate: debounce( ( { editor } ): void => {
 			store.update( { content: editor.getHTML() } );
