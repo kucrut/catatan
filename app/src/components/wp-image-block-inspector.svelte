@@ -7,6 +7,8 @@
 	import { get_attachment_size_options, generate_attributes } from '$utils/media';
 	import { get_store } from '$stores';
 	import { onMount } from 'svelte';
+	import TextareaControl from './textarea-control.svelte';
+	import ExternalLink from './external-link.svelte';
 
 	const blocks = get_store( 'blocks' );
 	const media = get_store( 'media' );
@@ -14,6 +16,16 @@
 	let attachment: WP_REST_API_Media;
 
 	$: attributes = $blocks.editor.getAttributes( block_name );
+
+	function handle_alt_change( event: Event & { target: HTMLTextAreaElement } ) {
+		$blocks.editor.commands.updateAttributes( block_name, {
+			...attributes,
+			img: {
+				...attributes.img,
+				alt: event.target.value,
+			},
+		} );
+	}
 
 	function handle_size_change( event: Event & { target: HTMLSelectElement } ) {
 		$blocks.editor.commands.updateAttributes( block_name, generate_attributes( attachment, event.target.value ) );
@@ -29,6 +41,18 @@
 
 	<Panel id="wp-image-block-size" title={__( 'Image settings' )}>
 		{#if attachment}
+			<TextareaControl
+				id="image-alt"
+				label={__( 'Alt text (alternative text)' )}
+				value={attributes.img.alt}
+				on:input={handle_alt_change}
+			>
+				<p class="components-base-control__help" slot="help">
+					<ExternalLink href="https://www.w3.org/WAI/tutorials/images/decision-tree"
+						>{__( 'Describe the purpose of the image' )}</ExternalLink
+					>{__( 'Leave empty if the image is purely decorative.' )}
+				</p>
+			</TextareaControl>
 			<SelectControl
 				id="image-size"
 				label={__( 'Image size' )}
