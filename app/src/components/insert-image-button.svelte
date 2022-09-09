@@ -19,7 +19,7 @@
 	async function handle_select( event: CustomEvent< { selection: WP_Media[] } > ): Promise< void > {
 		const { id } = event.detail.selection.at( 0 );
 		const media = await media_store.get( id );
-		const { caption, ...attrs } = generate_attributes( media, 'medium' );
+		const { caption, ...attrs } = generate_attributes( media, $blocks.image_default_size );
 
 		$blocks.editor
 			.chain()
