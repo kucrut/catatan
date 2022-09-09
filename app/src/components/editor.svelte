@@ -1,11 +1,12 @@
 <script lang="ts">
+	import type { EditorOptions } from '@tiptap/core';
 	import debounce from 'just-debounce-it';
 	import { get_store } from '$stores';
 
 	const blocks = get_store( 'blocks' );
 	const store = get_store( 'editor' );
 
-	const options = {
+	const options: Partial< EditorOptions > = {
 		content: $store.data.content,
 		onTransaction( { editor } ) {
 			blocks.update( $blocks => ( {
