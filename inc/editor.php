@@ -106,6 +106,22 @@ function get_post_id(): ?int {
 }
 
 /**
+ * Get alignment settings
+ *
+ * @since 0.1.0
+ *
+ * @return array
+ */
+function get_alignment_settings(): array {
+	return [
+		'none' => __( 'None' ),
+		'left' => __( 'Left' ),
+		'center' => __( 'Center' ),
+		'right' => __( 'Right' ),
+	];
+}
+
+/**
  * Get image settings
  *
  * @since 0.1.0
@@ -113,7 +129,6 @@ function get_post_id(): ?int {
  * @return array
  */
 function get_image_settings(): array {
-		/** This filter is documented in wp-admin/includes/media.php */
 	$image_size_names = apply_filters(
 		'image_size_names_choose',
 		array(
@@ -150,6 +165,7 @@ function get_config( WP_Post $post, WP_Post_Type $post_type ): array {
 
 	$config = array_merge(
 		[
+			'block_alignments' => get_alignment_settings(),
 			'edit_link' => get_edit_post_link( $post->ID, 'db' ),
 			'editor_id' => CATATAN\EDITOR_ID,
 			'media_rest_route' => rest_get_route_for_post_type_items( 'attachment' ),
