@@ -2,8 +2,8 @@
 	import Button from './button.svelte';
 	import { get_store } from '$stores';
 
+	export let id = '';
 	export let title: string;
-	export let id: string;
 
 	const ui = get_store( 'ui' );
 	let is_expanded = $ui.open_panels.includes( id );
@@ -12,6 +12,10 @@
 
 	function handle_click_button(): void {
 		is_expanded = ! is_expanded;
+
+		if ( ! id ) {
+			return;
+		}
 
 		ui.update( ( { open_panels, ...rest } ) => ( {
 			...rest,
