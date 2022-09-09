@@ -5,6 +5,7 @@
 	import PanelRow from './panel-row.svelte';
 	import { __ } from '@wordpress/i18n';
 	import { get_store } from '$stores';
+	import TextareaControl from './textarea-control.svelte';
 
 	const editor = get_store( 'editor' );
 	const id = 'catatan-post-excerpt-input';
@@ -16,23 +17,14 @@
 
 <Panel id="excerpt" title={__( 'Excerpt' )}>
 	<PanelRow class="editor-post-excerpt">
-		<BaseControl {id} label={__( 'Write an excerpt (optional)' )}>
-			<textarea
-				{id}
-				class="components-textarea-control__input "
-				rows="4"
-				value={$editor.data.excerpt || ''}
-				on:input={handle_input}
-			/>
-		</BaseControl>
+		<TextareaControl
+			{id}
+			label={__( 'Write an excerpt (optional)' )}
+			value={$editor.data.excerpt || ''}
+			on:input={handle_input}
+		/>
 		<ExternalLink href="https://wordpress.org/support/article/settings-sidebar/#excerpt"
 			>{__( 'Learn more about manual excerpts' )}</ExternalLink
 		>
 	</PanelRow>
 </Panel>
-
-<style>
-	textarea {
-		width: 100%;
-	}
-</style>
