@@ -14,9 +14,9 @@ import table_row from '@tiptap/extension-table-row';
 import youtube from '@tiptap/extension-youtube';
 import { lowlight } from 'lowlight/lib/common';
 
-import text_align from './text-align';
 import wp_alignment from './wp-alignment';
 import wp_image from './wp-image';
+import wp_text_align from './wp-text-align';
 
 export function get_extensions(): Extensions {
 	return [
@@ -28,9 +28,6 @@ export function get_extensions(): Extensions {
 		table_header,
 		table_row,
 		wp_image,
-		wp_alignment.configure( {
-			types: [ 'wpImage' ],
-		} ),
 		code_block_lowlight.configure( {
 			lowlight,
 			HTMLAttributes: { class: 'hljs' },
@@ -39,9 +36,6 @@ export function get_extensions(): Extensions {
 			autolink: false,
 			linkOnPaste: false,
 			openOnClick: false,
-		} ),
-		text_align.configure( {
-			types: [ 'heading', 'paragraph' ],
 		} ),
 		placeholder.configure( {
 			placeholder: __( 'Start writing…' ),
@@ -55,6 +49,12 @@ export function get_extensions(): Extensions {
 		youtube.configure( {
 			width: 640,
 			height: 360,
+		} ),
+		wp_alignment.configure( {
+			types: [ 'wpImage' ],
+		} ),
+		wp_text_align.configure( {
+			types: [ 'heading', 'paragraph' ],
 		} ),
 	];
 }
