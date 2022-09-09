@@ -5,20 +5,20 @@
 	import { class_names } from '$utils/css';
 	import { get_store } from '$stores';
 
-	const store = get_store( 'editor' );
+	const blocks = get_store( 'blocks' );
 	const active_class = 'is-pressed';
 
-	$: is_active = ( key: string ) => $store.editor.isActive( key );
+	$: is_active = ( key: string ) => $blocks.editor.isActive( key );
 	$: button_class = ( key: string ) => class_names( is_active( key ) ? active_class : '', 'components-toolbar-button' );
-	$: run = ( task: string ) => () => $store.editor.chain().focus()[ task ]().run();
-	$: has_no_selection = $store.editor.view.state.selection.empty;
-	$: is_link_selected = $store.editor.isActive( 'link' );
+	$: run = ( task: string ) => () => $blocks.editor.chain().focus()[ task ]().run();
+	$: has_no_selection = $blocks.editor.view.state.selection.empty;
+	$: is_link_selected = $blocks.editor.isActive( 'link' );
 
 	function handle_click_link() {
 		if ( is_link_selected ) {
-			$store.editor.chain().focus().unsetLink().run();
+			$blocks.editor.chain().focus().unsetLink().run();
 		} else {
-			store.edit_link( '' );
+			$blocks.edited_link = '';
 		}
 	}
 </script>
@@ -59,7 +59,7 @@
 				title={is_link_selected ? __( 'Unlink' ) : null}
 				on:click={handle_click_link}
 			/>
-			{#if $store.edited_link !== null}
+			{#if $blocks.edited_link !== null}
 				<LinkControl />
 			{/if}
 		</div>

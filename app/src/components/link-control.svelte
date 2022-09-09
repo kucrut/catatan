@@ -9,15 +9,15 @@
 	import { get_store } from '$stores';
 	import { onMount } from 'svelte';
 
-	const editor = get_store( 'editor' );
+	const blocks = get_store( 'blocks' );
 	const class_prefix = 'block-editor-link-control';
 	const input_id = 'block-editor-url-input';
 
 	let input_el: HTMLInputElement;
 	let should_open_in_new_tab = false;
-	let value = $editor.edited_link;
+	let value = $blocks.edited_link;
 
-	const close = () => editor.edit_link( null );
+	const close = () => ( $blocks.edited_link = null );
 	const handle_check = () => ( should_open_in_new_tab = ! should_open_in_new_tab );
 
 	function handle_submit() {
@@ -41,7 +41,7 @@
 			attributes.target = '_blank';
 		}
 
-		$editor.editor.chain().focus().setLink( attributes ).run();
+		$blocks.editor.chain().focus().setLink( attributes ).run();
 		close();
 	}
 

@@ -9,7 +9,7 @@
 	const button_label = __( 'Insert image' );
 	const frame_title = __( 'Select or Upload Media' );
 	const media_store = get_store( 'media' );
-	const store = get_store( 'editor' );
+	const blocks = get_store( 'blocks' );
 
 	let should_open_frame = false;
 
@@ -21,7 +21,7 @@
 		const media = await media_store.get( id );
 		const { caption, ...attrs } = generate_attributes( media, 'medium' );
 
-		$store.editor
+		$blocks.editor
 			.chain()
 			.focus()
 			.insertContent( {

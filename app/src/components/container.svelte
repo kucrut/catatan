@@ -8,7 +8,7 @@
 	import { get_store } from '$stores';
 	import { __ } from '@wordpress/i18n';
 
-	const editor = get_store( 'editor' );
+	const blocks = get_store( 'blocks' );
 	const post_type = get_store( 'post_type' );
 	const ui = get_store( 'ui' );
 
@@ -25,7 +25,7 @@
 				<div class="interface-interface-skeleton__body">
 					<div aria-label={__( 'Editor content' )} class="interface-interface-skeleton__content" role="region">
 						<Notices />
-						{#if with_editor && $editor.editor}
+						{#if with_editor && $blocks.editor}
 							<EditorMenu />
 						{/if}
 						<div class="edit-post-visual-editor">
