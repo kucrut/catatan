@@ -1,4 +1,4 @@
-import { Node, type Attributes, type Command, type JSONContent } from '@tiptap/core';
+import { mergeAttributes, Node, type Attributes, type Command, type JSONContent } from '@tiptap/core';
 
 const class_name = 'wp-block-image';
 const attachment_id_class_prefix = 'wp-image-';
@@ -112,8 +112,8 @@ export const WPImage = Node.create< WPImageOptions >( {
 	},
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	renderHTML( { node, HTMLAttributes } ): any {
-		const { id, img, size } = HTMLAttributes;
+	renderHTML( { HTMLAttributes } ): any {
+		const { caption, id, img, size, ...rest } = HTMLAttributes;
 		let figure_class = class_name;
 
 		if ( size ) {
@@ -122,7 +122,7 @@ export const WPImage = Node.create< WPImageOptions >( {
 
 		return [
 			'figure',
-			{ class: figure_class },
+			mergeAttributes( { class: figure_class }, rest ),
 			[
 				'img',
 				{
@@ -130,8 +130,7 @@ export const WPImage = Node.create< WPImageOptions >( {
 					class: id ? attachment_id_class_prefix + id : null,
 				},
 			],
-			// TODO: Find better way for this.
-			node.textContent ? [ 'figcaption', {}, 0 ] : null,
+			caption ? [ 'figcaption', {}, 0 ] : null,
 		].filter( i => i !== null );
 	},
 
