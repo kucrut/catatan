@@ -1,25 +1,26 @@
 <script lang="ts">
 	import type { WP_REST_API_Media } from '$types';
+	import BaseControlHelp from './base-control-help.svelte';
 	import BlockCard from './block-card.svelte';
+	import ExternalLink from './external-link.svelte';
 	import Panel from './panel.svelte';
 	import SelectControl from './select-control.svelte';
+	import TextareaControl from './textarea-control.svelte';
 	import { __ } from '@wordpress/i18n';
 	import { get_attachment_size_options, generate_attributes } from '$utils/media';
 	import { get_store } from '$stores';
 	import { onMount } from 'svelte';
-	import TextareaControl from './textarea-control.svelte';
-	import ExternalLink from './external-link.svelte';
-	import BaseControlHelp from './base-control-help.svelte';
+	import BlockAlignmentSetting from './block-alignment-setting.svelte';
 
 	const blocks = get_store( 'blocks' );
 	const media = get_store( 'media' );
-	const block_name = 'wpImage';
+	const block_type = 'wpImage';
 	let attachment: WP_REST_API_Media;
 
-	$: attributes = $blocks.editor.getAttributes( block_name );
+	$: attributes = $blocks.editor.getAttributes( block_type );
 
 	function handle_alt_change( event: InputEvent & { currentTarget: HTMLTextAreaElement } ) {
-		$blocks.editor.commands.updateAttributes( block_name, {
+		$blocks.editor.commands.updateAttributes( block_type, {
 			...attributes,
 			img: {
 				...attributes.img,
@@ -29,7 +30,7 @@
 	}
 
 	function handle_size_change( event: Event & { target: HTMLSelectElement } ) {
-		$blocks.editor.commands.updateAttributes( block_name, generate_attributes( attachment, event.target.value ) );
+		$blocks.editor.commands.updateAttributes( block_type, generate_attributes( attachment, event.target.value ) );
 	}
 
 	onMount( async () => {
@@ -61,6 +62,7 @@
 				value={attributes.size}
 				on:change={handle_size_change}
 			/>
+			<BlockAlignmentSetting type={block_type} />
 		{/if}
 	</Panel>
 </div>
