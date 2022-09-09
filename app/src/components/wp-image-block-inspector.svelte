@@ -9,6 +9,7 @@
 	import { onMount } from 'svelte';
 	import TextareaControl from './textarea-control.svelte';
 	import ExternalLink from './external-link.svelte';
+	import BaseControlHelp from './base-control-help.svelte';
 
 	const blocks = get_store( 'blocks' );
 	const media = get_store( 'media' );
@@ -47,11 +48,11 @@
 				value={attributes.img.alt}
 				on:input={handle_alt_change}
 			>
-				<p class="components-base-control__help" slot="help">
+				<BaseControlHelp slot="help">
 					<ExternalLink href="https://www.w3.org/WAI/tutorials/images/decision-tree"
 						>{__( 'Describe the purpose of the image' )}</ExternalLink
 					>{__( 'Leave empty if the image is purely decorative.' )}
-				</p>
+				</BaseControlHelp>
 			</TextareaControl>
 			<SelectControl
 				id="image-size"
