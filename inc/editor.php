@@ -106,6 +106,34 @@ function get_post_id(): ?int {
 }
 
 /**
+ * Get image settings
+ *
+ * @since 0.1.0
+ *
+ * @return array
+ */
+function get_image_settings(): array {
+		/** This filter is documented in wp-admin/includes/media.php */
+	$image_size_names = apply_filters(
+		'image_size_names_choose',
+		array(
+			'thumbnail' => __( 'Thumbnail' ),
+			'medium'    => __( 'Medium' ),
+			'large'     => __( 'Large' ),
+			'full'      => __( 'Full Size' ),
+		)
+	);
+
+	$default_size       = get_option( 'image_default_size', 'large' );
+	$image_default_size = in_array( $default_size, array_keys( $image_size_names ), true ) ? $default_size : 'large';
+
+	return [
+		'image_default_size' => $image_default_size,
+		'image_size_names' => $image_size_names,
+	];
+}
+
+/**
  * Get editor config
  *
  * @param WP_Post      $post      Current post object being edited.
@@ -120,16 +148,19 @@ function get_config( WP_Post $post, WP_Post_Type $post_type ): array {
 		$post_list_url = add_query_arg( [ 'post_type' => $post_type->name ], $post_list_url );
 	}
 
-	$config = [
-		'edit_link' => get_edit_post_link( $post->ID, 'db' ),
-		'editor_id' => CATATAN\EDITOR_ID,
-		'media_rest_route' => rest_get_route_for_post_type_items( 'attachment' ),
-		'post_id' => $post->ID,
-		'post_list_url' => $post_list_url,
-		'post_rest_route' => rest_get_route_for_post_type_items( $post->post_type ),
-		'post_type' => $post_type->name,
-		'post_type_rest_route' => sprintf( '/wp/v2/types/%s', $post->post_type ),
-	];
+	$config = array_merge(
+		[
+			'edit_link' => get_edit_post_link( $post->ID, 'db' ),
+			'editor_id' => CATATAN\EDITOR_ID,
+			'media_rest_route' => rest_get_route_for_post_type_items( 'attachment' ),
+			'post_id' => $post->ID,
+			'post_list_url' => $post_list_url,
+			'post_rest_route' => rest_get_route_for_post_type_items( $post->post_type ),
+			'post_type' => $post_type->name,
+			'post_type_rest_route' => sprintf( '/wp/v2/types/%s', $post->post_type ),
+		],
+		get_image_settings()
+	);
 
 	/**
 	 * Filter editor config
