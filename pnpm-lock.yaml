@@ -16,7 +16,6 @@ specifiers:
   '@tiptap/extension-table-cell': 2.0.0-beta.23
   '@tiptap/extension-table-header': 2.0.0-beta.25
   '@tiptap/extension-table-row': 2.0.0-beta.22
-  '@tiptap/extension-text-align': 2.0.0-beta.31
   '@tiptap/extension-youtube': 2.0.0-beta.6
   '@tiptap/starter-kit': 2.0.0-beta.192
   '@tsconfig/svelte': ^3.0.0
@@ -74,7 +73,6 @@ devDependencies:
   '@tiptap/extension-table-cell': 2.0.0-beta.23_ngwxlaqnk6fwzlupw2ne24im6m
   '@tiptap/extension-table-header': 2.0.0-beta.25_ngwxlaqnk6fwzlupw2ne24im6m
   '@tiptap/extension-table-row': 2.0.0-beta.22_ngwxlaqnk6fwzlupw2ne24im6m
-  '@tiptap/extension-text-align': 2.0.0-beta.31_ngwxlaqnk6fwzlupw2ne24im6m
   '@tiptap/extension-youtube': 2.0.0-beta.6_ngwxlaqnk6fwzlupw2ne24im6m
   '@tiptap/starter-kit': 2.0.0-beta.192
   '@tsconfig/svelte': 3.0.0
@@ -1830,14 +1828,6 @@ packages:
       prosemirror-model: 1.18.1
       prosemirror-state: 1.4.1
       prosemirror-view: 1.26.2
-    dev: true
-
-  /@tiptap/extension-text-align/2.0.0-beta.31_ngwxlaqnk6fwzlupw2ne24im6m:
-    resolution: {integrity: sha512-gSJqi57piiMPc2r6WEkXv7ZgQIogigsRUhmlnZC/7s3zzOvjXrexWnV0Ctt/9A7BKcM7OHMykpZyoewvk6QRTw==}
-    peerDependencies:
-      '@tiptap/core': ^2.0.0-beta.1
-    dependencies:
-      '@tiptap/core': 2.0.0-beta.183
     dev: true
 
   /@tiptap/extension-text/2.0.0-beta.17_ngwxlaqnk6fwzlupw2ne24im6m:
