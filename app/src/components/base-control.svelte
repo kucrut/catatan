@@ -25,6 +25,7 @@
 		{/if}
 		<slot />
 	</div>
+	<slot name="help" />
 </div>
 
 <style>
