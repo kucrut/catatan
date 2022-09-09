@@ -32,7 +32,7 @@
 			<SelectControl
 				id="image-size"
 				label={__( 'Image size' )}
-				options={get_attachment_size_options( attachment )}
+				options={get_attachment_size_options( attachment, $blocks.image_size_names )}
 				value={attributes.size}
 				on:change={handle_size_change}
 			/>
