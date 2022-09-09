@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { WP_Media } from '$types';
-	import { FeaturedImageFrame, InsertImageFrame } from '$utils/media';
+	import { FeaturedImageFrame, InsertImageFrame } from '$utils/media-frame';
 	import { createEventDispatcher, onMount } from 'svelte';
 
 	interface FrameEvents {
