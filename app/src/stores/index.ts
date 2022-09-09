@@ -24,7 +24,15 @@ export interface Stores {
 let stores: Stores;
 
 export async function init_stores( config: StoresConfig ): Promise< void > {
-	const { media_rest_route, post_id, post_rest_route, post_type_rest_route, ...editor_config } = config;
+	const {
+		image_default_size,
+		image_size_names,
+		media_rest_route,
+		post_id,
+		post_rest_route,
+		post_type_rest_route,
+		...editor_config
+	} = config;
 
 	const post_type = create_post_type_store( post_type_rest_route );
 	await post_type.fetch();
@@ -35,7 +43,7 @@ export async function init_stores( config: StoresConfig ): Promise< void > {
 	const taxonomies = create_taxonomies_store( post );
 	await taxonomies.fetch();
 
-	const blocks = create_block_store();
+	const blocks = create_block_store( { image_default_size, image_size_names } );
 	const media = create_media_store( media_rest_route );
 	const notices = create_notices_store();
 
