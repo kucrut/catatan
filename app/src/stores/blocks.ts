@@ -1,13 +1,12 @@
+import type { Editor } from '@tiptap/core';
 import { writable, type Writable } from 'svelte/store';
 
 export interface Blocks {
-	active_block: string;
+	editor?: Editor;
 }
 
 export type BlocksStore = Writable< Blocks >;
 
 export default function create_store(): BlocksStore {
-	return writable< Blocks >( {
-		active_block: '',
-	} );
+	return writable< Blocks >( {} );
 }
