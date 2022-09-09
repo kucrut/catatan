@@ -15,6 +15,7 @@ import youtube from '@tiptap/extension-youtube';
 import { lowlight } from 'lowlight/lib/common';
 
 import text_align from './text-align';
+import wp_alignment from './wp-alignment';
 import wp_image from './wp-image';
 
 export function get_extensions(): Extensions {
@@ -27,6 +28,9 @@ export function get_extensions(): Extensions {
 		table_header,
 		table_row,
 		wp_image,
+		wp_alignment.configure( {
+			types: [ 'wpImage' ],
+		} ),
 		code_block_lowlight.configure( {
 			lowlight,
 			HTMLAttributes: { class: 'hljs' },
