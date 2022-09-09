@@ -4,17 +4,17 @@
 
 	const blocks = get_store( 'blocks' );
 	const store = get_store( 'editor' );
+
 	const options = {
 		content: $store.data.content,
 		onTransaction( { editor } ) {
-			store.set_editor( editor );
 			blocks.update( $blocks => ( {
 				...$blocks,
 				editor,
 			} ) );
 		},
 		onDestroy() {
-			store.remove_editor();
+			blocks.update( ( { editor: _, ...$blocks } ) => $blocks );
 		},
 		onUpdate: debounce( ( { editor } ): void => {
 			store.update( { content: editor.getHTML() } );
