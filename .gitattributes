@@ -1,3 +1,4 @@
+.changeset export-ignore
 .github export-ignore
 app/src export-ignore
 .editorconfig export-ignore
