@@ -53,5 +53,6 @@ jobs:
         uses: EndBug/add-and-commit@v9
         if: steps.changesets.outputs.published == 'true'
         with:
+          add: "app/dist --force"
           tag: ${{ steps.get_version.outputs.package_version }}
           push: "--tags"
