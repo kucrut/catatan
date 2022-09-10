@@ -27,6 +27,7 @@
 	},
 	"devDependencies": {
 		"@babel/core": "^7.19.0",
+		"@changesets/cli": "^2.24.4",
 		"@kucrut/vite-for-wp": "^0.3.0",
 		"@macfja/svelte-persistent-store": "^2.1.0",
 		"@sveltejs/vite-plugin-svelte": "^1.0.5",
