@@ -1,0 +1,57 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+  release:
+    # prevents this action from running on forks
+    if: github.repository == 'kucrut/catatan'
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+        with:
+          # This makes Actions fetch all Git history so that Changesets can generate changelogs with the correct commits
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - uses: pnpm/action-setup@v2.2.2
+        name: Install pnpm
+        id: pnpm-install
+        with:
+          run_install: false
+
+      - run: pnpm install --frozen-lockfile --silent
+      - run: pnpm build
+
+      - id: get_version
+        shell: bash
+        run: |
+          VERSION=$(cat package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[", ]//g')
+          echo "::set-output name=package_version::$VERSION"
+
+      - name: Create release pull request or publish to NPM
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          publish: pnpm release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Create tag
+        uses: EndBug/add-and-commit@v9
+        if: steps.changesets.outputs.published == 'true'
+        with:
+          tag: ${{ steps.get_version.outputs.package_version }}
+          push: "--tags"
