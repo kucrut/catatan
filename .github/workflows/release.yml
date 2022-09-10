@@ -33,14 +33,8 @@ jobs:
 
       - run: pnpm install --frozen-lockfile --silent
 
-      - id: get_version
-        shell: bash
-        run: |
-          VERSION=$(cat package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[", ]//g')
-          echo "::set-output name=package_version::$VERSION"
-
       - name: Create release pull request
-        id: changesets
+        id: create_version_pr
         uses: changesets/action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
