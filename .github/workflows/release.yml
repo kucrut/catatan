@@ -54,7 +54,7 @@ jobs:
           sed -i -E "s#(Version:[ ]+).*\$#\1${NEW_VERSION}#" plugin.php
           git add plugin.php
           git commit -m "Bump plugin version -> ${NEW_VERSION}"
-          git push
+          git push --set-upstream origin changeset-release/main
 
   check_new_version:
     name: Check new version
