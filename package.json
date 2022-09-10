@@ -12,7 +12,8 @@
 	"keywords": [
 		"wordpress",
 		"editor",
-		"markdown"
+		"post-editor",
+		"svelte"
 	],
 	"scripts": {
 		"build": "vite build",
