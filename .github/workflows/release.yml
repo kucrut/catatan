@@ -32,7 +32,6 @@ jobs:
           run_install: false
 
       - run: pnpm install --frozen-lockfile --silent
-      - run: pnpm build
 
       - id: get_version
         shell: bash
@@ -71,7 +70,7 @@ jobs:
         name: Check if there's a new version
         shell: bash
         run: |
-          if [[ `git rev-parse @^:CHANGELOG.md` = `git rev-parse @:CHANGELOG.md` ]]; then
+          if [[ `git rev-parse --verify --quiet @^:CHANGELOG.md` = `git rev-parse --verify --quiet @:CHANGELOG.md` ]]; then
             NEW_VERSION=''
           else
             NEW_VERSION=$(cat package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[", ]//g')
@@ -93,10 +92,14 @@ jobs:
         with:
           node-version: 18.x
 
-      - name: Build assets
-        run: |
-          npm install
-          npm run build
+      - uses: pnpm/action-setup@v2.2.2
+        name: Install pnpm
+        id: pnpm-install
+        with:
+          run_install: false
+
+      - run: pnpm install --frozen-lockfile --silent
+      - run: pnpm build
 
       - name: Create tag
         uses: EndBug/add-and-commit@v9
