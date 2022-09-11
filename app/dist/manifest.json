@@ -1,0 +1,38 @@
+{
+  "app/src/main.ts": {
+    "file": "assets/main.24b58220.js",
+    "src": "app/src/main.ts",
+    "isEntry": true,
+    "dynamicImports": [
+      "app/src/components/tiptap.svelte",
+      "app/src/tiptap-extensions/extensions.ts"
+    ],
+    "css": [
+      "assets/main.45501c13.css"
+    ]
+  },
+  "app/src/components/tiptap.svelte": {
+    "file": "assets/tiptap.d2aceedf.js",
+    "src": "app/src/components/tiptap.svelte",
+    "isDynamicEntry": true,
+    "imports": [
+      "app/src/main.ts",
+      "_tiptap-core.esm.a3c5031e.js"
+    ]
+  },
+  "_tiptap-core.esm.a3c5031e.js": {
+    "file": "assets/tiptap-core.esm.a3c5031e.js"
+  },
+  "app/src/tiptap-extensions/extensions.ts": {
+    "file": "assets/extensions.5d2946d5.js",
+    "src": "app/src/tiptap-extensions/extensions.ts",
+    "isDynamicEntry": true,
+    "imports": [
+      "_tiptap-core.esm.a3c5031e.js"
+    ]
+  },
+  "app/src/main.css": {
+    "file": "assets/main.45501c13.css",
+    "src": "app/src/main.css"
+  }
+}
