@@ -29,7 +29,7 @@ export interface TaxonomiesStore extends Readable< Taxonomies > {
 const actions = [ 'assign', 'create' ];
 
 export default function create_store( post: PostStore ): TaxonomiesStore {
-	const tax_store = writable< Taxonomies >();
+	const tax_store = writable< Taxonomies >( [] );
 	const tax_terms: TaxTerms[] = [];
 
 	const get_terms_store = ( tax_name: string ): TermsStore | undefined => {
@@ -101,14 +101,19 @@ export default function create_store( post: PostStore ): TaxonomiesStore {
 		get_terms_store,
 
 		async fetch(): Promise< void > {
-			const data = await api_fetch< Taxonomies >( {
-				parse: true,
-				path: `/wp/v2/taxonomies?context=edit&type=${ post_type }`,
-			} );
+			try {
+				const data = await api_fetch< Taxonomies >( {
+					parse: true,
+					path: `/wp/v2/taxonomies?context=edit&type=${ post_type }`,
+				} );
 
-			const sorted = sort_by( Object.values( data ), ( { labels } ) => labels.name.toLowerCase() );
+				const sorted = sort_by( Object.values( data ), ( { labels } ) => labels.name.toLowerCase() );
 
-			tax_store.update( () => sorted );
+				tax_store.update( () => sorted );
+			} catch {
+				// Nothing to do. Either the post type doesn't have taxonomies,
+				// or the user doesn't have permissions to create or manage terms.
+			}
 		},
 	};
 }
