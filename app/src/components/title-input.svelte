@@ -56,10 +56,10 @@
 		min-width: 1px;
 		margin-block: unset;
 		margin-inline: auto;
-		font-family: var( --wp--preset--font-family--source-serif-pro );
-		font-size: var( --wp--custom--typography--font-size--gigantic );
+		font-family: var( --wp--preset--font-family--source-serif-pro, serif );
+		font-size: var( --wp--custom--typography--font-size--gigantic, clamp( 2.75rem, 6vw, 3.25rem ) );
 		font-weight: 300;
-		line-height: var( --wp--custom--typography--line-height--tiny );
+		line-height: var( --wp--custom--typography--line-height--tiny, 1.15 );
 
 		&:empty::before {
 			content: attr( data-placeholder );

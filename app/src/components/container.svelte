@@ -61,7 +61,7 @@
 		max-width: 720px;
 		width: 100%;
 		/* stylelint-disable-next-line custom-property-pattern */
-		padding-inline: var( --wp--custom--spacing--outer );
+		padding-inline: var( --wp--custom--spacing--outer, 1.25rem );
 	}
 
 	/* TODO: Make this toggleable via the "Preview" button. */
