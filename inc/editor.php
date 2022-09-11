@@ -17,26 +17,25 @@ use WP_Post_Type;
  * @return void
  */
 function bootstrap(): void {
-	add_action( 'registered_post_type', __NAMESPACE__ . '\\register_menu', 10, 2 );
+	add_action( 'admin_menu', __NAMESPACE__ . '\\register_menu' );
 }
 
 /**
- * Replace post type's "Add new" submenu
+ * Register admin menus
+ *
+ * This adds the edit screen for each supported post types and replaces core's "Add new" submenu.
  *
  * @since 0.1.0
  *
- * @param string       $post_type Post type name.
- * @param WP_Post_Type $post_type_object Post type object.
- *
  * @return void
  */
-function register_menu( string $post_type, WP_Post_Type $post_type_object ): void {
-	if ( ! Catatan\is_post_type_supported( $post_type ) ) {
-		return;
+function register_menu(): void {
+	foreach ( get_post_types( [], 'objects' ) as $post_type ) {
+		if ( Catatan\is_post_type_supported( $post_type->name ) ) {
+			register_page( $post_type, true );
+			register_page( $post_type, false );
+		}
 	}
-
-	add_action( 'admin_menu', fn () => register_page( $post_type_object, true ) );
-	add_action( 'admin_menu', fn () => register_page( $post_type_object, false ) );
 }
 
 /**
