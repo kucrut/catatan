@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b07118c5bdf7cd19c48c9ea799f68ef0",
+    "content-hash": "8f7529ebd90e0857231259c5e55eaba5",
     "packages": [
         {
             "name": "kucrut/vite-for-wp",
-            "version": "v0.2.0",
+            "version": "v0.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kucrut/vite-for-wp.git",
-                "reference": "1f80efab5745a148b5aa1609b9f61d8f38cc6361"
+                "reference": "29891585a24fac3b0aeca45b428c0e19c1a2d028"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kucrut/vite-for-wp/zipball/1f80efab5745a148b5aa1609b9f61d8f38cc6361",
-                "reference": "1f80efab5745a148b5aa1609b9f61d8f38cc6361",
+                "url": "https://api.github.com/repos/kucrut/vite-for-wp/zipball/29891585a24fac3b0aeca45b428c0e19c1a2d028",
+                "reference": "29891585a24fac3b0aeca45b428c0e19c1a2d028",
                 "shasum": ""
             },
             "require-dev": {
@@ -42,9 +42,9 @@
             "description": "Vite integration for WordPress plugins and themes development.",
             "support": {
                 "issues": "https://github.com/kucrut/vite-for-wp/issues",
-                "source": "https://github.com/kucrut/vite-for-wp/tree/v0.2.0"
+                "source": "https://github.com/kucrut/vite-for-wp/tree/v0.3.0"
             },
-            "time": "2022-08-26T04:49:58+00:00"
+            "time": "2022-09-01T12:07:08+00:00"
         }
     ],
     "packages-dev": [

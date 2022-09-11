@@ -17,26 +17,25 @@ use WP_Post_Type;
  * @return void
  */
 function bootstrap(): void {
-	add_action( 'registered_post_type', __NAMESPACE__ . '\\register_menu', 10, 2 );
+	add_action( 'admin_menu', __NAMESPACE__ . '\\register_menu' );
 }
 
 /**
- * Replace post type's "Add new" submenu
+ * Register admin menus
+ *
+ * This adds the edit screen for each supported post types and replaces core's "Add new" submenu.
  *
  * @since 0.1.0
  *
- * @param string       $post_type Post type name.
- * @param WP_Post_Type $post_type_object Post type object.
- *
  * @return void
  */
-function register_menu( string $post_type, WP_Post_Type $post_type_object ): void {
-	if ( ! Catatan\is_post_type_supported( $post_type ) ) {
-		return;
+function register_menu(): void {
+	foreach ( get_post_types( [], 'objects' ) as $post_type ) {
+		if ( Catatan\is_post_type_supported( $post_type->name ) ) {
+			register_page( $post_type, true );
+			register_page( $post_type, false );
+		}
 	}
-
-	add_action( 'admin_menu', fn () => register_page( $post_type_object, true ) );
-	add_action( 'admin_menu', fn () => register_page( $post_type_object, false ) );
 }
 
 /**
@@ -288,7 +287,7 @@ function load( WP_Post_Type $post_type, bool $is_edit = true ): void {
  * @return void
  */
 function enqueue_assets( WP_Post $post, WP_Post_Type $post_type ): void {
-	preload_data( $post );
+	preload_data( $post, $post_type );
 	wp_enqueue_global_styles_css_custom_properties();
 	wp_enqueue_media( [ 'post' => $post ] );
 
@@ -316,20 +315,24 @@ function enqueue_assets( WP_Post $post, WP_Post_Type $post_type ): void {
  *
  * @since 0.1.0
  *
- * @param WP_Post $post Current post object being edited.
+ * @param WP_Post      $post      Current post object being edited.
+ * @param WP_Post_Type $post_type Current post type object.
  *
  * @return void
  */
-function preload_data( WP_Post $post ): void {
+function preload_data( WP_Post $post, WP_Post_Type $post_type ): void {
 	$post_route = add_query_arg( 'context', 'edit', rest_get_route_for_post( $post ) );
 
 	// Preload common data.
 	$preload_paths = [
 		sprintf( '/wp/v2/types/%s?context=edit', $post->post_type ),
-		sprintf( '/wp/v2/taxonomies?context=edit&type=%s', $post->post_type ),
 		$post_route,
 		[ $post_route, 'OPTIONS' ],
 	];
+
+	if ( ! empty( $post_type->taxonomies ) ) {
+		$preload_paths[] = sprintf( '/wp/v2/taxonomies?context=edit&type=%s', $post->post_type );
+	}
 
 	$featured_image_id = get_post_thumbnail_id( $post );
 
