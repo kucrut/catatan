@@ -36,6 +36,10 @@ export function get_extensions(): Extensions {
 			autolink: false,
 			linkOnPaste: false,
 			openOnClick: false,
+			HTMLAttributes: {
+				rel: null,
+				target: null,
+			},
 		} ),
 		placeholder.configure( {
 			placeholder: __( 'Start writing…' ),
