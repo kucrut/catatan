@@ -1,5 +1,12 @@
 # @kucrut/catatan
 
+## 0.1.2
+
+### Patch Changes
+
+- a8a142f: Add backward compat for UI store
+- a8a142f: Fix link attributes
+
 ## 0.1.1
 
 ### Patch Changes
