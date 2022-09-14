@@ -22,6 +22,12 @@ export default function create_store(): UiStore {
 		'catatan-ui',
 	);
 
+	// Backward compatibility.
+	update( ( { open_panels, ...rest } ) => ( {
+		...rest,
+		open_panels: [ ...( open_panels || [] ) ],
+	} ) );
+
 	return {
 		...store,
 		update,
