@@ -287,7 +287,7 @@ function load( WP_Post_Type $post_type, bool $is_edit = true ): void {
  * @return void
  */
 function enqueue_assets( WP_Post $post, WP_Post_Type $post_type ): void {
-	preload_data( $post, $post_type );
+	preload_data( $post );
 	wp_enqueue_global_styles_css_custom_properties();
 	wp_enqueue_media( [ 'post' => $post ] );
 
@@ -315,12 +315,11 @@ function enqueue_assets( WP_Post $post, WP_Post_Type $post_type ): void {
  *
  * @since 0.1.0
  *
- * @param WP_Post      $post      Current post object being edited.
- * @param WP_Post_Type $post_type Current post type object.
+ * @param WP_Post $post Current post object being edited.
  *
  * @return void
  */
-function preload_data( WP_Post $post, WP_Post_Type $post_type ): void {
+function preload_data( WP_Post $post ): void {
 	$post_route = add_query_arg( 'context', 'edit', rest_get_route_for_post( $post ) );
 
 	// Preload common data.
@@ -330,7 +329,9 @@ function preload_data( WP_Post $post, WP_Post_Type $post_type ): void {
 		[ $post_route, 'OPTIONS' ],
 	];
 
-	if ( ! empty( $post_type->taxonomies ) ) {
+	$taxonomies = get_taxonomies( [ 'object_type' => [ $post->post_type ] ] );
+
+	if ( ! empty( $taxonomies ) ) {
 		$preload_paths[] = sprintf( '/wp/v2/taxonomies?context=edit&type=%s', $post->post_type );
 	}
 
