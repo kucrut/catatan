@@ -30,8 +30,8 @@ function bootstrap(): void {
  * @return void
  */
 function register_menu(): void {
-	foreach ( get_post_types( [], 'objects' ) as $post_type ) {
-		if ( Catatan\is_post_type_supported( $post_type->name ) ) {
+	foreach ( get_post_types( [], 'names' ) as $post_type ) {
+		if ( Catatan\is_post_type_supported( $post_type ) ) {
 			register_page( $post_type, true );
 			register_page( $post_type, false );
 		}
@@ -43,26 +43,28 @@ function register_menu(): void {
  *
  * @since 0.1.0
  *
- * @param WP_Post_Type $post_type Post type object.
- * @param bool         $for_edit  Whether to register page for edit or create action.
+ * @param string $post_type Post type name.
+ * @param bool   $for_edit  Whether to register page for edit or create action.
  *
  * @return void
  */
-function register_page( WP_Post_Type $post_type, bool $for_edit = true ): void {
+function register_page( string $post_type, bool $for_edit = true ): void {
 	$parent = 'edit.php';
 	$original_submenu_slug = 'post-new.php';
 
-	if ( $post_type->name !== 'post' ) {
-		$parent = "{$parent}?post_type={$post_type->name}";
-		$original_submenu_slug = "{$original_submenu_slug}?post_type={$post_type->name}";
+	if ( $post_type !== 'post' ) {
+		$parent = "{$parent}?post_type={$post_type}";
+		$original_submenu_slug = "{$original_submenu_slug}?post_type={$post_type}";
 	}
 
-	$page_slug = Catatan\get_editor_page_slug( $post_type->name, $for_edit );
+	$pt_object = get_post_type_object( $post_type );
+
+	$page_slug = Catatan\get_editor_page_slug( $post_type, $for_edit );
 	$hook_suffix = add_submenu_page(
 		$parent,
-		$post_type->labels->{ $for_edit ? 'edit_item' : 'add_new_item' },
-		$post_type->labels->{ $for_edit ? 'edit_item' : 'add_new' },
-		$post_type->cap->{ $for_edit ? 'edit_posts' : 'create_posts' },
+		$pt_object->labels->{ $for_edit ? 'edit_item' : 'add_new_item' },
+		$pt_object->labels->{ $for_edit ? 'edit_item' : 'add_new' },
+		$pt_object->cap->{ $for_edit ? 'edit_posts' : 'create_posts' },
 		$page_slug,
 		__NAMESPACE__ . '\\render_page',
 		1
@@ -150,16 +152,15 @@ function get_image_settings(): array {
 /**
  * Get editor config
  *
- * @param WP_Post      $post      Current post object being edited.
- * @param WP_Post_Type $post_type Post type object.
+ * @param WP_Post $post Current post object being edited.
  *
  * @return array
  */
-function get_config( WP_Post $post, WP_Post_Type $post_type ): array {
+function get_config( WP_Post $post ): array {
 	$post_list_url = admin_url( 'edit.php' );
 
-	if ( $post_type->name !== 'post' ) {
-		$post_list_url = add_query_arg( [ 'post_type' => $post_type->name ], $post_list_url );
+	if ( $post->post_type !== 'post' ) {
+		$post_list_url = add_query_arg( [ 'post_type' => $post->post_type ], $post_list_url );
 	}
 
 	$config = array_merge(
@@ -171,7 +172,7 @@ function get_config( WP_Post $post, WP_Post_Type $post_type ): array {
 			'post_id' => $post->ID,
 			'post_list_url' => $post_list_url,
 			'post_rest_route' => rest_get_route_for_post_type_items( $post->post_type ),
-			'post_type' => $post_type->name,
+			'post_type' => $post->post_type,
 			'post_type_rest_route' => sprintf( '/wp/v2/types/%s', $post->post_type ),
 		],
 		get_image_settings()
@@ -182,11 +183,10 @@ function get_config( WP_Post $post, WP_Post_Type $post_type ): array {
 	 *
 	 * @since 0.1.0
 	 *
-	 * @param array        $config    Editor config.
-	 * @param WP_Post      $post      Current post object being edited.
-	 * @param WP_Post_Type $post_type Post type object.
+	 * @param array $config Editor config.
+	 * @param int   $post   Current post ID being edited.
 	 */
-	$config = apply_filters( 'catatan__editor_config', $config, $post, $post_type );
+	$config = apply_filters( 'catatan__editor_config', $config, $post->ID );
 
 	return $config;
 }
@@ -198,13 +198,15 @@ function get_config( WP_Post $post, WP_Post_Type $post_type ): array {
  *
  * @todo Provide page title templates for new & edit screens.
  *
- * @param WP_Post_Type $post_type Current post type object.
- * @param bool         $is_edit   Are we loading the edit page?
+ * @param string $post_type Current post type name.
+ * @param bool   $is_edit   Are we loading the edit page?
  *
  * @return void
  */
-function load( WP_Post_Type $post_type, bool $is_edit = true ): void {
-	if ( ! current_user_can( $post_type->cap->edit_posts ) || ! current_user_can( $post_type->cap->create_posts ) ) {
+function load( string $post_type, bool $is_edit = true ): void {
+	$pt_object = get_post_type_object( $post_type );
+
+	if ( ! current_user_can( $pt_object->cap->edit_posts ) || ! current_user_can( $pt_object->cap->create_posts ) ) {
 		wp_die(
 			'<h1>' . esc_html__( 'You need a higher level of permission.' ) . '</h1>' .
 			'<p>' . esc_html__( 'Sorry, you are not allowed to create posts as this user.' ) . '</p>',
@@ -217,7 +219,7 @@ function load( WP_Post_Type $post_type, bool $is_edit = true ): void {
 	if ( $is_edit ) {
 		// Ensure we're on the correct page.
 		if ( empty( $post_id ) ) {
-			wp_safe_redirect( Catatan\get_editor_url( $post_type->name ), 302, 'Catatan' );
+			wp_safe_redirect( Catatan\get_editor_url( $post_type ), 302, 'Catatan' );
 			exit;
 		}
 
@@ -227,10 +229,10 @@ function load( WP_Post_Type $post_type, bool $is_edit = true ): void {
 			wp_die( esc_html__( 'You attempted to edit an item that does not exist. Perhaps it was deleted?' ) );
 		}
 	} else {
-		$post = get_default_post_to_edit( $post_type->name, true );
+		$post = get_default_post_to_edit( $post_type, true );
 	}
 
-	if ( $post->post_type !== $post_type->name ) {
+	if ( $post->post_type !== $post_type ) {
 		wp_die(
 			esc_html__( 'A post type mismatch has been detected.' ),
 			esc_html__( 'Sorry, you are not allowed to edit this item.' ),
@@ -251,18 +253,18 @@ function load( WP_Post_Type $post_type, bool $is_edit = true ): void {
 	 *
 	 * @since 0.1.0
 	 *
-	 * @param WP_Post      $post      Current post object being edited.
-	 * @param WP_Post_Type $post_type Current post type object.
-	 * @param bool         $is_edit   Are we loading the edit page?
+	 * @param int  $post_id Current post ID being edited.
+	 * @param bool $is_edit Are we loading the edit page?
 	 */
-	do_action( 'catatan__before_load_editor', $post, $post_type, $is_edit );
+	do_action( 'catatan__before_load_editor', $post->ID, $is_edit );
 
-	add_action( 'admin_enqueue_scripts', fn () => enqueue_assets( $post, $post_type ) );
+	add_action( 'admin_enqueue_scripts', fn () => enqueue_assets( $post->ID ) );
 	add_filter( 'admin_body_class', fn ( string $classes ) => "{$classes} catatan-editor-page" );
 
 	if ( $is_edit ) {
-		// Because we've removed the page from admin menus, WP does not have the page title anymore, so we need to fix it here.
-		add_filter( 'admin_title', fn ( string $admin_title ): string => "{$post_type->labels->edit_item} {$admin_title}" );
+		$pt_object = get_post_type_object( $post_type );
+		// Because we've removed the page from admin menus, WP does not hav
+		add_filter( 'admin_title', fn ( string $admin_title ): string => "{$pt_object->labels->edit_item} {$admin_title}" );
 	}
 
 	/**
@@ -270,10 +272,10 @@ function load( WP_Post_Type $post_type, bool $is_edit = true ): void {
 	 *
 	 * @since 0.1.0
 	 *
-	 * @param WP_Post_Type $post_type Current post type object.
-	 * @param bool         $is_edit  Are we loading the edit page?
+	 * @param int  $post_id Current post ID being edited.
+	 * @param bool $is_edit Are we loading the edit page?
 	 */
-	do_action( 'catatan__after_load_editor', $post_type, $is_edit );
+	do_action( 'catatan__after_load_editor', $post->ID, $is_edit );
 }
 
 /**
@@ -281,12 +283,17 @@ function load( WP_Post_Type $post_type, bool $is_edit = true ): void {
  *
  * @since 0.1.0
  *
- * @param WP_Post      $post      Current post object being edited.
- * @param WP_Post_Type $post_type Current post type object.
+ * @param int $post_id Current post ID being edited.
  *
  * @return void
  */
-function enqueue_assets( WP_Post $post, WP_Post_Type $post_type ): void {
+function enqueue_assets( int $post_id ): void {
+	$post = get_post( $post_id );
+
+	if ( ! $post ) {
+		return;
+	}
+
 	preload_data( $post );
 	wp_enqueue_global_styles_css_custom_properties();
 	wp_enqueue_media( [ 'post' => $post ] );
@@ -305,7 +312,7 @@ function enqueue_assets( WP_Post $post, WP_Post_Type $post_type ): void {
 	wp_add_inline_script(
 		Catatan\EDITOR_ID,
 		// phpcs:ignore WordPress.WP.AlternativeFunctions.json_encode_json_encode
-		sprintf( 'var catatanEditor = %s;', json_encode( get_config( $post, $post_type ) ) ),
+		sprintf( 'var catatanEditor = %s;', json_encode( get_config( $post ) ) ),
 		'before'
 	);
 }
