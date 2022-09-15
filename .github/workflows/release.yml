@@ -8,10 +8,10 @@ on:
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
-  release:
+  create_release:
     # prevents this action from running on forks
     if: github.repository == 'kucrut/catatan'
-    name: Release
+    name: Create release
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
