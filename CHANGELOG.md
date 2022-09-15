@@ -1,5 +1,11 @@
 # @kucrut/catatan
 
+## 0.1.3
+
+### Patch Changes
+
+- ce8a032: Fix data preloader
+
 ## 0.1.2
 
 ### Patch Changes
