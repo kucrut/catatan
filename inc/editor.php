@@ -257,7 +257,7 @@ function load( WP_Post_Type $post_type, bool $is_edit = true ): void {
 	 */
 	do_action( 'catatan__before_load_editor', $post, $post_type, $is_edit );
 
-	enqueue_assets( $post, $post_type );
+	add_action( 'admin_enqueue_scripts', fn () => enqueue_assets( $post, $post_type ) );
 	add_filter( 'admin_body_class', fn ( string $classes ) => "{$classes} catatan-editor-page" );
 
 	if ( $is_edit ) {
