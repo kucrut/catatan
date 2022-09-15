@@ -34,14 +34,14 @@ jobs:
       - run: pnpm install --frozen-lockfile --silent
 
       - name: Create release pull request
-        id: create_version_pr
+        id: create_release_pr
         uses: changesets/action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Update plugin version
         shell: bash
-        if: steps.create_version_pr.outputs.hasChangesets != 'false'
+        if: steps.create_release_pr.outputs.hasChangesets != 'false'
         run: |
           NEW_VERSION=$(cat package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[", ]//g')
           sed -i -E "s#(Version:[ ]+).*\$#\1${NEW_VERSION}#" plugin.php
