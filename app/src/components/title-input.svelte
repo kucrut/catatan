@@ -11,6 +11,12 @@
 		editor.update( { title: event.currentTarget.innerText } );
 	}
 
+	function handle_keydown( event: KeyboardEvent ): void {
+		if ( event.code === 'Enter' ) {
+			event.preventDefault();
+		}
+	}
+
 	function handle_keyup( event: TitleInputEvent ): void {
 		// Because we're using a block element (h1), the browser will most probably insert a <br/> tag.
 		if ( event.currentTarget.innerText === '\n' ) {
@@ -51,6 +57,7 @@
 		data-placeholder={placeholder}
 		role="textbox"
 		on:input={handle_input}
+		on:keydown={handle_keydown}
 		on:keyup={handle_keyup}
 		on:paste|preventDefault={handle_paste}
 	>
