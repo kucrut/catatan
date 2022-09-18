@@ -1,5 +1,11 @@
 # @kucrut/catatan
 
+## 0.1.4
+
+### Patch Changes
+
+- 444fbde: Improve paste handler on Title input
+
 ## 0.1.3
 
 ### Patch Changes
