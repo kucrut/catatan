@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { __ } from '@wordpress/i18n';
 	import { get_store } from '$stores';
+	import { no_enter } from '$actions/no-enter';
 
 	type TitleInputEvent = Event & { currentTarget: HTMLHeadingElement };
 
@@ -21,7 +22,21 @@
 
 	function handle_paste( event: ClipboardEvent & { currentTarget: HTMLHeadingElement } ): void {
 		// We don't want _any_ markup in our post title.
-		event.currentTarget.innerText = event.clipboardData.getData( 'text' );
+		const text = event.clipboardData.getData( 'text/plain' );
+
+		// Credit: https://htmldom.dev/paste-as-plain-text/
+		const selection = event.currentTarget.ownerDocument.getSelection();
+		const range = selection.rangeCount ? selection.getRangeAt( 0 ) : null;
+		const text_node = document.createTextNode( text );
+
+		range.deleteContents();
+		range.insertNode( text_node );
+		range.selectNodeContents( text_node );
+		range.collapse( false );
+
+		selection.removeAllRanges();
+		selection.addRange( range );
+
 		// We've prevented the paste event, so let's trigger the input event :wink:
 		event.currentTarget.dispatchEvent( new Event( 'input' ) );
 	}
@@ -39,6 +54,7 @@
 		on:input={handle_input}
 		on:keyup={handle_keyup}
 		on:paste|preventDefault={handle_paste}
+		use:no_enter
 	>
 		{$editor.data.title}
 	</h1>
