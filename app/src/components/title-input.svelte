@@ -23,17 +23,17 @@
 	function handle_paste( event: ClipboardEvent & { currentTarget: HTMLHeadingElement } ): void {
 		// We don't want _any_ markup in our post title.
 		const text = event.clipboardData.getData( 'text/plain' );
-		// event.clipboardData.setData( 'text/plain', text );
-		const range = document.getSelection().getRangeAt( 0 );
-		range.deleteContents();
 
 		// Credit: https://htmldom.dev/paste-as-plain-text/
+		const selection = event.currentTarget.ownerDocument.getSelection();
+		const range = selection.rangeCount ? selection.getRangeAt( 0 ) : null;
 		const text_node = document.createTextNode( text );
+
+		range.deleteContents();
 		range.insertNode( text_node );
 		range.selectNodeContents( text_node );
 		range.collapse( false );
 
-		const selection = window.getSelection();
 		selection.removeAllRanges();
 		selection.addRange( range );
 
