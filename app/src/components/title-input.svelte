@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { __ } from '@wordpress/i18n';
 	import { get_store } from '$stores';
+	import { no_enter } from '$actions/no-enter';
 
 	type TitleInputEvent = Event & { currentTarget: HTMLHeadingElement };
 
@@ -9,12 +10,6 @@
 
 	function handle_input( event: TitleInputEvent ): void {
 		editor.update( { title: event.currentTarget.innerText } );
-	}
-
-	function handle_keydown( event: KeyboardEvent ): void {
-		if ( event.code === 'Enter' ) {
-			event.preventDefault();
-		}
 	}
 
 	function handle_keyup( event: TitleInputEvent ): void {
@@ -57,9 +52,9 @@
 		data-placeholder={placeholder}
 		role="textbox"
 		on:input={handle_input}
-		on:keydown={handle_keydown}
 		on:keyup={handle_keyup}
 		on:paste|preventDefault={handle_paste}
+		use:no_enter
 	>
 		{$editor.data.title}
 	</h1>
