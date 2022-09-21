@@ -11,6 +11,7 @@
 	import { get_store } from '$stores';
 	import { onMount } from 'svelte';
 	import BlockAlignmentSetting from './block-alignment-setting.svelte';
+	import Button from './button.svelte';
 
 	const blocks = get_store( 'blocks' );
 	const media = get_store( 'media' );
@@ -26,6 +27,28 @@
 				...attributes.img,
 				alt: event.currentTarget.value,
 			},
+		} );
+	}
+
+	function handle_add_caption( event: MouseEvent ) {
+		event.preventDefault();
+
+		$blocks.editor
+			.chain()
+			.focus()
+			.updateAttributes( block_type, {
+				...attributes,
+				caption: '',
+			} )
+			.run();
+	}
+
+	function handle_remove_caption( event: MouseEvent ) {
+		event.preventDefault();
+
+		$blocks.editor.commands.updateAttributes( block_type, {
+			...attributes,
+			caption: null,
 		} );
 	}
 
@@ -63,6 +86,11 @@
 				on:change={handle_size_change}
 			/>
 			<BlockAlignmentSetting type={block_type} />
+			{#if typeof attributes.caption === 'string'}
+				<Button is_destructive on:click={handle_remove_caption}>Remove caption</Button>
+			{:else}
+				<Button is_secondary on:click={handle_add_caption}>Add caption</Button>
+			{/if}
 		{/if}
 	</Panel>
 </div>
