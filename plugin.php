@@ -4,7 +4,7 @@
  * Description: Simple post editor for WordPress.
  * Author: Dzikri Aziz
  * Author URI: https://dz.aziz.im
- * Version: 0.1.4
+ * Version: 0.1.5
  * Text Domain: catatan
  */
 

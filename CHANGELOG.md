@@ -1,5 +1,12 @@
 # @kucrut/catatan
 
+## 0.1.5
+
+### Patch Changes
+
+- 5c42ea9: WPImage: Add naive button to add/remove caption
+- 5c42ea9: Add some content styles
+
 ## 0.1.4
 
 ### Patch Changes
