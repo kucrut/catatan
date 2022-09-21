@@ -1,0 +1,45 @@
+/* TipTap/ProseMirror fixes/overrides */
+/* stylelint-disable-next-line selector-class-pattern */
+.ProseMirror {
+	height: 100%;
+	line-height: 1.65;
+
+	p.is-editor-empty:first-child::before {
+		content: attr( data-placeholder );
+		opacity: 0.62;
+		float: inline-start;
+		height: 0;
+		pointer-events: none;
+	}
+
+	blockquote {
+		margin-inline: unset;
+		padding-inline-start: 1rem;
+		border-inline-start: solid #eee 3px;
+
+		p {
+			font-style: italic;
+		}
+	}
+
+	pre.hljs {
+		padding-block: 1rem;
+		padding-inline: 1rem;
+	}
+
+	.wp-block-image {
+		margin-block-end: 1rem;
+
+		&.alignleft {
+			margin-inline-end: 1rem;
+		}
+
+		&.alignright {
+			margin-inline-start: 1rem;
+		}
+
+		&.aligncenter {
+			margin-inline: auto;
+		}
+	}
+}
