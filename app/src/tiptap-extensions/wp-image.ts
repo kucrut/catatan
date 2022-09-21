@@ -7,7 +7,7 @@ const size_class_prefix = 'size-';
 const size_class_regex = new RegExp( `((${ size_class_prefix })(\\w+))` );
 
 export interface WPImageAttributes {
-	caption?: string;
+	caption?: string | null;
 	id: number;
 	img: {
 		alt: string;
@@ -130,7 +130,7 @@ export const WPImage = Node.create< WPImageOptions >( {
 					class: id ? attachment_id_class_prefix + id : null,
 				},
 			],
-			caption ? [ 'figcaption', {}, 0 ] : null,
+			typeof caption === 'string' ? [ 'figcaption', {}, 0 ] : null,
 		].filter( i => i !== null );
 	},
 
