@@ -1,0 +1,13 @@
+/* TipTap/ProseMirror fixes/overrides */
+/* stylelint-disable-next-line selector-class-pattern */
+.ProseMirror {
+	height: 100%;
+
+	p.is-editor-empty:first-child::before {
+		content: attr( data-placeholder );
+		opacity: 0.62;
+		float: inline-start;
+		height: 0;
+		pointer-events: none;
+	}
+}
