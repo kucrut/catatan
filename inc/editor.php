@@ -260,6 +260,7 @@ function load( string $post_type, bool $is_edit = true ): void {
 
 	add_action( 'admin_enqueue_scripts', fn () => enqueue_assets( $post->ID ) );
 	add_filter( 'admin_body_class', fn ( string $classes ) => "{$classes} catatan-editor-page" );
+	remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
 
 	if ( $is_edit ) {
 		$pt_object = get_post_type_object( $post_type );
