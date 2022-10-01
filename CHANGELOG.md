@@ -1,5 +1,11 @@
 # @kucrut/catatan
 
+## 0.1.6
+
+### Patch Changes
+
+- 75d394f: Fix emoji 🎉
+
 ## 0.1.5
 
 ### Patch Changes
