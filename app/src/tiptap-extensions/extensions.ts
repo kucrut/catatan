@@ -34,7 +34,7 @@ export function get_extensions(): Extensions {
 		} ),
 		link.configure( {
 			autolink: false,
-			linkOnPaste: false,
+			linkOnPaste: true,
 			openOnClick: false,
 			HTMLAttributes: {
 				rel: null,
