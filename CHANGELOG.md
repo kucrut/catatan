@@ -1,5 +1,11 @@
 # @kucrut/catatan
 
+## 0.1.7
+
+### Patch Changes
+
+- 830b409: Enable linkOnPaste
+
 ## 0.1.6
 
 ### Patch Changes
