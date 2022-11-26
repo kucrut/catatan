@@ -11,7 +11,7 @@
 	],
 	"require": {
 		"php": ">=7.4.0",
-		"kucrut/vite-for-wp": "^0.3.1"
+		"kucrut/vite-for-wp": "^0.5.1"
 	},
 	"require-dev": {
 		"wp-coding-standards/wpcs": "^2.3",
