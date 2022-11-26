@@ -70,7 +70,7 @@ jobs:
             NEW_VERSION=$(cat package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[", ]//g')
           fi
 
-          echo "::set-output name=new_version::$NEW_VERSION"
+          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
 
   publish:
     name: Publish new version
