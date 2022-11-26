@@ -149,6 +149,7 @@
 
 <div class={class_prefix}>
 	<label for={input_id} class="{class_prefix}__label">{label}</label>
+	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<div
 		class="{class_prefix}__input-container"
 		tabindex="-1"

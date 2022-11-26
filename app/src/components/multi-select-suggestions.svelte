@@ -49,6 +49,7 @@
 <ul {id} class="{class_prefix}__suggestions-list" role="listbox" bind:this={list}>
 	{#each items as label, index (index + label)}
 		{@const  matched = regex.exec( label ) }
+		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<li
 			aria-selected={selected_index === index}
 			class="{class_prefix}__suggestion"
