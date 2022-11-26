@@ -1,5 +1,12 @@
 # @kucrut/catatan
 
+## 0.1.8
+
+### Patch Changes
+
+- 9bb1863: Fix CS issues
+- f072292: Fix deprecated stuff in GH actions
+
 ## 0.1.7
 
 ### Patch Changes
