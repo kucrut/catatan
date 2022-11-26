@@ -1,6 +1,11 @@
 import type { ActionReturn } from 'svelte/action';
 
 export function trap_focus( node: HTMLElement ): ActionReturn< undefined > {
+	/**
+	 * Handle keydown event
+	 *
+	 * @param {KeyboardEvent} event Event.
+	 */
 	function handle_keydown( event: KeyboardEvent ): void {
 		if ( event.code !== 'Tab' ) {
 			return;
@@ -10,8 +15,8 @@ export function trap_focus( node: HTMLElement ): ActionReturn< undefined > {
 
 		const tabbables = Array.from( node.querySelectorAll( '*' ) ).filter( el => {
 			return (
+				el instanceof HTMLElement &&
 				'tabIndex' in el &&
-				// @ts-expect-error The element must have tabIndex attribute after the check above.
 				el.tabIndex >= 0 &&
 				! el.hasAttribute( 'disabled' ) &&
 				! el.hasAttribute( 'hidden' ) &&
@@ -24,29 +29,36 @@ export function trap_focus( node: HTMLElement ): ActionReturn< undefined > {
 		}
 
 		// Index of element that's currently in focus.
-		let index = tabbables.indexOf( node.ownerDocument.activeElement );
+		let index = node.ownerDocument.activeElement ? tabbables.indexOf( node.ownerDocument.activeElement ) : -1;
 
-		// The focus is outside. Reset it.
-		if ( index === -1 ) {
-			index = 0;
+		if ( event.shiftKey ) {
+			index = index > 0 ? index - 1 : tabbables.length - 1;
+		} else {
+			index = index + 1 < tabbables.length ? index + 1 : 0;
 		}
 
-		index += tabbables.length + ( event.shiftKey ? -1 : 1 );
-		index %= tabbables.length;
+		const focused_el = tabbables[ index ];
 
-		// @ts-expect-error This is fine.
-		tabbables[ index ].focus();
+		if ( focused_el instanceof HTMLElement ) {
+			focused_el.focus();
+		}
 	}
 
+	/**
+	 * Toggle keydown event listener
+	 *
+	 * @param {boolean} should_listen State.
+	 */
 	function toggle_listener( should_listen: boolean ): void {
 		if ( should_listen ) {
-			node.addEventListener( 'keydown', handle_keydown );
+			window.addEventListener( 'keydown', handle_keydown );
 		} else {
-			node.removeEventListener( 'keydown', handle_keydown );
+			window.removeEventListener( 'keydown', handle_keydown );
 		}
 	}
 
 	toggle_listener( true );
+	node.focus();
 
 	return {
 		destroy(): void {
